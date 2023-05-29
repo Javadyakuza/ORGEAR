@@ -1,0 +1,8 @@
+pragma ever-solidity >= 0.61.2;
+
+interface ITip3VoteWallet{
+
+    function getPastVotes(uint256 _blockNumber) external view returns(uint256 voteWeight_); 
+    function walletOf(address _voter) external view returns(address _expectedWalletAddress);
+
+}   

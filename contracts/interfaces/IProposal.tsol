@@ -1,0 +1,15 @@
+pragma ever-solidity >=0.61.2;
+
+import "../structures/ProposalConfigurationStructure.tsol";
+import "../structures/ProposalStates.tsol";
+import "../structures/ProposalActionStruct.tsol";
+interface IProposal is ProposalConfigurationStructure, ProposalStates, Action{
+
+  function castVote(address _voter, bool _support, string _reason) external internalMsg;
+  function Queue() external ;
+  function execute() external ;
+  function cancell() external ;
+  function getPorosposalOverview() external view returns (ProposalInitConfiguration initConf_, ProposalState states_);
+  function getActions() external view returns (VenomActions[]  venomActions_);
+  function getProposalState() external view returns (ProposalState state_);
+}

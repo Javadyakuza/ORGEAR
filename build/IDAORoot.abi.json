@@ -1,0 +1,107 @@
+{
+	"ABI version": 2,
+	"version": "2.2",
+	"header": ["pubkey", "time", "expire"],
+	"functions": [
+		{
+			"name": "deployProposal",
+			"inputs": [
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "onProposalSucceeded",
+			"inputs": [
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "excuteVenomActions",
+			"inputs": [
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "upgradeDAORootCode",
+			"inputs": [
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "updateProposalCode",
+			"inputs": [
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "_estimateActionGas",
+			"inputs": [
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "changeDAORootprefrences",
+			"inputs": [
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "chnageAdmin",
+			"inputs": [
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "getAdmin",
+			"inputs": [
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "getProposalConfig",
+			"inputs": [
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "getDAORootConfig",
+			"inputs": [
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "getTotalProposals",
+			"inputs": [
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "constructor",
+			"inputs": [
+			],
+			"outputs": [
+			]
+		}
+	],
+	"data": [
+	],
+	"events": [
+	],
+	"fields": [
+		{"name":"_pubkey","type":"uint256"},
+		{"name":"_timestamp","type":"uint64"},
+		{"name":"_constructorFlag","type":"bool"}
+	]
+}

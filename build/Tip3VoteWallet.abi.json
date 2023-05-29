@@ -1,0 +1,42 @@
+{
+	"ABI version": 2,
+	"version": "2.2",
+	"header": ["time"],
+	"functions": [
+		{
+			"name": "getPastVotes",
+			"inputs": [
+				{"name":"answerId","type":"uint32"},
+				{"name":"_blockNumber","type":"uint256"}
+			],
+			"outputs": [
+				{"name":"voteWeight_","type":"uint256"}
+			]
+		},
+		{
+			"name": "walletOf",
+			"inputs": [
+				{"name":"_voter","type":"address"}
+			],
+			"outputs": [
+				{"name":"_expectedWalletAddress","type":"address"}
+			]
+		},
+		{
+			"name": "constructor",
+			"inputs": [
+			],
+			"outputs": [
+			]
+		}
+	],
+	"data": [
+	],
+	"events": [
+	],
+	"fields": [
+		{"name":"_pubkey","type":"uint256"},
+		{"name":"_timestamp","type":"uint64"},
+		{"name":"_constructorFlag","type":"bool"}
+	]
+}

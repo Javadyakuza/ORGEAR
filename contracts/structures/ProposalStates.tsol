@@ -1,0 +1,14 @@
+pragma ever-solidity >= 0.39.0;
+
+interface ProposalStates {
+    enum ProposalState {
+        Pending, // i think they change it in case of any problem 
+        Active, // meaning that they accept voting rn 
+        Canceled, // meaning that the proposal is cancelled
+        Failed, // the poropsal didnt get the enough votes  
+        Succeeded, // the propsal is succseded 
+        Expired, // meaning that the poropsal time perios is done 
+        Queued, // the queue means that the enough votes are gatherd for the proposal and it time for excution  
+        Executed // the proppsal has been suucesfully excuted 
+    }
+}

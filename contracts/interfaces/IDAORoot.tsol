@@ -1,0 +1,43 @@
+pragma ever-solidity >=0.61.2;
+pragma AbiHeader expire;
+pragma AbiHeader pubkey;
+
+import "../structures/ProposalConfigurationStructure.tsol";
+import "../structures/ProposalActionStruct.tsol";
+import "../structures/DAORootConfigurationStruct.tsol";
+import "../helpers/ProposalInitialCheck.tsol";
+import "../interfaces/IProposal.tsol";
+// import "Tip3vote/contracts/ITip3VoteWallet.tsol";
+// import "Tip3vote/contracts/ITip3VotRoot.tsol";
+import "../Proposal.tsol";
+import "../libraries/TokenMsgFlag.tsol";
+import "@broxus/contracts/contracts/libraries/MsgFlag.tsol";
+import "../libraries/Gas.tsol";
+
+interface IDAORoot is ProposalConfigurationStructure, DAORootConfigurationStruct, Action {
+
+
+  ///@notice the proposal expected address will be calculated from  a postion id wich is totalProposals + 1 
+  function propose(ProposalInitConfiguration _ProposalInitConfiguration, VenomActions[] _venomActions) external returns(address deployedProposal_);
+  function deployProposal(ProposalInitConfiguration _ProposalInitConfiguration, VenomActions[] _venomActions) external returns(address);
+
+  // this  function is used to perfomrm the planned operation in case a proposal is approved and has got the votes
+  function onProposalSucceeded(VenomActions[] _venomActions, uint256 _proposalId) external ;
+
+  // -- get funcs -- // 
+  function expectedProposalAddress(uint256 _proposalId) external view returns (address expectedAddress_) ;
+  function getAdmin() external view returns (address admin_) ;
+
+  function getDAORootConfig() external view returns (initializingVars DAORootConfig_);
+
+  function getTotalProposals() external view returns (uint256 totalProposal_);
+  // -- get funcs -- // 
+  // -- ADMIN FUNCTION -- //
+  function chnageAdmin(address _newAdmin) external ;
+
+  function acceptBeingAdmin() external ;
+
+  function changeDAORootprefrences(initializingVars _newInitializingVars) external;
+  // -- ADMIN FUNCTION -- //
+
+}

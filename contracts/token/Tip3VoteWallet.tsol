@@ -1,0 +1,20 @@
+pragma ever-solidity >= 0.61.2;
+
+import "../interfaces/ITip3VoteWallet.tsol";
+
+contract Tip3VoteWallet is ITip3VoteWallet{
+
+function getPastVotes(uint256 _blockNumber) public  view override returns(uint256 voteWeight_){
+    tvm.accept();
+/*
+  the logic will be impelemented here   
+*/
+return {value :0 ,bounce : false , flag : 64 } _blockNumber;
+}  
+function walletOf(address _voter) public view override returns(address _expectedWalletAddress){
+    /*
+        the logic will be implemented here
+    */
+    
+}
+}

@@ -1,0 +1,946 @@
+.version sol 0.62.0
+
+.macro constructor
+DROP
+GETGLOB 2
+ISNULL
+IFREF {
+	CALL $c4_to_c7_with_init_storage$
+}
+GETGLOB 6
+THROWIF 51
+OVER
+PUSHCONT {
+	LDREF
+	ENDS
+	CTOS
+}
+IF
+LDMSGADDR
+LDU 128
+LDU 128
+LDU 128
+LDREF
+ENDS
+CTOS
+LDU 128
+LDU 32
+LDU 32
+LDU 32
+LDU 32
+LDU 32
+LDU 32
+LDU 32
+LDU 32
+LDU 16
+LDU 8
+ROLLREV 15
+TUPLE 15
+SWAP
+LDMSGADDR
+ENDS
+.loc ../contracts/DAORoot.tsol, 28
+SWAP
+SETGLOB 15
+.loc ../contracts/DAORoot.tsol, 30
+SETGLOB 11
+.loc ../contracts/DAORoot.tsol, 0
+CALLREF {
+	CALL $c7_to_c4$
+}
+THROW 0
+
+.macro deployProposal
+DROP
+GETGLOB 6
+THROWIFNOT 76
+GETGLOB 2
+ISNULL
+IFREF {
+	CALL $c4_to_c7$
+}
+.loc ../contracts/DAORoot.tsol, 45
+ENDS
+.loc ../contracts/DAORoot.tsol, 0
+CALLREF {
+	CALL $deployProposal_a9cfd2ee_internal_macro$
+}
+DROP
+CALLREF {
+	CALL $c7_to_c4$
+}
+THROW 0
+
+.globl	deployProposal_a9cfd2ee_internal
+.type	deployProposal_a9cfd2ee_internal, @function
+CALL $deployProposal_a9cfd2ee_internal_macro$
+
+.macro deployProposal_a9cfd2ee_internal_macro
+.loc ../contracts/DAORoot.tsol, 0
+
+.macro onProposalSuccess
+DROP
+GETGLOB 6
+THROWIFNOT 76
+GETGLOB 2
+ISNULL
+IFREF {
+	CALL $c4_to_c7$
+}
+.loc ../contracts/DAORoot.tsol, 47
+ENDS
+.loc ../contracts/DAORoot.tsol, 0
+CALLREF {
+	CALL $onProposalSuccess_6e85cf34_internal_macro$
+}
+DROP
+CALLREF {
+	CALL $c7_to_c4$
+}
+THROW 0
+
+.globl	onProposalSuccess_6e85cf34_internal
+.type	onProposalSuccess_6e85cf34_internal, @function
+CALL $onProposalSuccess_6e85cf34_internal_macro$
+
+.macro onProposalSuccess_6e85cf34_internal_macro
+.loc ../contracts/DAORoot.tsol, 0
+
+.macro excuteVenomActions
+DROP
+GETGLOB 6
+THROWIFNOT 76
+GETGLOB 2
+ISNULL
+IFREF {
+	CALL $c4_to_c7$
+}
+.loc ../contracts/DAORoot.tsol, 49
+ENDS
+.loc ../contracts/DAORoot.tsol, 0
+CALLREF {
+	CALL $excuteVenomActions_b55a9e77_internal_macro$
+}
+DROP
+CALLREF {
+	CALL $c7_to_c4$
+}
+THROW 0
+
+.globl	excuteVenomActions_b55a9e77_internal
+.type	excuteVenomActions_b55a9e77_internal, @function
+CALL $excuteVenomActions_b55a9e77_internal_macro$
+
+.macro excuteVenomActions_b55a9e77_internal_macro
+.loc ../contracts/DAORoot.tsol, 0
+
+.globl	_buildProposalStateInit_2093d356_internal
+.type	_buildProposalStateInit_2093d356_internal, @function
+CALL $_buildProposalStateInit_2093d356_internal_macro$
+
+.macro _buildProposalStateInit_2093d356_internal_macro
+.loc ../contracts/DAORoot.tsol, 0
+
+.macro upgradeDAORootCode
+DROP
+GETGLOB 6
+THROWIFNOT 76
+GETGLOB 2
+ISNULL
+IFREF {
+	CALL $c4_to_c7$
+}
+.loc ../contracts/DAORoot.tsol, 53
+ENDS
+.loc ../contracts/DAORoot.tsol, 0
+CALLREF {
+	CALL $upgradeDAORootCode_36d552c7_internal_macro$
+}
+DROP
+CALLREF {
+	CALL $c7_to_c4$
+}
+THROW 0
+
+.globl	upgradeDAORootCode_36d552c7_internal
+.type	upgradeDAORootCode_36d552c7_internal, @function
+CALL $upgradeDAORootCode_36d552c7_internal_macro$
+
+.macro upgradeDAORootCode_36d552c7_internal_macro
+.loc ../contracts/DAORoot.tsol, 0
+
+.macro updateProposalCode
+DROP
+GETGLOB 6
+THROWIFNOT 76
+GETGLOB 2
+ISNULL
+IFREF {
+	CALL $c4_to_c7$
+}
+.loc ../contracts/DAORoot.tsol, 55
+ENDS
+.loc ../contracts/DAORoot.tsol, 0
+CALLREF {
+	CALL $updateProposalCode_49eacb8c_internal_macro$
+}
+DROP
+CALLREF {
+	CALL $c7_to_c4$
+}
+THROW 0
+
+.globl	updateProposalCode_49eacb8c_internal
+.type	updateProposalCode_49eacb8c_internal, @function
+CALL $updateProposalCode_49eacb8c_internal_macro$
+
+.macro updateProposalCode_49eacb8c_internal_macro
+.loc ../contracts/DAORoot.tsol, 0
+
+.macro _estimateActionGas
+DROP
+GETGLOB 6
+THROWIFNOT 76
+GETGLOB 2
+ISNULL
+IFREF {
+	CALL $c4_to_c7$
+}
+.loc ../contracts/DAORoot.tsol, 57
+ENDS
+.loc ../contracts/DAORoot.tsol, 0
+CALLREF {
+	CALL $_estimateActionGas_6c490f02_internal_macro$
+}
+DROP
+CALLREF {
+	CALL $c7_to_c4$
+}
+THROW 0
+
+.globl	_estimateActionGas_6c490f02_internal
+.type	_estimateActionGas_6c490f02_internal, @function
+CALL $_estimateActionGas_6c490f02_internal_macro$
+
+.macro _estimateActionGas_6c490f02_internal_macro
+.loc ../contracts/DAORoot.tsol, 0
+
+.macro changeDAORootprefrences
+DROP
+GETGLOB 6
+THROWIFNOT 76
+GETGLOB 2
+ISNULL
+IFREF {
+	CALL $c4_to_c7$
+}
+.loc ../contracts/DAORoot.tsol, 59
+ENDS
+.loc ../contracts/DAORoot.tsol, 0
+CALLREF {
+	CALL $changeDAORootprefrences_b869230f_internal_macro$
+}
+DROP
+CALLREF {
+	CALL $c7_to_c4$
+}
+THROW 0
+
+.globl	changeDAORootprefrences_b869230f_internal
+.type	changeDAORootprefrences_b869230f_internal, @function
+CALL $changeDAORootprefrences_b869230f_internal_macro$
+
+.macro changeDAORootprefrences_b869230f_internal_macro
+.loc ../contracts/DAORoot.tsol, 0
+
+.macro chnageAdmin
+DROP
+GETGLOB 6
+THROWIFNOT 76
+GETGLOB 2
+ISNULL
+IFREF {
+	CALL $c4_to_c7$
+}
+.loc ../contracts/DAORoot.tsol, 61
+ENDS
+.loc ../contracts/DAORoot.tsol, 0
+CALLREF {
+	CALL $chnageAdmin_8f46d641_internal_macro$
+}
+DROP
+CALLREF {
+	CALL $c7_to_c4$
+}
+THROW 0
+
+.globl	chnageAdmin_8f46d641_internal
+.type	chnageAdmin_8f46d641_internal, @function
+CALL $chnageAdmin_8f46d641_internal_macro$
+
+.macro chnageAdmin_8f46d641_internal_macro
+.loc ../contracts/DAORoot.tsol, 0
+
+.globl	_expectedProposalAddress_8d040ce7_internal
+.type	_expectedProposalAddress_8d040ce7_internal, @function
+CALL $_expectedProposalAddress_8d040ce7_internal_macro$
+
+.macro _expectedProposalAddress_8d040ce7_internal_macro
+.loc ../contracts/DAORoot.tsol, 63
+PUSHREFSLICE {
+	.blob x8000000000000000000000000000000000000000000000000000000000000000001_
+}
+.loc ../contracts/DAORoot.tsol, 0
+
+.macro getAdmin
+DROP
+GETGLOB 6
+THROWIFNOT 76
+GETGLOB 2
+ISNULL
+IFREF {
+	CALL $c4_to_c7$
+}
+.loc ../contracts/DAORoot.tsol, 66
+ENDS
+.loc ../contracts/DAORoot.tsol, 0
+CALLREF {
+	CALL $getAdmin_6e9960c3_internal_macro$
+}
+DROP
+CALLREF {
+	CALL $c7_to_c4$
+}
+THROW 0
+
+.globl	getAdmin_6e9960c3_internal
+.type	getAdmin_6e9960c3_internal, @function
+CALL $getAdmin_6e9960c3_internal_macro$
+
+.macro getAdmin_6e9960c3_internal_macro
+.loc ../contracts/DAORoot.tsol, 0
+
+.macro getProposalConfig
+DROP
+GETGLOB 6
+THROWIFNOT 76
+GETGLOB 2
+ISNULL
+IFREF {
+	CALL $c4_to_c7$
+}
+.loc ../contracts/DAORoot.tsol, 68
+ENDS
+.loc ../contracts/DAORoot.tsol, 0
+CALLREF {
+	CALL $getProposalConfig_9ff8ee85_internal_macro$
+}
+DROP
+CALLREF {
+	CALL $c7_to_c4$
+}
+THROW 0
+
+.globl	getProposalConfig_9ff8ee85_internal
+.type	getProposalConfig_9ff8ee85_internal, @function
+CALL $getProposalConfig_9ff8ee85_internal_macro$
+
+.macro getProposalConfig_9ff8ee85_internal_macro
+.loc ../contracts/DAORoot.tsol, 0
+
+.macro getDAORootConfig
+DROP
+GETGLOB 6
+THROWIFNOT 76
+GETGLOB 2
+ISNULL
+IFREF {
+	CALL $c4_to_c7$
+}
+.loc ../contracts/DAORoot.tsol, 70
+ENDS
+.loc ../contracts/DAORoot.tsol, 0
+CALLREF {
+	CALL $getDAORootConfig_1a18c2b3_internal_macro$
+}
+DROP
+CALLREF {
+	CALL $c7_to_c4$
+}
+THROW 0
+
+.globl	getDAORootConfig_1a18c2b3_internal
+.type	getDAORootConfig_1a18c2b3_internal, @function
+CALL $getDAORootConfig_1a18c2b3_internal_macro$
+
+.macro getDAORootConfig_1a18c2b3_internal_macro
+.loc ../contracts/DAORoot.tsol, 0
+
+.macro getTotalProposals
+DROP
+GETGLOB 6
+THROWIFNOT 76
+GETGLOB 2
+ISNULL
+IFREF {
+	CALL $c4_to_c7$
+}
+.loc ../contracts/DAORoot.tsol, 72
+ENDS
+.loc ../contracts/DAORoot.tsol, 0
+CALLREF {
+	CALL $getTotalProposals_1a5007dd_internal_macro$
+}
+DROP
+CALLREF {
+	CALL $c7_to_c4$
+}
+THROW 0
+
+.globl	getTotalProposals_1a5007dd_internal
+.type	getTotalProposals_1a5007dd_internal, @function
+CALL $getTotalProposals_1a5007dd_internal_macro$
+
+.macro getTotalProposals_1a5007dd_internal_macro
+.loc ../contracts/DAORoot.tsol, 0
+
+.macro c4_to_c7
+PUSHROOT
+CTOS
+LDU 256 ; pubkey c4
+LDU 64 ; pubkey timestamp c4
+LDU 1 ; ctor flag
+NIP
+LDU 32
+LDMSGADDR
+LDU 32
+LDREF
+LDU 32
+LDREF
+ENDS
+CTOS
+LDU 32
+LDU 128
+LDU 32
+LDU 128
+LDU 32
+ROLLREV 6
+TUPLE 6
+SWAP
+LDMSGADDR
+LDREF
+ENDS
+CTOS
+LDU 128
+LDU 128
+LDU 128
+LDU 128
+LDU 32
+LDU 32
+LDU 32
+LDU 32
+LDU 32
+LDU 32
+LDU 32
+LDU 32
+LDU 16
+LDU 8
+ROLLREV 15
+TUPLE 15
+SWAP
+ENDS
+SETGLOB 15
+SETGLOB 14
+SETGLOB 13
+SETGLOB 12
+SETGLOB 11
+SETGLOB 10
+SETGLOB 3
+SETGLOB 2
+
+.macro c4_to_c7_with_init_storage
+PUSHROOT
+CTOS
+SBITS
+GTINT 1
+PUSHCONT {
+	PUSHINT 0
+	PUSHROOT
+	CTOS
+	PLDDICT ; D
+	PUSHINT 1
+	OVER
+	PUSHINT 64
+	DICTUGET
+	ZEROSWAPIFNOT
+	PUSHCONT {
+		PLDU 32
+	}
+	IF
+	PUSHREFSLICE {
+		.blob x8000000000000000000000000000000000000000000000000000000000000000001_
+	}
+	PUSHINT 0
+	PUSHREF {
+	}
+	PUSHINT 0
+	BLKPUSH 5, 0
+	TUPLE 6
+	PUSHREFSLICE {
+		.blob x8000000000000000000000000000000000000000000000000000000000000000001_
+	}
+	PUSHINT 0
+	BLKPUSH 13, 0
+	TUPLE 15
+	SETGLOB 15
+	SETGLOB 14
+	SETGLOB 13
+	SETGLOB 12
+	SETGLOB 11
+	SETGLOB 10
+	PUSHINT 64
+	DICTUGET
+	THROWIFNOT 61
+	PLDU 256
+	SETGLOB 2
+	PUSHINT 0 ; timestamp
+	SETGLOB 3
+}
+IFREFELSE {
+	CALL $c4_to_c7$
+}
+
+.macro c7_to_c4
+GETGLOB 15
+GETGLOB 14
+GETGLOB 13
+GETGLOB 12
+GETGLOB 11
+GETGLOB 10
+GETGLOB 3
+GETGLOB 2
+NEWC
+STU 256
+STU 64
+STONE
+STU 32
+STSLICE
+STU 32
+STREF
+SWAP
+UNTUPLE 6
+REVERSE 7, 0
+STU 32
+ROLLREV 6
+NEWC
+STU 32
+STU 128
+STU 32
+STU 128
+STU 32
+SWAP
+UNTUPLE 15
+REVERSE 16, 0
+STSLICE
+ROLLREV 14
+NEWC
+STU 128
+STU 128
+STU 128
+STU 128
+STU 32
+STU 32
+STU 32
+STU 32
+STU 32
+STU 32
+STU 32
+STU 32
+STU 16
+STU 8
+STBREFR
+STBREFR
+ENDC
+POPROOT
+
+.macro upd_only_time_in_c4
+PUSHROOT
+CTOS
+LDU 256
+LDU 64
+NIP
+GETGLOB 3
+ROT
+NEWC
+STU 256
+STU 64
+STSLICE
+ENDC
+POPROOT
+
+.internal-alias :main_internal, 0
+.internal :main_internal
+PUSHROOT
+CTOS
+SBITS
+NEQINT 1
+SETGLOB 6
+PUSH S2
+CTOS
+LDU 4 ; bounced tail
+LDMSGADDR ; bounced src tail
+DROP
+SETGLOB 9
+MODPOW2 1
+IFRET
+OVER
+SEMPTY ; isEmpty
+IFJMPREF {
+	GETGLOB 6
+	THROWIFNOT 76
+}
+OVER
+LDUQ 32  ; [funcId] body' ok
+THROWIFNOT 60
+OVER
+IFNOTJMPREF {
+	GETGLOB 6
+	THROWIFNOT 76
+}
+SWAP
+CALLREF {
+	CALL $public_function_selector$
+}
+THROW 60
+
+.internal-alias :main_external, -1
+.internal :main_external
+PUSHROOT
+CTOS
+SBITS
+NEQINT 1
+SETGLOB 6
+PUSHREFSLICE {
+	.blob x8000000000000000000000000000000000000000000000000000000000000000001_
+}
+SETGLOB 9
+OVER
+CALLREF {
+	CALL $c4_to_c7_with_init_storage$
+}
+LDU 1 ; haveSign msgSlice
+SWAP
+PUSHCONT {
+	PUSHPOW2 9
+	LDSLICEX ; signatureSlice msgSlice
+	DUP
+	HASHSU ; signatureSlice msgSlice hashMsgSlice
+	SWAP
+	LDU 1 ; signatureSlice hashMsgSlice hasPubkey msgSlice
+	SWAP
+	PUSHCONT {
+		LDU 256 ; signatureSlice hashMsgSlice pubkey msgSlice
+		XCHG S3
+		SWAP
+	}
+	PUSHCONT {
+		XCHG S2
+		GETGLOB 2
+	}
+	IFELSE
+	CHKSIGNU ; msgSlice isSigned
+	THROWIFNOT 40
+}
+PUSHCONT {
+	LDU 1 ; hasPubkey msgSlice
+	SWAP
+	THROWIF 58
+}
+IFELSE
+LDU 64 ; timestamp msgSlice
+SWAP
+CALL $replay_protection_macro$
+LDU 32 ; expireAt msgSlice
+SWAP
+NOW ; msgSlice expireAt now
+GREATER ; msgSlice expireAt>now
+THROWIFNOT 57
+LDU 32 ; funcId body
+SWAP
+CALLREF {
+	CALL $public_function_selector$
+}
+THROW 60
+
+.macro admin
+DROP
+ENDS
+CALLREF {
+	CALL $c4_to_c7$
+}
+GETGLOB 11
+OVER
+PUSHCONT {
+	PUSHSLICE xc000000000000000000000000086b0bd64
+	NEWC
+	STSLICE
+	STSLICE
+	ENDC
+	PUSHINT 0
+	SENDRAWMSG
+}
+IF
+THROW 0
+
+.macro proposalCount
+DROP
+ENDS
+CALLREF {
+	CALL $c4_to_c7$
+}
+GETGLOB 12
+OVER
+PUSHCONT {
+	PUSHSLICE xc0000000000000000000000000dbe2de36
+	NEWC
+	STSLICE
+	STU 32
+	ENDC
+	PUSHINT 0
+	SENDRAWMSG
+}
+IF
+THROW 0
+
+.macro proposalCode
+DROP
+ENDS
+CALLREF {
+	CALL $c4_to_c7$
+}
+GETGLOB 13
+OVER
+PUSHCONT {
+	PUSHSLICE xc000000000000000000000000080da14e0
+	NEWC
+	STSLICE
+	STREF
+	ENDC
+	PUSHINT 0
+	SENDRAWMSG
+}
+IF
+THROW 0
+
+.macro proposalConfiguration
+DROP
+ENDS
+CALLREF {
+	CALL $c4_to_c7$
+}
+GETGLOB 14
+OVER
+PUSHCONT {
+	PUSHSLICE xc000000000000000000000000090afffda
+	NEWC
+	STSLICE
+	SWAP
+	UNTUPLE 6
+	REVERSE 7, 0
+	STU 32
+	STU 32
+	STU 128
+	STU 32
+	STU 128
+	STU 32
+	ENDC
+	PUSHINT 0
+	SENDRAWMSG
+}
+IF
+THROW 0
+
+.macro DAORootConfiguration
+DROP
+ENDS
+CALLREF {
+	CALL $c4_to_c7$
+}
+GETGLOB 15
+OVER
+PUSHCONT {
+	PUSHSLICE xc0000000000000000000000001
+	NEWC
+	STSLICE
+	SWAP
+	NEWC
+	STSLICECONST xece6deed
+	SWAP
+	UNTUPLE 15
+	REVERSE 16, 0
+	STSLICE
+	STU 128
+	STU 128
+	STU 128
+	ROLLREV 11
+	NEWC
+	STU 128
+	STU 32
+	STU 32
+	STU 32
+	STU 32
+	STU 32
+	STU 32
+	STU 32
+	STU 32
+	STU 16
+	STU 8
+	STBREFR
+	STBREFR
+	ENDC
+	PUSHINT 0
+	SENDRAWMSG
+}
+IF
+THROW 0
+
+.macro public_function_selector
+DUP
+PUSHINT 1893735792
+LEQ
+IFJMPREF {
+	DUP
+	PUSHINT 151130107
+	LEQ
+	IFJMPREF {
+		DUP
+		PUSHINT 14292192
+		EQUAL
+		IFJMPREF {
+			CALL $proposalCode$
+		}
+		DUP
+		PUSHINT 112246116
+		EQUAL
+		IFJMPREF {
+			CALL $admin$
+		}
+		DUP
+		PUSHINT 123406197
+		EQUAL
+		IFJMPREF {
+			CALL $updateProposalCode$
+		}
+		DUP
+		PUSHINT 151130107
+		EQUAL
+		IFJMPREF {
+			CALL $constructor$
+		}
+	}
+	DUP
+	PUSHINT 435995633
+	LEQ
+	IFJMPREF {
+		DUP
+		PUSHINT 241969748
+		EQUAL
+		IFJMPREF {
+			CALL $getDAORootConfig$
+		}
+		DUP
+		PUSHINT 279969754
+		EQUAL
+		IFJMPREF {
+			CALL $proposalConfiguration$
+		}
+		DUP
+		PUSHINT 333720580
+		EQUAL
+		IFJMPREF {
+			CALL $getProposalConfig$
+		}
+		DUP
+		PUSHINT 435995633
+		EQUAL
+		IFJMPREF {
+			CALL $getAdmin$
+		}
+	}
+	DUP
+	PUSHINT 1541594678
+	LEQ
+	IFJMPREF {
+		DUP
+		PUSHINT 554042037
+		EQUAL
+		IFJMPREF {
+			CALL $getTotalProposals$
+		}
+		DUP
+		PUSHINT 855627307
+		EQUAL
+		IFJMPREF {
+			CALL $upgradeDAORootCode$
+		}
+		DUP
+		PUSHINT 942903801
+		EQUAL
+		IFJMPREF {
+			CALL $chnageAdmin$
+		}
+		DUP
+		PUSHINT 1541594678
+		EQUAL
+		IFJMPREF {
+			CALL $proposalCount$
+		}
+	}
+	DUP
+	PUSHINT 1893735792
+	LEQ
+	IFJMPREF {
+		DUP
+		PUSHINT 1787757323
+		EQUAL
+		IFJMPREF {
+			CALL $onProposalSuccess$
+		}
+		DUP
+		PUSHINT 1819420980
+		EQUAL
+		IFJMPREF {
+			CALL $_estimateActionGas$
+		}
+		DUP
+		PUSHINT 1827069677
+		EQUAL
+		IFJMPREF {
+			CALL $DAORootConfiguration$
+		}
+		DUP
+		PUSHINT 1893735792
+		EQUAL
+		IFJMPREF {
+			CALL $changeDAORootprefrences$
+		}
+	}
+}
+DUP
+PUSHINT 2066534345
+LEQ
+IFJMPREF {
+	DUP
+	PUSHINT 1917155020
+	EQUAL
+	IFJMPREF {
+		CALL $deployProposal$
+	}
+	DUP
+	PUSHINT 2066534345
+	EQUAL
+	IFJMPREF {
+		CALL $excuteVenomActions$
+	}
+}
+

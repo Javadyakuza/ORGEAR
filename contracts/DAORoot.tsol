@@ -1,0 +1,191 @@
+pragma ever-solidity >=0.61.2;
+pragma AbiHeader expire;
+pragma AbiHeader pubkey;
+
+import "./structures/ProposalConfigurationStructure.tsol";
+import "./structures/ProposalActionStruct.tsol";
+import "./structures/DAORootConfigurationStruct.tsol";
+import "./helpers/ProposalInitialCheck.tsol";
+import "./interfaces/IProposal.tsol";
+import "./Tip3vote/contracts/ITip3VoteWallet.tsol";
+import "./Tip3vote/contracts/ITip3VotRoot.tsol";
+import "./Proposal.tsol";
+import "./libraries/TokenMsgFlag.tsol";
+import "@broxus/contracts/contracts/libraries/MsgFlag.tsol";
+import "./libraries/Gas.tsol";
+
+contract DAORoot is ProposalConfigurationStructure, DAORootConfigurationStruct, Action, ProposalInitialCheck {
+  event ProposalDeployed(address _proposer, uint256 proposalId, string description);
+  event AdminTransferRequest(address _oldAdmin, address _newAdmin);
+  event AdminTransfered(address _oldAdmin, address _newAdmin);
+  event DAORootPrefrencesChanged();
+
+  // static //
+  uint32 static _nonce;
+  // static //
+
+  // the constant variables are wrapped into a struct see {"DAORootConfiguarationStruct.tsol"}.
+
+  // normal //
+  address public admin;
+
+  address public pendingAdmin;
+  uint256 public totalProposals;
+  initializingVars public DAORootConfig;
+
+  // normal //
+
+  constructor(initializingVars _DAORootConfig, address _admin) public {
+    // initializing the state variabls
+    DAORootConfig = _DAORootConfig;
+    // admin setting
+    admin = _admin;
+  }
+
+  modifier onlyAdmin() {
+    require(msg.sender == admin, 103);
+    _;
+  }
+  modifier onlyProposal(uint256 _proposalId) {
+    require(msg.sender == expectedProposalAddress(_proposalId), DaoErrors.NOT_PROPOSAL);
+    _;
+  }
+
+
+  ///@notice the proposal expected address will be calculated from  a postion id wich is totalProposals + 1 
+  function propose(ProposalInitConfiguration _ProposalInitConfiguration, VenomActions[] _venomActions) public returns(address deployedProposal_){
+    // cheking if the user has provided enough venom for deploying and action the proposal  
+    /// @dev Gas.MAIN_VALUE in here is the value for deploying the proposal 
+    require(msg.value >= _venomActionTotalValue(_venomActions) + Gas.MAIN_VALUE, DaoErrors.MSG_VALUE_TOO_LOW_TO_CREATE_PROPOSAL);
+    // reserving the contract balance to not be spent on this trnasaction
+    tvm.rawReserve(address(this).balance - msg.value, 0); // flag 0 saves exactly the amount in the reserve
+    // cheking the deploying params
+    uint8 paramsRes = checkParams(DAORootConfig, _ProposalInitConfiguration, _venomActions, msg.sender);
+    require(paramsRes == uint8(200), paramsRes);
+
+    if(msg.sender == admin ){
+      deployProposal(_ProposalInitConfiguration, _venomActions);
+    }else{
+      // sending the proposal data to the tip3 vote token 
+      // the flag in here must be set to 1 and the expected operation too
+    }
+
+    
+
+  }
+  function deployProposal(ProposalInitConfiguration _ProposalInitConfiguration, VenomActions[] _venomActions) internal returns(address){
+    // reserving the contract balance to not be spent on this trnasaction
+
+
+    // deploying the contract
+    address proposalAddr = new Proposal{
+      stateInit: _buildProposalStateInit(totalProposals.add(1)),
+      value:msg.value, // it must be somhow the sender in the prropose function  
+      flag: TokenMsgFlag.SENDER_PAYS_FEES
+    }(
+      _ProposalInitConfiguration,
+      _venomActions,
+      msg.sender // msg sender checked
+    );
+    // adding one to the total proposals the totalProposals
+    // emit ProposalDeployed(address _proposer, uint256 proposalId, string description);
+    totalProposals.add(1);
+    return proposalAddr;
+  }
+
+  // this  function is used to perfomrm the planned operation in case a proposal is approved and has got the votes
+  function onProposalSucceeded(VenomActions[] _venomActions, uint256 _proposalId) internal onlyProposal(_proposalId) {
+    // checking that the proposal has provided tha excuting amount 
+    /// @dev the msg value is payed by the proposal balance which is charged at the deploying time 
+    require(msg.value >= _venomActionTotalValue(_venomActions), DaoErrors.VALUE_TOO_LOW);
+    // saving the contract value
+    tvm.rawReserve(address(this).balance - msg.value, 0); // flag 0 saves exactly the amount in the reserve
+    // actioning the actions !
+    for (uint i = 0 ; i > _venomActions.length(); i++){
+      _venomActions[i].target.transfer({
+        value: _venomActions[i].value, 
+        bounce: false,
+        flag: MsgFlag.SENDER_PAYS_FEES,
+        body : _venomActions[i].payload
+        });
+    }
+  IProposal(expectedProposalAddress(_proposalId)).onActionsExecuted{
+      value:0, 
+      flag: MsgFlag.ALL_NOT_RESERVED
+    }();
+  }
+
+  function _buildProposalStateInit(uint256 _proopsalId) private view returns (TvmCell initData_) {
+    return
+      tvm.buildStateInit({
+        code: DAORootConfig.proposalCode,
+        contr: Proposal,
+        varInit: { PROPOSAL_ID: _proopsalId, DaoRootAddress: address(this) }
+      });
+  }
+
+  // -- get funcs -- // 
+  function expectedProposalAddress(uint256 _proposalId) public view returns (address expectedAddress_) {
+    return address(tvm.hash(_buildProposalStateInit(_proposalId)));
+  }
+
+  function getAdmin() public view returns (address admin_) {
+    return admin;
+  }
+
+  function getDAORootConfig() public view returns (initializingVars DAORootConfig_) {
+    return DAORootConfig;
+  }
+
+  function getTotalProposals() public view returns (uint256 totalProposal_) {
+    return totalProposals;
+  }
+
+  function _venomActionTotalValue(VenomActions[] _venomActions) private view returns(uint256 totalValue_){
+    // this function fee is payed by previous func
+    totalValue = 0;
+    for (uint i = 0; i < _venomActions.length; i++) {
+      /// @dev Gas.MAIN_VALUE in here is the value for excuting 
+      totalValue = totalValue.add(_venomActions[i].value.add(Gas.MAIN_VALUE));
+    }
+    return totalValue;
+  } 
+  // -- get funcs -- // 
+  // -- ADMIN FUNCTION -- //
+  function chnageAdmin(address _newAdmin) public onlyAdmin {
+    // saving the amount from the contract value  
+    // Gas.MAIN_VALUE is the chagning state value 
+    tvm.rawReserve((address(this).balance).sub(Gas.MAIN_VALUE));
+    // emiting the event
+    emit AdminTransferRequest(msg.sender, _newAdmin);
+    // adding the requested admin to the pendingAdmin
+    pendingAdmin = _newAdmin;
+    
+  }
+
+  function acceptBeingAdmin() public {
+    // checking that hte pedingAdmin is calling and has attahced the value to pay the gas fees
+    require(msg.sender == pendingAdmin && msg.value >= Gas.MAIN_VALUE, DaoErrors.NOT_PENDING_ADMIN);
+    // saving the contract value 
+    tvm.rawReserve(uint256(address(this).balance).sub(msg.value), 0);
+    // emiting the event
+    emit AdminTransfered(admin, pendingAdmin);
+    // setting the new admin
+    admin = pendingAdmin;
+    // deleting the pemding admin
+    pendingAdmin = address(0);
+    // trannnfering the rest of the gas fees to the admin(newAdmin is that pending adnin that we just setted )
+    admin.transfer({ value: 0, flag: MsgFlag.REMAINING_GAS });
+  }
+
+  function changeDAORootprefrences(initializingVars _newInitializingVars) public onlyAdmin {
+    // this contract is patying for the state changing since the admin is calling 
+    tvm.accept();
+    // emiting the event
+    emit DAORootPrefrencesChanged();
+    // setting the new ones
+    DAORootConfig = _newInitializingVars;
+  }
+  // -- ADMIN FUNCTION -- //
+
+}

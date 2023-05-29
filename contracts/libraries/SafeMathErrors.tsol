@@ -1,0 +1,8 @@
+pragma ever-solidity >= 0.61.2;
+
+library SafeMathErrors {
+    uint8 constant ADDITION_OVERFLOW = 101;
+    uint8 constant SUBSTRACTION_OVERFLOW = 102;
+    uint8 constant MULTIPLICTION_OVERFLOW = 103;
+    uint8 constant DIVISION_OVERFLOW = 104;
+}

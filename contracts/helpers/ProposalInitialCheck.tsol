@@ -1,0 +1,35 @@
+pragma ever-solidity >= 0.61.2;
+
+import "../structures/DAORootConfigurationStruct.tsol";
+import "../structures/ProposalConfigurationStructure.tsol";
+import "../structures/ProposalActionStruct.tsol";
+import "../libraries/DAOErrors.tsol";
+abstract contract ProposalInitialCheck is ProposalConfigurationStructure, DAORootConfigurationStruct, Action{
+    // the init params are not going to hav any problem since all the variables are just the proposal id and will be filled autona,itacally byt eh contract and no off-chain data 
+        function checkParams(
+        initializingVars _basis,
+        ProposalInitConfiguration _basisOP,
+        VenomActions[] _plannedActions,
+        address _proposer
+        ) internal pure returns(uint8 errorCode){
+        // in here we have to check the ProposalInitConfiguration params with the DAORootInitalConfig Params 
+        // checking the basisOP with the basis 
+        if(_proposer == address(0) ) return DaoErrors.ADDRESS_ZERO; // proposer must not be zero be 
+
+        if(bytes(_basisOP.description).length > _basis.proposalMaxDescriptionLen || bytes(_basisOP.description).length == 0) return DaoErrors.DESCRIPTION_TOO_LONG; // checking the proposal descrition is suitable
+
+        if (_plannedActions.length > _basis.proposalMaxOperations && _plannedActions.length == 0 ) return DaoErrors.TOO_MANY_OR_ZERO_ACTIONS; // checking that the actions are not zero or too many
+
+        // require(, uint errorCode, Type exceptionArgument); // checking the mag.value for the gases
+        // check the _basisOP with basis 
+        if(_basisOP.votingDelay > _basis.MAX_VOTING_DELAY || _basisOP.votingDelay < _basis.MIN_VOTING_DELAY ) return DaoErrors.WRONG_VOTING_DELAY;
+        if(_basisOP.votingPeriod > _basis.MAX_VOTING_PERIOD || _basisOP.votingPeriod < _basis.MIN_VOTING_PERIOD ) return DaoErrors.WRONG_VOTING_PERIOD;
+        if(_basisOP.quorumVotes > _basis.MAX_PROPOSAL_QUORUM || _basisOP.quorumVotes < _basis.MIN_PROPOSAL_QUORUM ) return DaoErrors.WRONG_QUORUM;
+        if(_basisOP.timeLock > _basis.MAX_TIME_LOCK || _basisOP.timeLock < _basis.MIN_TIME_LOCK ) return DaoErrors.WRONG_TIME_LOCK;    
+        if(_basisOP.gracePeriod > _basis.MAX_GRACE_PERIOD || _basisOP.gracePeriod < _basis.MIN_GRACE_PERIOD) return DaoErrors.WRONG_GRACE_PERIOD;    
+        if(_basisOP.threshold > _basis.MAX_TIP3_VOTE_THRESHOLD || _basisOP.threshold < _basis.MIN_TIP3_VOTE_THRESHOLD) return DaoErrors.WRONG_THRESHOLD;    
+        return 200;
+    }
+}
+
+// writing  a gas fee calcualtor aaaaaaaaaaa

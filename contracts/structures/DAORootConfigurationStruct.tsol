@@ -1,0 +1,23 @@
+pragma ever-solidity >= 0.61.2;
+
+interface DAORootConfigurationStruct{
+        struct initializingVars{
+            address  TIP3_VOTE_ADDRESS; // constant 
+            uint256  TIP3_VOTE_PROPPOSING_QUORUM; // thw quorum for proposing  
+            uint128  MIN_TIP3_VOTE_THRESHOLD;  // 
+            uint128  MAX_TIP3_VOTE_THRESHOLD; 
+            uint128  MAX_PROPOSAL_QUORUM;
+            uint128  MIN_PROPOSAL_QUORUM;
+            uint32   MIN_VOTING_PERIOD;
+            uint32   MAX_VOTING_PERIOD;
+            uint32   MIN_VOTING_DELAY;
+            uint32   MAX_VOTING_DELAY;
+            uint32   MIN_TIME_LOCK;
+            uint32   MAX_TIME_LOCK;
+            uint32   MIN_GRACE_PERIOD;
+            uint32   MAX_GRACE_PERIOD;
+            uint16   proposalMaxDescriptionLen; 
+            uint8    proposalMaxOperations; 
+            TvmCell  proposalCode;
+        }
+}

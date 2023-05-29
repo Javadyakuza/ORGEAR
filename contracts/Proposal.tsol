@@ -1,0 +1,168 @@
+pragma ever-solidity >=0.61.2;
+
+import "./structures/ProposalActionStruct.tsol";
+import "./structures/ProposalConfigurationStructure.tsol";
+import "./structures/ProposalStates.tsol";
+import "./interfaces/ITip3VoteWallet.tsol";
+import "./interfaces/IDAORoot.tsol";
+import "./libraries/DAOErrors.tsol";
+import "./libraries/SafeMath.tsol";
+
+contract Proposal is ProposalConfigurationStructure, Action, ProposalStates{
+  using SafeMath for uint256;
+  
+  // static //
+  uint256 public static PROPOSAL_ID;
+  address public static DaoRootAddress;
+  // static //
+
+  event VoteCasted(address voter, bool support, uint votes, string reason);
+  event Queueed(uint256 executionTime);
+  event Executed();
+  event Canceled();
+  event ProposerFundedBack(address _proposer, uint256 _amount);
+
+  VenomActions[] public venomActions;
+  ProposalInitConfiguration public initConfig;
+  ProposalState public state;
+  uint256 public creationBlockTS;
+  address public proposer;
+
+  constructor(
+    ProposalInitConfiguration _initConfig, 
+    VenomActions[] _venomActions,
+    address _proposer
+  ) public internalMsg{
+    initConfig = _initConfig;
+    venomActions = _venomActions;
+    creationBlockTS = block.timestamp;
+    proposer = _proposer;
+  }
+
+  // set function //
+  /**
+  @notice this function support the delegate voting by getting the voter  
+   */
+  function castVote(address _voter, bool _support, string _reason) public internalMsg { // changing the vote 
+    // logic of setting a vote on this contract
+    // calling the tip3 vpte root to get the tip3vote wallet contract expected adddress    
+    // calling the TIP3Root to get the vote weight
+    address voterWallet = address(this); // will be repl;aced with Tip3Vote.walletOf(msg.sender)
+    /* the following line will be uincommented in production */
+    // uint256 voteWeight = ITip3VoteWallet(_voter).getPastVotes(creationBlockTS);
+    uint256 voteWeight = 9;
+    // checking the vpte weight is greater thatn 0 
+    require(voteWeight != 0 , DaoErrors.VALUE_ZERO);
+    // checking that state is active 
+    require(getProposalState() == ProposalState.Active, DaoErrors.PROPOSAL_IS_NOT_ACTIVVE);
+    // casting the vote 
+    if (_support) {
+        initConfig.forVotes.add(voteWeight);
+        } else {
+        initConfig.againstVotes.add(voteWeight);
+        }
+        emit VoteCasted(_voter, _support, voteWeight, _reason);
+
+    } 
+  // queue the proposal means that propoposal is ready to be excuited and was successfull
+  function Queue() public {
+    // checking if the positioin was successfull or not 
+    require(getProposalState() == ProposalState.Succeeded, DaoErrors.PROPOSAL_IS_NOT_SUCCEEDED);
+    // accepting puuting the proposal state in queue fees
+    tvm.accept();
+    // putting the end time plus the time lock as the excution time 
+    initConfig.executionTime = initConfig.endTime.add(initConfig.timeLock);
+    // changing the proposal state
+    state = ProposalState.Queued; 
+    // emiting the event 
+    emit Queueed(initConfig.executionTime);
+  }
+  // this func call the "onProposalSuccess" fiunction on the dao root 
+  /// @notice payer : this   
+  function execute() public {
+    // checking the state of the proopsal is queued 
+    require(getProposalState() == ProposalState.Queued, DaoErrors.PROPOSAL_IS_NOT_QUEUED);
+    // cheking that the its the time to execute the contrac, the execution time must be greater that now time  
+    require(block.timestamp >= initConfig.executionTime, DaoErrors.EXECUTION_TIME_NOT_COME_YET);
+    // accepting the fees 
+    tvm.accept();
+    // toggling the initCinfig excuted to true 
+     initConfig.executed = true ;
+     // changing the contract state 
+     state = ProposalState.Executed;
+     // emiting the event 
+     emit Executed();
+     // excuting the contract from the dao root channel 
+     IDAORoot(DaoRootAddress).onProposalSucceeded{
+      value : 0, 
+      flag : 0
+     }(venomActions, PROPOSAL_ID);
+
+  }
+  // this function cancells the proposal
+  /// @notice payer : sender   
+  function cancell() public {
+    // cheking that the sender hsa attached enogh venom to change the state 
+    /// @dev Gas.MAIN_VALUE is the state change basically 
+    require(msg.value >= Gas.MAIN_VALUE, DaoErrors.VALUE_TOO_LOW);
+    // saving the contract value 
+    tvm.rawReserve(uint256(address(this).balance).sub(msg.value) , 0);
+    // chaking that the proposer is calling this function 
+    require(msg.sender == proposer, DaoErrors.NOT_OWNER);
+    // checking that the contract is not excuted yet 
+    require(!initConfig.executed, DaoErrors.PROPOSAL_IS_EXECUTED);
+    // toggling the cancell to true 
+    initConfig.canceled = true ;
+    // emitng the event reffering to that 
+    emit Canceled();
+
+  }
+  function onActionsExecuted() public {
+        // only dao can call his function 
+        require(msg.sender == DaoRootAddress, DaoErrors.NOT_DAO);
+        // saving the inital balance of the contract Gas.MAIN_VALUE, : inital balance 
+        tvm.rawReserve(Gas.MAIN_VALUE, 2);
+        // emiting a event 
+        emit ProposerFundedBack(proposer, uint256(address(this).balance).sub(Gas.MAIN_VALUE));
+        // transfering all the remaining balance to the proposers
+        proposer.transfer({value: 0, flag: MsgFlag.ALL_NOT_RESERVED});
+  }
+
+  // set function //
+
+  // get funcs 
+  function getPorosposalOverview() public view returns (ProposalInitConfiguration initConf_, ProposalState states_){
+        return (initConfig, state);
+  } 
+  function getActions() public view returns (VenomActions[]  venomActions_){
+      return venomActions;
+  }
+  function getProposalState() public view returns (ProposalState state_){
+        if (initConfig.canceled) {
+          // returns the cencelled if the inti config struct cancelled was true 
+            return ProposalState.Canceled;
+        } else if (initConfig.executed) {
+          // returnexcuted if the init config file excuted was true
+            return ProposalState.Executed;
+        } else if (block.timestamp <= initConfig.startTime) {
+          // return pending if the init config file start time was freater than block.timestamp time
+            return ProposalState.Pending;
+        } else if (block.timestamp <= initConfig.endTime) {
+            // return the active if the block.timestamp time was less than the end time from the iitconfig struct 
+            return ProposalState.Active;
+        } else if (initConfig.forVotes <= initConfig.againstVotes || initConfig.forVotes < initConfig.quorumVotes) {
+          // return failed if for votes were lees than or eq to against votes OR for votes were less than qourom votes
+            return ProposalState.Failed;
+        } else if (initConfig.executionTime == 0) {
+          // return succesdded if the execution time was zero , why ?
+            return ProposalState.Succeeded;
+        } else if (block.timestamp > (initConfig.executionTime).add(initConfig.gracePeriod)) {
+            // return expired if the excution time plus grace periosd time were less thatn now time 
+            return ProposalState.Expired;
+        } else {
+          // if none above condition met , rerturn queue which means that proposal is waiting t be excuted
+            return ProposalState.Queued;
+        }
+    }
+ // get funcs 
+}

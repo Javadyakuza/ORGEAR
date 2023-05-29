@@ -1,0 +1,9 @@
+pragma ever-solidity >= 0.61.2;
+
+interface Action {
+    struct VenomActions {
+        uint128 value;
+        address target;
+        TvmCell payload;   
+        }
+}

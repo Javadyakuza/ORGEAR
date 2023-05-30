@@ -3,12 +3,17 @@ pragma ever-solidity >=0.61.2;
 import "./structures/ProposalActionStruct.tsol";
 import "./structures/ProposalConfigurationStructure.tsol";
 import "./structures/ProposalStates.tsol";
-import "./interfaces/ITip3VoteWallet.tsol";
+import "./interfaces/IProposal.tsol";
 import "./interfaces/IDAORoot.tsol";
+import "Tip3vote/contracts/interfaces/IVoteTokenWallet.tsol";
+import "Tip3vote/contracts/interfaces/IVoteTokenRoot.tsol";
+import "Tip3vote/contracts/VoteTokenWallet.tsol";
 import "./libraries/DAOErrors.tsol";
 import "./libraries/SafeMath.tsol";
+import "./libraries/Gas.tsol";
+import "@broxus/contracts/contracts/libraries/MsgFlag.tsol";
 
-contract Proposal is ProposalConfigurationStructure, Action, ProposalStates{
+contract Proposal is  ProposalConfigurationStructure, Action, ProposalStates{
   using SafeMath for uint256;
   
   // static //
@@ -32,7 +37,7 @@ contract Proposal is ProposalConfigurationStructure, Action, ProposalStates{
     ProposalInitConfiguration _initConfig, 
     VenomActions[] _venomActions,
     address _proposer
-  ) public internalMsg{
+  ) public {
     initConfig = _initConfig;
     venomActions = _venomActions;
     creationBlockTS = block.timestamp;
@@ -43,25 +48,35 @@ contract Proposal is ProposalConfigurationStructure, Action, ProposalStates{
   /**
   @notice this function support the delegate voting by getting the voter  
    */
-  function castVote(address _voter, bool _support, string _reason) public internalMsg { // changing the vote 
-    // logic of setting a vote on this contract
-    // calling the tip3 vpte root to get the tip3vote wallet contract expected adddress    
-    // calling the TIP3Root to get the vote weight
-    address voterWallet = address(this); // will be repl;aced with Tip3Vote.walletOf(msg.sender)
-    /* the following line will be uincommented in production */
-    // uint256 voteWeight = ITip3VoteWallet(_voter).getPastVotes(creationBlockTS);
-    uint256 voteWeight = 9;
-    // checking the vpte weight is greater thatn 0 
-    require(voteWeight != 0 , DaoErrors.VALUE_ZERO);
+  function vote(address _voter, bool _support, string _reason) public {
+    // packing the data 
+    TvmBuilder votePayload;
+    votePayload.store(_voter);
+    votePayload.store(_support);
+    votePayload.store(_reason);
+    
+    // calling the expected tip3 vote wallet to return the past votes for us 
+    IVoteTokenWallet(_expectedTip3VoteWalletAddress(_voter)).getPastVotes{
+      value : 0 ,
+      flag : MsgFlag.SENDER_PAYS_FEES,
+      callback : castVote
+    }(creationBlockTS, votePayload.toCell()); 
+  }
+  function castVote(uint256 _balance, TvmCell _votePayload) public internalMsg { 
     // checking that state is active 
     require(getProposalState() == ProposalState.Active, DaoErrors.PROPOSAL_IS_NOT_ACTIVVE);
+    // unpacking the data 
+    (address _voter, bool _support, string _reason) 
+              = _votePayload.toSlice().decodeFunctionParams(vote);
+    // checking the vpte weight is greater than 0 
+    require(_balance != 0 , DaoErrors.VALUE_ZERO);
     // casting the vote 
     if (_support) {
-        initConfig.forVotes.add(voteWeight);
+        initConfig.forVotes.add(_balance);
         } else {
-        initConfig.againstVotes.add(voteWeight);
+        initConfig.againstVotes.add(_balance);
         }
-        emit VoteCasted(_voter, _support, voteWeight, _reason);
+        emit VoteCasted(_voter, _support, _balance, _reason);
 
     } 
   // queue the proposal means that propoposal is ready to be excuited and was successfull
@@ -127,8 +142,18 @@ contract Proposal is ProposalConfigurationStructure, Action, ProposalStates{
         // transfering all the remaining balance to the proposers
         proposer.transfer({value: 0, flag: MsgFlag.ALL_NOT_RESERVED});
   }
-
-  // set function //
+  function _expectedTip3VoteWalletAddress(address _walletOwner) private view returns (address expectedTip3WalletAddress_) {
+    return address(tvm.hash(
+         tvm.buildStateInit({
+            contr: VoteTokenWallet,
+            varInit: {
+                root_: initConfig.TIP3_VOTE_ROOT_ADDRESS,
+                owner_: _walletOwner
+            },
+            pubkey: 0,
+            code: initConfig.Tip3VoteWalletCode
+        }))); 
+  }  // set function //
 
   // get funcs 
   function getPorosposalOverview() public view returns (ProposalInitConfiguration initConf_, ProposalState states_){

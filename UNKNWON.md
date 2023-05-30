@@ -62,3 +62,4 @@ if the contract doesnt accept for paying the gas fees the sender will ?
 doesthis mean the msg.sender ? : require(pendingAdmin.value != 0 && msg.sender == pendingAdmin, DaoErrors.NOT_PENDING_ADMIN);
 
 what is the differenece between initData and the stateInit ?
+the value handling in deploying a proposal

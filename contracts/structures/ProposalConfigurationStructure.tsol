@@ -4,19 +4,21 @@ interface ProposalConfigurationStructure {
   // some variables that can besetted by off-chain controller are set here 
   // the other ones that needs to be set on-chain are set as state variables   
   struct ProposalInitConfiguration {
-    string description; //+
-    uint256 startTime;//+
-    uint256 endTime;//+
-    uint32 votingDelay; // the time between that the proposal is proposed and the time that the voting is getting started 
-    uint32 votingPeriod; // the time that the votinng is elligible 
-    uint128 quorumVotes; // this will epecify the amount of votes that a proposal needs to be considred as valid , fo example if even 100 % of participators said yes to the proposal but the amount of them is not exceeding the qorom it will be considered as falid proposal 
-    uint32 timeLock; // the time between when the poroposal gets queue and the time of excution ^
-    uint128 threshold; // this threshold of votes says that x amount of votes is enough for a proposal to be successfull  hale [✅]
-    uint32 gracePeriod; // this is liken timelock 
-    uint256 executionTime;//-
-    uint256 forVotes;//-
-    uint256 againstVotes;//-
-    bool canceled;//-
-    bool executed; //-
+    address  TIP3_VOTE_ROOT_ADDRESS; // constant 
+    string   description; //+
+    uint256  startTime;//+
+    uint256  endTime;//+
+    uint32   votingDelay; // the time between that the proposal is proposed and the time that the voting is getting started 
+    uint32   votingPeriod; // the time that the votinng is elligible 
+    uint128  quorumVotes; // this will epecify the amount of votes that a proposal needs to be considred as valid , fo example if even 100 % of participators said yes to the proposal but the amount of them is not exceeding the qorom it will be considered as falid proposal 
+    uint32   timeLock; // the time between when the poroposal gets queue and the time of excution ^
+    uint128  threshold; // this threshold of votes says that x amount of votes is enough for a proposal to be successfull  hale [✅]
+    uint32   gracePeriod; // this is liken timelock 
+    uint256  executionTime;//-
+    uint256  forVotes;//-
+    uint256  againstVotes;//-
+    bool     canceled;//-
+    bool     executed; //-
+    TvmCell  Tip3VoteWalletCode;
   }
 }

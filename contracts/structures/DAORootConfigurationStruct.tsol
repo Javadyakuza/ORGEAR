@@ -2,7 +2,7 @@ pragma ever-solidity >= 0.61.2;
 
 interface DAORootConfigurationStruct{
         struct initializingVars{
-            address  TIP3_VOTE_ADDRESS; // constant 
+            address  TIP3_VOTE_ROOT_ADDRESS; // constant 
             uint256  TIP3_VOTE_PROPPOSING_QUORUM; // thw quorum for proposing  
             uint128  MIN_TIP3_VOTE_THRESHOLD;  // 
             uint128  MAX_TIP3_VOTE_THRESHOLD; 
@@ -19,5 +19,6 @@ interface DAORootConfigurationStruct{
             uint16   proposalMaxDescriptionLen; 
             uint8    proposalMaxOperations; 
             TvmCell  proposalCode;
+            TvmCell  Tip3VoteWalletCode;
         }
 }

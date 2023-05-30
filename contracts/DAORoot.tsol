@@ -7,8 +7,9 @@ import "./structures/ProposalActionStruct.tsol";
 import "./structures/DAORootConfigurationStruct.tsol";
 import "./helpers/ProposalInitialCheck.tsol";
 import "./interfaces/IProposal.tsol";
-import "./Tip3vote/contracts/ITip3VoteWallet.tsol";
-import "./Tip3vote/contracts/ITip3VotRoot.tsol";
+import "Tip3vote/contracts/interfaces/IVoteTokenWallet.tsol";
+import "Tip3vote/contracts/interfaces/IVoteTokenRoot.tsol";
+import "Tip3vote/contracts/VoteTokenWallet.tsol";
 import "./Proposal.tsol";
 import "./libraries/TokenMsgFlag.tsol";
 import "@broxus/contracts/contracts/libraries/MsgFlag.tsol";
@@ -16,6 +17,7 @@ import "./libraries/Gas.tsol";
 
 contract DAORoot is ProposalConfigurationStructure, DAORootConfigurationStruct, Action, ProposalInitialCheck {
   event ProposalDeployed(address _proposer, uint256 proposalId, string description);
+  event ProposaDeployFailed(address _proposer, uint256 _futuredProposalId, TvmCell Payload);
   event AdminTransferRequest(address _oldAdmin, address _newAdmin);
   event AdminTransfered(address _oldAdmin, address _newAdmin);
   event DAORootPrefrencesChanged();
@@ -54,7 +56,7 @@ contract DAORoot is ProposalConfigurationStructure, DAORootConfigurationStruct, 
 
   ///@notice the proposal expected address will be calculated from  a postion id wich is totalProposals + 1 
   function propose(ProposalInitConfiguration _ProposalInitConfiguration, VenomActions[] _venomActions) public returns(address deployedProposal_){
-    // cheking if the user has provided enough venom for deploying and action the proposal  
+    // cheking if the user has provided enough venom for deploying and actioning the proposal  
     /// @dev Gas.MAIN_VALUE in here is the value for deploying the proposal 
     require(msg.value >= _venomActionTotalValue(_venomActions) + Gas.MAIN_VALUE, DaoErrors.MSG_VALUE_TOO_LOW_TO_CREATE_PROPOSAL);
     // reserving the contract balance to not be spent on this trnasaction
@@ -63,27 +65,40 @@ contract DAORoot is ProposalConfigurationStructure, DAORootConfigurationStruct, 
     uint8 paramsRes = checkParams(DAORootConfig, _ProposalInitConfiguration, _venomActions, msg.sender);
     require(paramsRes == uint8(200), paramsRes);
 
+    TvmBuilder payload;
+    payload.store(_ProposalInitConfiguration);
+    payload.store(_venomActions);
+    payload.store(msg.sender);
+
     if(msg.sender == admin ){
       deployProposal(_ProposalInitConfiguration, _venomActions);
     }else{
       // sending the proposal data to the tip3 vote token 
       // the flag in here must be set to 1 and the expected operation too
+      IVoteTokenWallet(expectedTip3VoteWalletAddress(msg.sender)).getVotes{
+        value : 0, 
+        flag : MsgFlag.SENDER_PAYS_FEES,
+        callback : deployProposal
+      }(payload.tocell());
     }
-
-    
-
   }
-  function deployProposal(ProposalInitConfiguration _ProposalInitConfiguration, VenomActions[] _venomActions) internal returns(address){
-    // reserving the contract balance to not be spent on this trnasaction
-
-
+  function deployProposal( uint256 _balance, TvmCell _payload) internal returns(address){
+    // unpacking the tvm cell 
+    (ProposalInitConfiguration _ProposalConf, VenomActions[] _venomActions, address _proposer)
+                = _payload.toSlice().decodeFunctionParams(propose);    
+    // checking if the sender has the enough value to deploy the porposal 
+      if (_balance < DAORootConfig.TIP3_VOTE_PROPPOSING_QUORUM){
+        // user is not admin and doesnt have the quorum token neither
+        emit ProposaDeployFailed(_proposer, totalProposals.add(1), _payload);
+        revert(DaoErrors.TIP3_VOTE_TOO_LOW_TO_CREATE_PROPOSAL);
+      }
     // deploying the contract
     address proposalAddr = new Proposal{
       stateInit: _buildProposalStateInit(totalProposals.add(1)),
-      value:msg.value, // it must be somhow the sender in the prropose function  
+      value: msg.value, // it must be somhow the sender in the prropose function  
       flag: TokenMsgFlag.SENDER_PAYS_FEES
     }(
-      _ProposalInitConfiguration,
+      _ProposalConf,
       _venomActions,
       msg.sender // msg sender checked
     );
@@ -125,10 +140,22 @@ contract DAORoot is ProposalConfigurationStructure, DAORootConfigurationStruct, 
   }
 
   // -- get funcs -- // 
-  function expectedProposalAddress(uint256 _proposalId) public view returns (address expectedAddress_) {
+  function expectedProposalAddress(uint256 _proposalId) public view returns (address expectedProposalAddress_) {
     return address(tvm.hash(_buildProposalStateInit(_proposalId)));
   }
-
+  function expectedTip3VoteWalletAddress(address _walletOwner) public view returns (address expectedTip3WalletAddress_) {
+    return address(tvm.hash(
+         tvm.buildStateInit({
+            contr: VoteTokenWallet,
+            varInit: {
+                root_: DAORootConfig.TIP3_VOTE_ROOT_ADDRESS,
+                owner_: walletOwner
+            },
+            pubkey: 0,
+            code: DAORootConfig.Tip3VoteWalletCode
+        })));
+    
+  }
   function getAdmin() public view returns (address admin_) {
     return admin;
   }

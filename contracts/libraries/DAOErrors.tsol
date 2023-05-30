@@ -11,7 +11,8 @@ library DaoErrors {
 
     uint8 constant TOO_MANY_OR_ZERO_ACTIONS = 110;
     uint8 constant MSG_VALUE_TOO_LOW_TO_CREATE_PROPOSAL = 112;
-    uint8 constant DESCRIPTION_TOO_LONG = 113;
+    uint8 constant TIP3_VOTE_TOO_LOW_TO_CREATE_PROPOSAL = 113;
+    uint8 constant DESCRIPTION_TOO_LONG = 114;
 
     uint8 constant WRONG_VOTING_PERIOD = 120;
     uint8 constant WRONG_VOTING_DELAY = 121;

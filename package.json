@@ -17,7 +17,7 @@
     "locklift": "^2.5.5",
     "prettier": "^2.8.8",
     "tip3": "git://github.com/broxus/tip3#v5",
-    "Tip3vote": "git://github.com/meisamtaher/Tip3vote#v1",
+    "tip3vote": "git://github.com/meisamtaher/Tip3vote",
     "ts-mocha": "^10.0.0",
     "typescript": "^4.7.4"
   }

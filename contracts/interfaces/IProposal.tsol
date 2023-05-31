@@ -1,15 +1,26 @@
 pragma ever-solidity >=0.61.2;
 
+import "../structures/ProposalActionStruct.tsol";
 import "../structures/ProposalConfigurationStructure.tsol";
 import "../structures/ProposalStates.tsol";
-import "../structures/ProposalActionStruct.tsol";
-interface IProposal is ProposalConfigurationStructure, ProposalStates, Action{
+interface IProposal is  ProposalConfigurationStructure, Action, ProposalStates{
 
-  function castVote(address _voter, bool _support, string _reason) external internalMsg;
+  // set function //
+  function vote(address _voter, bool _support, string _reason) external view ;
+  function castVote(uint256 _balance, TvmCell _votePayload) external internalMsg;
+  // queue the proposal means that propoposal is ready to be excuited and was successfull
   function Queue() external ;
-  function execute() external ;
+  // this func call the "onProposalSuccess" fiunction on the dao root 
+  /// @notice payer : this   
+  function execute() external;
+  // this function cancells the proposal
+  /// @notice payer : sender   
   function cancell() external ;
+  function onActionsExecuted() external view ;
+  // get funcs 
   function getPorosposalOverview() external view returns (ProposalInitConfiguration initConf_, ProposalState states_);
   function getActions() external view returns (VenomActions[]  venomActions_);
   function getProposalState() external view returns (ProposalState state_);
+    
+ // get funcs 
 }

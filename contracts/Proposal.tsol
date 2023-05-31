@@ -5,17 +5,16 @@ import "./structures/ProposalConfigurationStructure.tsol";
 import "./structures/ProposalStates.tsol";
 import "./interfaces/IProposal.tsol";
 import "./interfaces/IDAORoot.tsol";
-import "Tip3vote/contracts/interfaces/IVoteTokenWallet.tsol";
-import "Tip3vote/contracts/interfaces/IVoteTokenRoot.tsol";
-import "Tip3vote/contracts/VoteTokenWallet.tsol";
+import "tip3vote/contracts/interfaces/IVoteTokenWallet.tsol";
+import "tip3vote/contracts/interfaces/IVoteTokenRoot.tsol";
+import "tip3vote/contracts/VoteTokenWallet.tsol";
 import "./libraries/DAOErrors.tsol";
 import "./libraries/SafeMath.tsol";
 import "./libraries/Gas.tsol";
 import "@broxus/contracts/contracts/libraries/MsgFlag.tsol";
 
-contract Proposal is  ProposalConfigurationStructure, Action, ProposalStates{
+contract Proposal is  ProposalConfigurationStructure, Action, ProposalStates, IProposal{
   using SafeMath for uint256;
-  
   // static //
   uint256 public static PROPOSAL_ID;
   address public static DaoRootAddress;
@@ -48,7 +47,7 @@ contract Proposal is  ProposalConfigurationStructure, Action, ProposalStates{
   /**
   @notice this function support the delegate voting by getting the voter  
    */
-  function vote(address _voter, bool _support, string _reason) public {
+  function vote(address _voter, bool _support, string _reason) public override view{
     // packing the data 
     TvmBuilder votePayload;
     votePayload.store(_voter);
@@ -62,7 +61,7 @@ contract Proposal is  ProposalConfigurationStructure, Action, ProposalStates{
       callback : castVote
     }(creationBlockTS, votePayload.toCell()); 
   }
-  function castVote(uint256 _balance, TvmCell _votePayload) public internalMsg { 
+  function castVote(uint256 _balance, TvmCell _votePayload) public override internalMsg { 
     // checking that state is active 
     require(getProposalState() == ProposalState.Active, DaoErrors.PROPOSAL_IS_NOT_ACTIVVE);
     // unpacking the data 
@@ -80,7 +79,7 @@ contract Proposal is  ProposalConfigurationStructure, Action, ProposalStates{
 
     } 
   // queue the proposal means that propoposal is ready to be excuited and was successfull
-  function Queue() public {
+  function Queue() public override{
     // checking if the positioin was successfull or not 
     require(getProposalState() == ProposalState.Succeeded, DaoErrors.PROPOSAL_IS_NOT_SUCCEEDED);
     // accepting puuting the proposal state in queue fees
@@ -94,7 +93,7 @@ contract Proposal is  ProposalConfigurationStructure, Action, ProposalStates{
   }
   // this func call the "onProposalSuccess" fiunction on the dao root 
   /// @notice payer : this   
-  function execute() public {
+  function execute() public override{
     // checking the state of the proopsal is queued 
     require(getProposalState() == ProposalState.Queued, DaoErrors.PROPOSAL_IS_NOT_QUEUED);
     // cheking that the its the time to execute the contrac, the execution time must be greater that now time  
@@ -114,14 +113,15 @@ contract Proposal is  ProposalConfigurationStructure, Action, ProposalStates{
      }(venomActions, PROPOSAL_ID);
 
   }
+
   // this function cancells the proposal
   /// @notice payer : sender   
-  function cancell() public {
+  function cancell() public override {
     // cheking that the sender hsa attached enogh venom to change the state 
     /// @dev Gas.MAIN_VALUE is the state change basically 
     require(msg.value >= Gas.MAIN_VALUE, DaoErrors.VALUE_TOO_LOW);
     // saving the contract value 
-    tvm.rawReserve(uint256(address(this).balance).sub(msg.value) , 0);
+    tvm.rawReserve(SafeMath.sub(uint256(address(this).balance),msg.value) , 0);
     // chaking that the proposer is calling this function 
     require(msg.sender == proposer, DaoErrors.NOT_OWNER);
     // checking that the contract is not excuted yet 
@@ -132,13 +132,14 @@ contract Proposal is  ProposalConfigurationStructure, Action, ProposalStates{
     emit Canceled();
 
   }
-  function onActionsExecuted() public {
+
+  function onActionsExecuted() public override view {
         // only dao can call his function 
         require(msg.sender == DaoRootAddress, DaoErrors.NOT_DAO);
         // saving the inital balance of the contract Gas.MAIN_VALUE, : inital balance 
         tvm.rawReserve(Gas.MAIN_VALUE, 2);
         // emiting a event 
-        emit ProposerFundedBack(proposer, uint256(address(this).balance).sub(Gas.MAIN_VALUE));
+        emit ProposerFundedBack(proposer, SafeMath.sub(uint256(address(this).balance), Gas.MAIN_VALUE));
         // transfering all the remaining balance to the proposers
         proposer.transfer({value: 0, flag: MsgFlag.ALL_NOT_RESERVED});
   }
@@ -156,13 +157,13 @@ contract Proposal is  ProposalConfigurationStructure, Action, ProposalStates{
   }  // set function //
 
   // get funcs 
-  function getPorosposalOverview() public view returns (ProposalInitConfiguration initConf_, ProposalState states_){
+  function getPorosposalOverview() public override view returns (ProposalInitConfiguration initConf_, ProposalState states_){
         return (initConfig, state);
   } 
-  function getActions() public view returns (VenomActions[]  venomActions_){
+  function getActions() public override view returns (VenomActions[]  venomActions_){
       return venomActions;
   }
-  function getProposalState() public view returns (ProposalState state_){
+  function getProposalState() public override view returns (ProposalState state_){
         if (initConfig.canceled) {
           // returns the cencelled if the inti config struct cancelled was true 
             return ProposalState.Canceled;
@@ -181,7 +182,7 @@ contract Proposal is  ProposalConfigurationStructure, Action, ProposalStates{
         } else if (initConfig.executionTime == 0) {
           // return succesdded if the execution time was zero , why ?
             return ProposalState.Succeeded;
-        } else if (block.timestamp > (initConfig.executionTime).add(initConfig.gracePeriod)) {
+        } else if (block.timestamp > SafeMath.add(initConfig.executionTime, uint256(initConfig.gracePeriod))) {
             // return expired if the excution time plus grace periosd time were less thatn now time 
             return ProposalState.Expired;
         } else {

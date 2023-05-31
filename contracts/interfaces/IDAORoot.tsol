@@ -5,34 +5,33 @@ pragma AbiHeader pubkey;
 import "../structures/ProposalConfigurationStructure.tsol";
 import "../structures/ProposalActionStruct.tsol";
 import "../structures/DAORootConfigurationStruct.tsol";
-import "../helpers/ProposalInitialCheck.tsol";
 import "../interfaces/IProposal.tsol";
-import "../Proposal.tsol";
-import "@broxus/contracts/contracts/libraries/MsgFlag.tsol";
-import "../libraries/Gas.tsol";
+
+
 
 interface IDAORoot is ProposalConfigurationStructure, DAORootConfigurationStruct, Action {
 
-
   ///@notice the proposal expected address will be calculated from  a postion id wich is totalProposals + 1 
-  function propose(ProposalInitConfiguration _ProposalInitConfiguration, VenomActions[] _venomActions) external returns(address deployedProposal_);
-  function deployProposal(ProposalInitConfiguration _ProposalInitConfiguration, VenomActions[] _venomActions) external returns(address);
+  function propose(ProposalInitConfiguration _ProposalInitConfiguration, VenomActions[] _venomActions) external;
+  function deployProposal( uint256 _balance, TvmCell _payload) external internalMsg;
 
   // this  function is used to perfomrm the planned operation in case a proposal is approved and has got the votes
-  function onProposalSucceeded(VenomActions[] _venomActions, uint256 _proposalId) external ;
-
+  function onProposalSucceeded(VenomActions[] _venomActions, uint256 _proposalId) external view ;
   // -- get funcs -- // 
-  function expectedProposalAddress(uint256 _proposalId) external view returns (address expectedAddress_) ;
+  function expectedProposalAddress(uint256 _proposalId) external view returns (address expectedProposalAddress_);
+  function expectedTip3VoteWalletAddress(address _walletOwner) external view returns (address expectedTip3WalletAddress_);
   function getAdmin() external view returns (address admin_) ;
 
   function getDAORootConfig() external view returns (initializingVars DAORootConfig_);
 
   function getTotalProposals() external view returns (uint256 totalProposal_);
+
+  function _venomActionTotalValue(VenomActions[] _venomActions) external pure returns(uint256 totalValue_);
   // -- get funcs -- // 
   // -- ADMIN FUNCTION -- //
-  function chnageAdmin(address _newAdmin) external ;
+  function chnageAdmin(address _newAdmin) external;
 
-  function acceptBeingAdmin() external ;
+  function acceptBeingAdmin() external;
 
   function changeDAORootprefrences(initializingVars _newInitializingVars) external;
   // -- ADMIN FUNCTION -- //

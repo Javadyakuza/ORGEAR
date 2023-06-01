@@ -124,7 +124,7 @@ describe("shuold deploy Dao Branch ", async function () {
     expect((await DAORoot.methods.getAdmin({}).call({})).admin_.toString()).to.eq(WalletV3.account.address.toString());
   });
 
-  it("shuold deploy the proposal and return the revelant data", async function () {
+  it("shuold deploy dao branch and return revelant data", async function () {
     // fetching the contracts
     const DAORoot = await locklift.factory.getDeployedContract("DAORoot", DAORootAddr);
     const ActionTestPersonalData = await locklift.factory.getDeployedContract(

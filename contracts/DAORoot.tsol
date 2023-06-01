@@ -47,14 +47,13 @@ contract DAORoot is DAOBranchConfigurationStruct, IDAORoot{
         // deploying the branch 
         address branchAddr = new DAOBranch {
             stateInit : _buildDaoBranchStatInit(_branchNonce, msg.sender),
-            value : msg.value,
+            value : 0,
             flag : MsgFlag.ALL_NOT_RESERVED
         }(
             _DaoBranchConfig
         );
         emit newBranchDepoyed(branchAddr, msg.sender);
         TotalDaoBranches++;
-        msg.sender.transfer({value : 0 , flag: MsgFlag.REMAINING_GAS});
     }
 
     // -- admin functions -- //

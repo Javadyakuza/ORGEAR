@@ -90,7 +90,7 @@
 			]
 		},
 		{
-			"name": "chnageAdmin",
+			"name": "changeAdmin",
 			"inputs": [
 				{"name":"_newAdmin","type":"address"}
 			],

@@ -61,10 +61,10 @@ contract DAOBranch is ProposalConfigurationStructure, DAOBranchConfigurationStru
   ///@notice the proposal expected address will be calculated from  a postion id wich is totalProposals + 1 
   function propose(ProposalInitConfiguration _ProposalInitConfiguration, VenomActions[] _venomActions) public override {
     // cheking if the user has provided enough venom for deploying and actioning the proposal  
-    /// @dev Gas.MAIN_VALUE in here is the value for deploying the proposal 
+    /// @dev Gas.MAIN_VALUE in here is the value for deploying the proposal  we have to add this function fee to the main value 
     require(msg.value >= _venomActionTotalValue(_venomActions) + Gas.MAIN_VALUE, DaoErrors.MSG_VALUE_TOO_LOW_TO_CREATE_PROPOSAL);
     // reserving the contract balance to not be spent on this trnasaction
-    tvm.rawReserve(address(this).balance - msg.value, 0); // flag 0 saves exactly the amount in the reserve
+    tvm.rawReserve(0,4); // flag 0 saves exactly the amount in the reserve
     // cheking the deploying params
     uint8 paramsRes = checkParams(BranchConfig, _ProposalInitConfiguration, _venomActions, msg.sender);
     require(paramsRes == uint8(200), paramsRes);
@@ -73,6 +73,7 @@ contract DAOBranch is ProposalConfigurationStructure, DAOBranchConfigurationStru
     payload.store(_ProposalInitConfiguration);
     payload.store(_venomActions);
     payload.store(msg.sender);
+    payload.store(msg.value);
 
     if(msg.sender == admin){
       deployProposal(0, payload.toCell());
@@ -80,28 +81,31 @@ contract DAOBranch is ProposalConfigurationStructure, DAOBranchConfigurationStru
       // sending the proposal data to the tip3 vote token 
       // the flag in here must be set to 1 and the expected operation too
       IVoteTokenWallet(expectedTip3VoteWalletAddress(msg.sender)).getVotes{
-        value : msg.value, 
+        value : 0, 
         flag : MsgFlag.SENDER_PAYS_FEES,
         callback : deployProposal
       }(payload.toCell());
     }
   }
   function deployProposal( uint256 _balance, TvmCell _payload) public override internalMsg {
-    require(msg.sender == admin || msg.sender == expectedTip3VoteWalletAddress(msg.sender), DaoErrors.NOT_ADMIN_OR_VOTE_WALLET);
     // unpacking the tvm cell 
-    (ProposalInitConfiguration _ProposalConf, VenomActions[] _venomActions, address _proposer)
-                = _payload.toSlice().decode(ProposalInitConfiguration, VenomActions[], address);    
+    (ProposalInitConfiguration _ProposalConf, VenomActions[] _venomActions, address _proposer, uint128 allowedValue)
+                = _payload.toSlice().decode(ProposalInitConfiguration, VenomActions[], address, uint128);    
+    require(msg.sender == admin || msg.sender == expectedTip3VoteWalletAddress(_proposer), DaoErrors.NOT_ADMIN_OR_VOTE_WALLET);
+
     // checking if the sender has the enough value to deploy the porposal 
       if (_balance < BranchConfig.TIP3_VOTE_PROPPOSING_QUORUM && msg.sender != admin){
         // user is not admin and doesnt have the quorum token neither
         emit ProposaDeployFailed(_proposer, totalProposals.add(1), _payload);
         revert(DaoErrors.TIP3_VOTE_TOO_LOW_TO_CREATE_PROPOSAL);
       }
+    tvm.rawReserve(SafeMath.sub(uint256(address(this).balance) ,uint256(allowedValue)), 0);
+    tvm.accept();
     // deploying the contract
     address proposalAddr = new Proposal{
       stateInit: _buildProposalStateInit(totalProposals.add(1)),
-      value: msg.value, // it must be somhow the sender in the prropose function  
-      flag: TokenMsgFlag.SENDER_PAYS_FEES
+      value: 0, // it must be somhow the sender in the prropose function  
+      flag: TokenMsgFlag.ALL_NOT_RESERVED
     }(
       _ProposalConf,
       _venomActions,
@@ -118,7 +122,7 @@ contract DAOBranch is ProposalConfigurationStructure, DAOBranchConfigurationStru
     /// @dev the msg value is payed by the proposal balance which is charged at the deploying time 
     require(msg.value >= _venomActionTotalValue(_venomActions), DaoErrors.VALUE_TOO_LOW);
     // saving the contract value
-    tvm.rawReserve(address(this).balance - msg.value, 0); // flag 0 saves exactly the amount in the reserve
+    tvm.rawReserve(0, 4); // flag 0 saves exactly the amount in the reserve
     // actioning the actions !
     for (uint i = 0 ; i > _venomActions.length; i++){
       _venomActions[i].target.transfer({
@@ -179,10 +183,8 @@ contract DAOBranch is ProposalConfigurationStructure, DAOBranchConfigurationStru
   } 
   // -- get funcs -- // 
   // -- ADMIN FUNCTION -- //
-  function chnageAdmin(address _newAdmin) public override onlyAdmin {
-    // saving the amount from the contract value  
-    // Gas.MAIN_VALUE is the chagning state value 
-    tvm.rawReserve(SafeMath.sub(uint256(address(this).balance), Gas.MAIN_VALUE), 0);
+  function changeAdmin(address _newAdmin) public override onlyAdmin {
+    tvm.accept();
     // emiting the event
     emit AdminTransferRequest(msg.sender, _newAdmin);
     // adding the requested admin to the pendingAdmin
@@ -194,7 +196,7 @@ contract DAOBranch is ProposalConfigurationStructure, DAOBranchConfigurationStru
     // checking that hte pedingAdmin is calling and has attahced the value to pay the gas fees
     require(msg.sender == pendingAdmin && msg.value >= Gas.MAIN_VALUE, DaoErrors.NOT_PENDING_ADMIN);
     // saving the contract value 
-    tvm.rawReserve(SafeMath.sub(uint256(address(this).balance), msg.value), 0);
+    tvm.rawReserve(0, 4);
     // emiting the event
     emit AdminTransfered(admin, pendingAdmin);
     // setting the new admin

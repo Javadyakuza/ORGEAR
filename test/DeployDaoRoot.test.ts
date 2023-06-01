@@ -2,7 +2,6 @@ import { expect } from "chai";
 import { Address, Contract, Signer, zeroAddress } from "locklift";
 import { FactorySource } from "../build/factorySource";
 import { CreateAccountOutput, WalletTypes } from "locklift/types/index";
-import { daoRootConfig } from "./structures_template/DAORootConfig.example";
 import { FactoryType } from "locklift/internal/factory";
 let DAORootAddr: Address;
 let Tip3voteRootAddr: Address;
@@ -40,9 +39,24 @@ describe("deploying Dao contract", async function () {
     expect(locklift.factory.getContractArtifacts("DAORoot").code).not.to.equal(undefined, "Code should be available");
     expect(locklift.factory.getContractArtifacts("DAORoot").abi).not.to.equal(undefined, "ABI should be available");
     expect(locklift.factory.getContractArtifacts("DAORoot").tvc).not.to.equal(undefined, "tvc should be available");
+    expect(locklift.factory.getContractArtifacts("DAOBranch").code).not.to.equal(undefined, "Code should be available");
+    expect(locklift.factory.getContractArtifacts("DAOBranch").abi).not.to.equal(undefined, "ABI should be available");
+    expect(locklift.factory.getContractArtifacts("DAOBranch").tvc).not.to.equal(undefined, "tvc should be available");
     expect(locklift.factory.getContractArtifacts("Proposal").code).not.to.equal(undefined, "Code should be available");
     expect(locklift.factory.getContractArtifacts("Proposal").abi).not.to.equal(undefined, "ABI should be available");
     expect(locklift.factory.getContractArtifacts("Proposal").tvc).not.to.equal(undefined, "tvc should be available");
+    expect(locklift.factory.getContractArtifacts("ActionTestPersonalData").code).not.to.equal(
+      undefined,
+      "Code should be available",
+    );
+    expect(locklift.factory.getContractArtifacts("ActionTestPersonalData").abi).not.to.equal(
+      undefined,
+      "ABI should be available",
+    );
+    expect(locklift.factory.getContractArtifacts("ActionTestPersonalData").tvc).not.to.equal(
+      undefined,
+      "tvc should be available",
+    );
     // making the signer
     signer = (await locklift.keystore.getSigner("0"))!;
     // making the wallet v3 and the token root  and wallet \
@@ -101,19 +115,17 @@ describe("deploying Dao contract", async function () {
     expect((await Tip3voteWallet.methods.balance({ answerId: 0 }).call({})).value0.toString()).to.eq("100");
   });
 
-  it("should deploy Dao", async function () {
-    // changinig the constructor params= tip3 vote root address
-    daoRootConfig.TIP3_VOTE_ROOT_ADDRESS = Tip3voteRootAddr;
+  it("should deploy Dao Root ", async function () {
     // deploying the DAORoot contract
     const { contract: DAORoot } = await locklift.factory.deployContract({
       contract: "DAORoot",
       publicKey: signer.publicKey,
       initParams: {
-        _nonce: locklift.utils.getRandomNonce(),
         admin: WalletV3.account.address,
+        _nonce: locklift.utils.getRandomNonce(),
       },
       constructorParams: {
-        _DAORootConfig: daoRootConfig,
+        _DaoBranchCode: locklift.factory.getContractArtifacts("DAOBranch").code,
       },
       value: locklift.utils.toNano(10),
     });

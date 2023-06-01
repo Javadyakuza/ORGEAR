@@ -29,7 +29,7 @@ interface IDAOBranch is ProposalConfigurationStructure, DAOBranchConfigurationSt
   function _venomActionTotalValue(VenomActions[] _venomActions) external pure returns(uint256 totalValue_);
   // -- get funcs -- // 
   // -- ADMIN FUNCTION -- //
-  function chnageAdmin(address _newAdmin) external;
+  function changeAdmin(address _newAdmin) external;
 
   function acceptBeingAdmin() external;
 

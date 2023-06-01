@@ -14,10 +14,12 @@ import "./structures/DAOBranchConfigurationStruct.tsol";
 
 contract DAORoot is DAOBranchConfigurationStruct, IDAORoot{
     using SafeMath for uint256;
+
     event newBranchDepoyed(address _branchAddress, address _admin);
     event DAORootAdminTransferreq(address _oldAdmin, address _newAdmin);
     event DAORootAdminTransfered(address _oldAdmin, address _newAdmin);
     event DAOBranchCodeUpdated();
+
     address static admin;
     uint32 static _nonce;
 
@@ -27,6 +29,7 @@ contract DAORoot is DAOBranchConfigurationStruct, IDAORoot{
 
     constructor(TvmCell _DaoBranchCode) public {
         require(tvm.pubkey() == msg.pubkey(), DaoErrors.NOT_ADMIN);
+        tvm.accept();
         DaoBranchCode = _DaoBranchCode;
     }
 
@@ -36,21 +39,22 @@ contract DAORoot is DAOBranchConfigurationStruct, IDAORoot{
     } 
 
     // this function deploys A dao Branch
-    function DeployDaoBranch(DaoBranchConfig _DaoBranchConfig) public override  returns(address newBranchAddr_){
+    function DeployDaoBranch(uint32 _branchNonce, DaoBranchConfig _DaoBranchConfig) public override{
         // chaking the msg.value 
         require(msg.value >= Gas.MAIN_VALUE, DaoErrors.VALUE_TOO_LOW);
         // reserving the contract value 
-        tvm.rawReserve(SafeMath.sub(uint256(address(this).balance ), msg.value), 0);
+        tvm.rawReserve(0, 4);
         // deploying the branch 
         address branchAddr = new DAOBranch {
-            stateInit : _buildDaoBranchStatInit(uint32(TotalDaoBranches.add(1)), msg.sender),
+            stateInit : _buildDaoBranchStatInit(_branchNonce, msg.sender),
             value : msg.value,
-            flag : MsgFlag.SENDER_PAYS_FEES
+            flag : MsgFlag.ALL_NOT_RESERVED
         }(
             _DaoBranchConfig
         );
+        emit newBranchDepoyed(branchAddr, msg.sender);
+        TotalDaoBranches++;
         msg.sender.transfer({value : 0 , flag: MsgFlag.REMAINING_GAS});
-        return branchAddr;
     }
 
     // -- admin functions -- //
@@ -76,7 +80,7 @@ contract DAORoot is DAOBranchConfigurationStruct, IDAORoot{
         // checking f the pending admin is calling 
         require(msg.sender == pendingAdmin , DaoErrors.NOT_PENDING_ADMIN);
         // reserving the contract value , the incomming message must be flag : 1 or this func will fail 
-        tvm.rawReserve(SafeMath.sub(uint256(address(this).balance ), msg.value), 0);
+        tvm.rawReserve(0, 4);
         // emiting the event 
         emit DAORootAdminTransfered(admin , msg.sender);
         // setting the state variables

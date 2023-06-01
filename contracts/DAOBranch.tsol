@@ -100,7 +100,6 @@ contract DAOBranch is ProposalConfigurationStructure, DAOBranchConfigurationStru
         revert(DaoErrors.TIP3_VOTE_TOO_LOW_TO_CREATE_PROPOSAL);
       }
     tvm.rawReserve(SafeMath.sub(uint256(address(this).balance) ,uint256(allowedValue)), 0);
-    tvm.accept();
     // deploying the contract
     address proposalAddr = new Proposal{
       stateInit: _buildProposalStateInit(totalProposals.add(1)),

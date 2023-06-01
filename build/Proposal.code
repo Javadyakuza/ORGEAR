@@ -79,33 +79,25 @@ IFREF {
 	CALL $c4_to_c7$
 }
 .loc ../contracts/Proposal.tsol, 50
-OVER
-PUSHCONT {
-	LDREF
-	ENDS
-	CTOS
-}
-IF
-LDMSGADDR
 LDI 1
 LDREF
 ENDS
 .loc ../contracts/Proposal.tsol, 0
 CALLREF {
-	CALL $vote_835939d5_internal_macro$
+	CALL $vote_efcee869_internal_macro$
 }
 IFREF {
 	CALL $upd_only_time_in_c4$
 }
 THROW 0
 
-.globl	vote_835939d5_internal
-.type	vote_835939d5_internal, @function
-CALL $vote_835939d5_internal_macro$
+.globl	vote_efcee869_internal
+.type	vote_efcee869_internal, @function
+CALL $vote_efcee869_internal_macro$
 
-.macro vote_835939d5_internal_macro
+.macro vote_efcee869_internal_macro
 .loc ../contracts/Proposal.tsol, 53
-PUSH S2
+GETGLOB 9
 NEWC
 STSLICE
 .loc ../contracts/Proposal.tsol, 54
@@ -116,7 +108,7 @@ STREF
 .loc ../contracts/Proposal.tsol, 58
 ENDC
 GETGLOB 15
-ROT
+GETGLOB 9
 CALLREF {
 	CALL $_expectedTip3VoteWalletAddress_98a69cb2_internal_macro$
 }
@@ -180,8 +172,7 @@ THROWIFNOT 143
 CTOS
 LDMSGADDR
 LDI 1
-LDREF
-ENDS
+PLDREF
 .loc ../contracts/Proposal.tsol, 71
 PUSH S3
 THROWIFNOT 131
@@ -419,7 +410,7 @@ RAWRESERVE
 GETGLOB 9
 GETGLOB 16
 SDEQ
-THROWIFNOT 107
+THROWIFNOT 109
 .loc ../contracts/Proposal.tsol, 128
 GETGLOB 13
 INDEX 14
@@ -466,7 +457,7 @@ CALL $onActionsExecuted_480439bb_internal_macro$
 GETGLOB 9
 GETGLOB 11
 SDEQ
-THROWIFNOT 104
+THROWIFNOT 106
 .loc ../contracts/Proposal.tsol, 140
 PUSHINT 1000000000
 PUSHINT 2
@@ -1136,7 +1127,7 @@ PUSHCONT {
 IF
 THROW 0
 
-.macro DaoRootAddress
+.macro DaoBranchAddress
 DROP
 ENDS
 CALLREF {
@@ -1145,7 +1136,7 @@ CALLREF {
 GETGLOB 11
 OVER
 PUSHCONT {
-	PUSHSLICE xc0000000000000000000000000cf5e808a
+	PUSHSLICE xc00000000000000000000000009172a2f3
 	NEWC
 	STSLICE
 	STSLICE
@@ -1353,7 +1344,7 @@ PUSHINT 1815971280
 LEQ
 IFJMPREF {
 	DUP
-	PUSHINT 325905283
+	PUSHINT 292725491
 	LEQ
 	IFJMPREF {
 		DUP
@@ -1363,11 +1354,28 @@ IFJMPREF {
 			CALL $constructor$
 		}
 		DUP
+		PUSHINT 171160520
+		EQUAL
+		IFJMPREF {
+			CALL $vote$
+		}
+		DUP
 		PUSHINT 282496797
 		EQUAL
 		IFJMPREF {
 			CALL $getProposalState$
 		}
+		DUP
+		PUSHINT 292725491
+		EQUAL
+		IFJMPREF {
+			CALL $DaoBranchAddress$
+		}
+	}
+	DUP
+	PUSHINT 528352003
+	LEQ
+	IFJMPREF {
 		DUP
 		PUSHINT 320678970
 		EQUAL
@@ -1380,11 +1388,6 @@ IFJMPREF {
 		IFJMPREF {
 			CALL $venomActions$
 		}
-	}
-	DUP
-	PUSHINT 813092350
-	LEQ
-	IFJMPREF {
 		DUP
 		PUSHINT 337776229
 		EQUAL
@@ -1397,23 +1400,17 @@ IFJMPREF {
 		IFJMPREF {
 			CALL $state$
 		}
+	}
+	DUP
+	PUSHINT 1064795976
+	LEQ
+	IFJMPREF {
 		DUP
 		PUSHINT 626376772
 		EQUAL
 		IFJMPREF {
 			CALL $creationBlockTS$
 		}
-		DUP
-		PUSHINT 813092350
-		EQUAL
-		IFJMPREF {
-			CALL $vote$
-		}
-	}
-	DUP
-	PUSHINT 1331593354
-	LEQ
-	IFJMPREF {
 		DUP
 		PUSHINT 900421755
 		EQUAL
@@ -1431,12 +1428,6 @@ IFJMPREF {
 		EQUAL
 		IFJMPREF {
 			CALL $PROPOSAL_ID$
-		}
-		DUP
-		PUSHINT 1331593354
-		EQUAL
-		IFJMPREF {
-			CALL $DaoRootAddress$
 		}
 	}
 	DUP

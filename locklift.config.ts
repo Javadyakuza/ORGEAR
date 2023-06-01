@@ -24,9 +24,9 @@ const config: LockliftConfig = {
     version: "0.62.0",
 
     // Specify config for extarnal contracts as in exapmple
-    // externalContracts: {
-    //   "node_modules/broxus-ton-tokens-contracts/build": ['TokenRoot', 'TokenWallet']
-    // }
+    externalContracts: {
+      "node_modules/tip3vote/build": ["VoteTokenRoot", "VoteTokenWallet"],
+    },
   },
   linker: {
     // Specify path to your stdlib
@@ -101,7 +101,7 @@ const config: LockliftConfig = {
         },
       },
       giver: {
-        address: "0:0000000000000000000000000000000000000000000000000000000000000000",
+        address: process.env.ADDRESS!,
         phrase: "phrase",
         accountId: 0,
       },
@@ -111,7 +111,7 @@ const config: LockliftConfig = {
       keys: {
         // Use everdev to generate your phrase
         // !!! Never commit it in your repos !!!
-        // phrase: "action inject penalty envelope rabbit element slim tornado dinner pizza off blood",
+        // phrase : process.env.PHRASE, // uncomment this line to use your account
         amount: 20,
       },
     },
@@ -129,7 +129,7 @@ const config: LockliftConfig = {
       },
       // This giver is default Wallet
       giver: {
-        address: "0:0000000000000000000000000000000000000000000000000000000000000000",
+        address: process.env.ADDRESS!,
         key: "secret key",
       },
       tracing: {
@@ -138,7 +138,7 @@ const config: LockliftConfig = {
       keys: {
         // Use everdev to generate your phrase
         // !!! Never commit it in your repos !!!
-        // phrase: "action inject penalty envelope rabbit element slim tornado dinner pizza off blood",
+        // phrase : process.env.PHRASE, // uncomment this line to use your account
         amount: 20,
       },
     },

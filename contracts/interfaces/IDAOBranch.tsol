@@ -1,0 +1,39 @@
+pragma ever-solidity >=0.61.2;
+pragma AbiHeader expire;
+pragma AbiHeader pubkey;
+
+import "../structures/ProposalConfigurationStructure.tsol";
+import "../structures/ProposalActionStruct.tsol";
+import "../structures/DAOBranchConfigurationStruct.tsol";
+import "../interfaces/IProposal.tsol";
+
+
+
+interface IDAOBranch is ProposalConfigurationStructure, DAOBranchConfigurationStruct, Action {
+
+  ///@notice the proposal expected address will be calculated from  a postion id wich is totalProposals + 1 
+  function propose(ProposalInitConfiguration _ProposalInitConfiguration, VenomActions[] _venomActions) external;
+  function deployProposal( uint256 _balance, TvmCell _payload) external internalMsg;
+
+  // this  function is used to perfomrm the planned operation in case a proposal is approved and has got the votes
+  function onProposalSucceeded(VenomActions[] _venomActions, uint256 _proposalId) external view ;
+  // -- get funcs -- // 
+  function expectedProposalAddress(uint256 _proposalId) external view returns (address expectedProposalAddress_);
+  function expectedTip3VoteWalletAddress(address _walletOwner) external view returns (address expectedTip3WalletAddress_);
+  function getAdmin() external view returns (address admin_) ;
+
+  function getDAOBranchConfig() external view returns (DaoBranchConfig DAORootConfig_);
+
+  function getTotalProposals() external view returns (uint256 totalProposal_);
+
+  function _venomActionTotalValue(VenomActions[] _venomActions) external pure returns(uint256 totalValue_);
+  // -- get funcs -- // 
+  // -- ADMIN FUNCTION -- //
+  function chnageAdmin(address _newAdmin) external;
+
+  function acceptBeingAdmin() external;
+
+  function changeDAOBranchprefrences(DaoBranchConfig _BranchConfig) external;
+  // -- ADMIN FUNCTION -- //
+
+}

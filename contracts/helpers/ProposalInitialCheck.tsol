@@ -1,13 +1,13 @@
 pragma ever-solidity >= 0.61.2;
 
-import "../structures/DAORootConfigurationStruct.tsol";
+import "../structures/DAOBranchConfigurationStruct.tsol";
 import "../structures/ProposalConfigurationStructure.tsol";
 import "../structures/ProposalActionStruct.tsol";
 import "../libraries/DAOErrors.tsol";
-abstract contract ProposalInitialCheck is ProposalConfigurationStructure, DAORootConfigurationStruct, Action{
+abstract contract ProposalInitialCheck is ProposalConfigurationStructure, DAOBranchConfigurationStruct, Action{
     // the init params are not going to hav any problem since all the variables are just the proposal id and will be filled autona,itacally byt eh contract and no off-chain data 
         function checkParams(
-        initializingVars _basis,
+        DaoBranchConfig _basis,
         ProposalInitConfiguration _basisOP,
         VenomActions[] _plannedActions,
         address _proposer

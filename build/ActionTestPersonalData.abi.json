@@ -1,0 +1,59 @@
+{
+	"ABI version": 2,
+	"version": "2.2",
+	"header": ["time"],
+	"functions": [
+		{
+			"name": "constructor",
+			"inputs": [
+				{"name":"_age","type":"uint256"},
+				{"name":"_name","type":"string"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "setAge",
+			"inputs": [
+				{"name":"_age","type":"uint256"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "setName",
+			"inputs": [
+				{"name":"_name","type":"string"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "age",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"age","type":"uint256"}
+			]
+		},
+		{
+			"name": "name",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"name","type":"string"}
+			]
+		}
+	],
+	"data": [
+	],
+	"events": [
+	],
+	"fields": [
+		{"name":"_pubkey","type":"uint256"},
+		{"name":"_timestamp","type":"uint64"},
+		{"name":"_constructorFlag","type":"bool"},
+		{"name":"age","type":"uint256"},
+		{"name":"name","type":"string"}
+	]
+}

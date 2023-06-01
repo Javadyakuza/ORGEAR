@@ -1,0 +1,20 @@
+pragma ever-solidity >= 0.61.2;
+
+contract ActionTestPersonalData{
+    uint256 public age;
+    string public name;
+
+    constructor(uint256 _age, string _name) public {
+        tvm.accept();
+        age = _age;
+        name = _name;
+    }
+
+    function setAge(uint256 _age) public {
+        age = _age;
+    }
+    function setName(string _name) public {
+        name = _name;
+    }
+    /// @dev get functions provided by default 
+}

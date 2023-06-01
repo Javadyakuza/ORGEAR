@@ -2,12 +2,14 @@ pragma ever-solidity >= 0.39.0;
 
 library DaoErrors {
     uint8 constant NOT_ADMIN = 101;
-    uint8 constant NOT_QUALIFIED_FOR_PROPOSE = 102;
-    uint8 constant NOT_PENDING_ADMIN = 103;
-    uint8 constant NOT_DAO = 104;
-    uint8 constant NOT_PROPOSAL = 105;
-    uint8 constant NOT_ACCOUNT = 106;
-    uint8 constant NOT_OWNER = 107;
+    uint8 constant NOT_ADMIN_OR_VOTE_WALLET = 102;
+    uint8 constant NOT_ROOT = 103;
+    uint8 constant NOT_QUALIFIED_FOR_PROPOSE = 104;
+    uint8 constant NOT_PENDING_ADMIN = 105;
+    uint8 constant NOT_DAO = 106;
+    uint8 constant NOT_PROPOSAL = 107;
+    uint8 constant NOT_ACCOUNT = 108;
+    uint8 constant NOT_OWNER = 109;
 
     uint8 constant TOO_MANY_OR_ZERO_ACTIONS = 110;
     uint8 constant MSG_VALUE_TOO_LOW_TO_CREATE_PROPOSAL = 112;

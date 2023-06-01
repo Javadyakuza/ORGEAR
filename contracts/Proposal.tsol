@@ -4,7 +4,7 @@ import "./structures/ProposalActionStruct.tsol";
 import "./structures/ProposalConfigurationStructure.tsol";
 import "./structures/ProposalStates.tsol";
 import "./interfaces/IProposal.tsol";
-import "./interfaces/IDAORoot.tsol";
+import "./interfaces/IDAOBranch.tsol";
 import "tip3vote/contracts/interfaces/IVoteTokenWallet.tsol";
 import "tip3vote/contracts/interfaces/IVoteTokenRoot.tsol";
 import "tip3vote/contracts/VoteTokenWallet.tsol";
@@ -17,7 +17,7 @@ contract Proposal is  ProposalConfigurationStructure, Action, ProposalStates, IP
   using SafeMath for uint256;
   // static //
   uint256 public static PROPOSAL_ID;
-  address public static DaoRootAddress;
+  address public static DaoBranchAddress;
   // static //
 
   event VoteCasted(address voter, bool support, uint votes, string reason);
@@ -47,15 +47,15 @@ contract Proposal is  ProposalConfigurationStructure, Action, ProposalStates, IP
   /**
   @notice this function support the delegate voting by getting the voter  
    */
-  function vote(address _voter, bool _support, string _reason) public override view{
+  function vote(bool _support, string _reason) public override view{
     // packing the data 
     TvmBuilder votePayload;
-    votePayload.store(_voter);
+    votePayload.store(msg.sender);
     votePayload.store(_support);
     votePayload.store(_reason);
     
     // calling the expected tip3 vote wallet to return the past votes for us 
-    IVoteTokenWallet(_expectedTip3VoteWalletAddress(_voter)).getPastVotes{
+    IVoteTokenWallet(_expectedTip3VoteWalletAddress(msg.sender)).getPastVotes{
       value : 0 ,
       flag : MsgFlag.SENDER_PAYS_FEES,
       callback : castVote
@@ -66,7 +66,7 @@ contract Proposal is  ProposalConfigurationStructure, Action, ProposalStates, IP
     require(getProposalState() == ProposalState.Active, DaoErrors.PROPOSAL_IS_NOT_ACTIVVE);
     // unpacking the data 
     (address _voter, bool _support, string _reason) 
-              = _votePayload.toSlice().decodeFunctionParams(vote);
+              = _votePayload.toSlice().decode(address, bool, string);
     // checking the vpte weight is greater than 0 
     require(_balance != 0 , DaoErrors.VALUE_ZERO);
     // casting the vote 
@@ -107,7 +107,7 @@ contract Proposal is  ProposalConfigurationStructure, Action, ProposalStates, IP
      // emiting the event 
      emit Executed();
      // excuting the contract from the dao root channel 
-     IDAORoot(DaoRootAddress).onProposalSucceeded{
+     IDAOBranch(DaoBranchAddress).onProposalSucceeded{
       value : 0, 
       flag : 0
      }(venomActions, PROPOSAL_ID);
@@ -135,7 +135,7 @@ contract Proposal is  ProposalConfigurationStructure, Action, ProposalStates, IP
 
   function onActionsExecuted() public override view {
         // only dao can call his function 
-        require(msg.sender == DaoRootAddress, DaoErrors.NOT_DAO);
+        require(msg.sender == DaoBranchAddress, DaoErrors.NOT_DAO);
         // saving the inital balance of the contract Gas.MAIN_VALUE, : inital balance 
         tvm.rawReserve(Gas.MAIN_VALUE, 2);
         // emiting a event 

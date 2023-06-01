@@ -16,7 +16,6 @@
 		{
 			"name": "vote",
 			"inputs": [
-				{"name":"_voter","type":"address"},
 				{"name":"_support","type":"bool"},
 				{"name":"_reason","type":"string"}
 			],
@@ -94,11 +93,11 @@
 			]
 		},
 		{
-			"name": "DaoRootAddress",
+			"name": "DaoBranchAddress",
 			"inputs": [
 			],
 			"outputs": [
-				{"name":"DaoRootAddress","type":"address"}
+				{"name":"DaoBranchAddress","type":"address"}
 			]
 		},
 		{
@@ -144,7 +143,7 @@
 	],
 	"data": [
 		{"key":1,"name":"PROPOSAL_ID","type":"uint256"},
-		{"key":2,"name":"DaoRootAddress","type":"address"}
+		{"key":2,"name":"DaoBranchAddress","type":"address"}
 	],
 	"events": [
 		{
@@ -195,7 +194,7 @@
 		{"name":"_timestamp","type":"uint64"},
 		{"name":"_constructorFlag","type":"bool"},
 		{"name":"PROPOSAL_ID","type":"uint256"},
-		{"name":"DaoRootAddress","type":"address"},
+		{"name":"DaoBranchAddress","type":"address"},
 		{"components":[{"name":"value","type":"uint256"},{"name":"target","type":"address"},{"name":"payload","type":"cell"}],"name":"venomActions","type":"tuple[]"},
 		{"components":[{"name":"TIP3_VOTE_ROOT_ADDRESS","type":"address"},{"name":"description","type":"string"},{"name":"startTime","type":"uint256"},{"name":"endTime","type":"uint256"},{"name":"votingDelay","type":"uint32"},{"name":"votingPeriod","type":"uint32"},{"name":"quorumVotes","type":"uint128"},{"name":"timeLock","type":"uint32"},{"name":"threshold","type":"uint128"},{"name":"gracePeriod","type":"uint32"},{"name":"executionTime","type":"uint256"},{"name":"forVotes","type":"uint256"},{"name":"againstVotes","type":"uint256"},{"name":"canceled","type":"bool"},{"name":"executed","type":"bool"},{"name":"Tip3VoteWalletCode","type":"cell"}],"name":"initConfig","type":"tuple"},
 		{"name":"state","type":"uint8"},

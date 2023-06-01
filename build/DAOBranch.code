@@ -1,0 +1,2109 @@
+.version sol 0.62.0
+
+.macro constructor
+DROP
+GETGLOB 2
+ISNULL
+IFREF {
+	CALL $c4_to_c7_with_init_storage$
+}
+GETGLOB 6
+THROWIF 51
+OVER
+PUSHCONT {
+	LDREF
+	ENDS
+	CTOS
+}
+IF
+LDMSGADDR
+LDU 256
+LDU 128
+LDREF
+ENDS
+CTOS
+LDU 128
+LDU 128
+LDU 128
+LDU 32
+LDU 32
+LDU 32
+LDU 32
+LDU 32
+LDU 32
+LDU 32
+LDU 32
+LDU 16
+LDU 8
+LDREF
+LDREF
+PUSHINT 18
+ROLLREVX
+PUSHINT 18
+TUPLEVAR
+SWAP
+ENDS
+.loc ../contracts/DAOBranch.tsol, 46
+GETGLOB 9
+GETGLOB 12
+SDEQ
+THROWIFNOT 103
+.loc ../contracts/DAOBranch.tsol, 48
+SETGLOB 15
+.loc ../contracts/DAOBranch.tsol, 0
+CALLREF {
+	CALL $c7_to_c4$
+}
+THROW 0
+
+.macro propose
+DROP
+GETGLOB 6
+THROWIFNOT 76
+GETGLOB 2
+ISNULL
+IFREF {
+	CALL $c4_to_c7$
+}
+.loc ../contracts/DAOBranch.tsol, 62
+OVER
+PUSHCONT {
+	LDREF
+	ENDS
+	CTOS
+}
+IF
+LDMSGADDR
+LDREF
+LDU 256
+LDREF
+ENDS
+CTOS
+LDU 256
+LDU 32
+LDU 32
+LDU 128
+LDU 32
+LDU 128
+LDU 32
+LDU 256
+LDREF
+ENDS
+CTOS
+LDU 256
+LDU 256
+LDI 1
+LDI 1
+LDREF
+ROLLREV 16
+PUSHINT 16
+TUPLEVAR
+SWAP
+LDU 32
+LDDICT
+ROTREV
+PAIR
+SWAP
+ENDS
+.loc ../contracts/DAOBranch.tsol, 0
+CALLREF {
+	CALL $propose_b3c6deae_internal_macro$
+}
+DROP
+CALLREF {
+	CALL $c7_to_c4$
+}
+THROW 0
+
+.globl	propose_b3c6deae_internal
+.type	propose_b3c6deae_internal, @function
+CALL $propose_b3c6deae_internal_macro$
+
+.macro propose_b3c6deae_internal_macro
+.loc ../contracts/DAOBranch.tsol, 65
+DEPTH
+ADDCONST -2
+PICK
+OVER
+CALLREF {
+	CALL $_venomActionTotalValue_3e9584e6_internal_macro$
+}
+PUSHINT 1000000000
+ADD
+GEQ
+THROWIFNOT 112
+.loc ../contracts/DAOBranch.tsol, 67
+GETPARAM 7
+FIRST
+DEPTH
+ADDCONST -2
+PICK
+SUB
+UFITS 128
+PUSHINT 0
+RAWRESERVE
+.loc ../contracts/DAOBranch.tsol, 69
+GETGLOB 15
+BLKPUSH 2, 2
+GETGLOB 9
+CALLREF {
+	CALL $checkParams_d06dacd3_internal_macro$
+}
+.loc ../contracts/DAOBranch.tsol, 70
+DUP
+PUSHINT 2
+MAX
+SWAP
+PUSHINT 200
+EQUAL
+THROWANYIFNOT
+.loc ../contracts/DAOBranch.tsol, 73
+NEWC
+ROT
+PUSHINT 16
+UNTUPLEVAR
+REVERSE 17, 0
+STSLICE
+STREF
+STU 256
+STU 256
+STU 32
+STU 32
+STU 128
+STU 32
+STU 128
+STU 32
+STU 256
+STU 256
+STU 256
+STI 1
+STI 1
+STREF
+.loc ../contracts/DAOBranch.tsol, 74
+SWAP
+UNPAIR
+XCHG S2
+STU 32
+STDICT
+.loc ../contracts/DAOBranch.tsol, 75
+GETGLOB 9
+STSLICER
+.loc ../contracts/DAOBranch.tsol, 77
+GETGLOB 9
+GETGLOB 11
+SDEQ
+PUSHCONT {
+	.loc ../contracts/DAOBranch.tsol, 78
+	PUSHINT 0
+	OVER
+	ENDC
+	CALLREF {
+		CALL $deployProposal_ad9d3ea6_internal_macro$
+	}
+}
+PUSHCONT {
+	.loc ../contracts/DAOBranch.tsol, 82
+	DUP
+	ENDC
+	DEPTH
+	ADDCONST -2
+	PICK
+	GETGLOB 9
+	CALLREF {
+		CALL $expectedTip3VoteWalletAddress_22764724_internal_macro$
+	}
+	NEWC
+	STSLICECONST x62_
+	STSLICE
+	SWAP
+	STGRAMS
+	PUSHINT 2139553845669224452
+	STUR 171
+	STREF
+	ENDC
+	PUSHINT 1
+	SENDRAWMSG
+}
+IFELSE
+.loc ../contracts/DAOBranch.tsol, 0
+DROP
+
+.macro deployProposal
+DROP
+GETGLOB 6
+THROWIFNOT 76
+GETGLOB 2
+ISNULL
+IFREF {
+	CALL $c4_to_c7$
+}
+.loc ../contracts/DAOBranch.tsol, 89
+OVER
+PUSHCONT {
+	LDREF
+	ENDS
+	CTOS
+}
+IF
+LDU 256
+LDREF
+ENDS
+.loc ../contracts/DAOBranch.tsol, 0
+CALLREF {
+	CALL $deployProposal_ad9d3ea6_internal_macro$
+}
+DROP
+CALLREF {
+	CALL $c7_to_c4$
+}
+THROW 0
+
+.globl	deployProposal_ad9d3ea6_internal
+.type	deployProposal_ad9d3ea6_internal, @function
+CALL $deployProposal_ad9d3ea6_internal_macro$
+
+.macro deployProposal_ad9d3ea6_internal_macro
+.loc ../contracts/DAOBranch.tsol, 89
+DEPTH
+ADDCONST -5
+PICK
+THROWIF 72
+.loc ../contracts/DAOBranch.tsol, 90
+GETGLOB 9
+GETGLOB 11
+SDEQ
+DUP
+PUSHCONT {
+	DROP
+	GETGLOB 9
+	DUP
+	CALLREF {
+		CALL $expectedTip3VoteWalletAddress_22764724_internal_macro$
+	}
+	SDEQ
+}
+IFNOT
+THROWIFNOT 102
+.loc ../contracts/DAOBranch.tsol, 92
+DUP
+CTOS
+LDMSGADDR
+LDREF
+LDU 256
+LDU 256
+LDU 32
+LDU 32
+LDU 128
+LDU 32
+LDU 128
+LDU 32
+LDU 256
+LDU 256
+LDU 256
+LDI 1
+LDI 1
+LDREF
+ROLLREV 16
+PUSHINT 16
+TUPLEVAR
+SWAP
+LDU 32
+LDDICT
+ROTREV
+PAIR
+SWAP
+LDMSGADDR
+DROP
+.loc ../contracts/DAOBranch.tsol, 95
+PUSH S4
+GETGLOB 15
+SECOND
+LESS
+GETGLOB 9
+GETGLOB 11
+SDEQ
+NOT
+AND
+PUSHCONT {
+	.loc ../contracts/DAOBranch.tsol, 97
+	ROLL 3
+	GETGLOB 14
+	PUSHINT 1
+	CALLREF {
+		CALL $SafeMath_with_obj_add_771602f7_macro$
+	}
+	SWAP
+	SETGLOB 14
+	ROT
+	PUSHSLICE xc000000000000000000000000062031524
+	NEWC
+	STSLICE
+	STSLICE
+	STU 256
+	STREF
+	ENDC
+	PUSHINT 0
+	SENDRAWMSG
+	.loc ../contracts/DAOBranch.tsol, 98
+	THROW 113
+	.loc ../contracts/DAOBranch.tsol, 0
+}
+IF
+.loc ../contracts/DAOBranch.tsol, 101
+GETGLOB 9
+ROT
+PUSH S3
+GETGLOB 14
+PUSHINT 1
+CALLREF {
+	CALL $SafeMath_with_obj_add_771602f7_macro$
+}
+SWAP
+SETGLOB 14
+CALLREF {
+	CALL $_buildProposalStateInit_7cbbb768_internal_macro$
+}
+DUP
+HASHCU
+NEWC
+STSLICECONST x801_
+STU 256
+ENDC
+CTOS
+ROLLREV 4
+DEPTH
+ADDCONST -2
+PICK
+PUSH S5
+NEWC
+STSLICECONST x62_
+STSLICE
+SWAP
+STGRAMS
+PUSHINT 3
+STUR 107
+OVER
+CALLREF {
+	CTOS
+	LDI 1
+	SWAP
+	PUSHCONT {
+		LDI 5
+		NIP
+	}
+	IF
+	LDI 1
+	SWAP
+	PUSHCONT {
+		LDI 2
+		NIP
+	}
+	IF
+	LDOPTREF
+	LDOPTREF
+	LDDICT
+	ENDS
+	BLKDROP 3
+}
+STREF
+STSLICECONST 1
+ROLLREV 3
+NEWC
+STSLICECONST x02d0ec43
+SWAP
+PUSHINT 16
+UNTUPLEVAR
+REVERSE 17, 0
+STSLICE
+STREF
+STU 256
+ROLLREV 15
+NEWC
+STU 256
+STU 32
+STU 32
+STU 128
+STU 32
+STU 128
+STU 32
+STU 256
+ROLLREV 7
+NEWC
+STU 256
+STU 256
+STI 1
+STI 1
+STREF
+SWAP
+UNPAIR
+XCHG S2
+STU 32
+STDICT
+SWAP
+NEWC
+STSLICE
+STBREFR
+STBREFR
+STBREFR
+STBREFR
+ENDC
+PUSHINT 1
+SENDRAWMSG
+.loc ../contracts/DAOBranch.tsol, 111
+ROT
+SECOND
+GETGLOB 14
+PUSHINT 1
+CALLREF {
+	CALL $SafeMath_with_obj_add_771602f7_macro$
+}
+SWAP
+SETGLOB 14
+SWAP2
+SWAP
+PUSHSLICE xc0000000000000000000000001
+NEWC
+STSLICE
+ROLLREV 4
+NEWC
+STSLICECONST x440e40be
+STSLICE
+ROLLREV 3
+NEWC
+STSLICE
+STU 256
+STREF
+STBREFR
+STBREFR
+ENDC
+PUSHINT 0
+SENDRAWMSG
+.loc ../contracts/DAOBranch.tsol, 112
+DROP2
+GETGLOB 14
+PUSHINT 1
+CALLREF {
+	CALL $SafeMath_with_obj_add_771602f7_macro$
+}
+DROP
+SETGLOB 14
+.loc ../contracts/DAOBranch.tsol, 0
+
+.macro onProposalSucceeded
+DROP
+GETGLOB 6
+THROWIFNOT 76
+GETGLOB 2
+ISNULL
+IFREF {
+	CALL $c4_to_c7$
+}
+.loc ../contracts/DAOBranch.tsol, 116
+OVER
+PUSHCONT {
+	LDU 32
+	LDDICT
+	ROTREV
+	PAIR
+	SWAP
+	LDREF
+	ENDS
+	CTOS
+}
+PUSHCONT {
+	LDU 32
+	LDDICT
+	ROTREV
+	PAIR
+	SWAP
+}
+IFELSE
+LDU 256
+ENDS
+.loc ../contracts/DAOBranch.tsol, 0
+CALLREF {
+	CALL $onProposalSucceeded_8abc98f4_internal_macro$
+}
+IFREF {
+	CALL $upd_only_time_in_c4$
+}
+THROW 0
+
+.globl	onProposalSucceeded_8abc98f4_internal
+.type	onProposalSucceeded_8abc98f4_internal, @function
+CALL $onProposalSucceeded_8abc98f4_internal_macro$
+
+.macro onProposalSucceeded_8abc98f4_internal_macro
+.loc ../contracts/DAOBranch.tsol, 116
+GETGLOB 9
+OVER
+.loc ../contracts/DAOBranch.tsol, 56
+CALLREF {
+	CALL $expectedProposalAddress_6c53fa69_internal_macro$
+}
+SDEQ
+THROWIFNOT 107
+.loc ../contracts/DAOBranch.tsol, 119
+DEPTH
+ADDCONST -2
+PICK
+PUSH S2
+CALLREF {
+	CALL $_venomActionTotalValue_3e9584e6_internal_macro$
+}
+GEQ
+THROWIFNOT 130
+.loc ../contracts/DAOBranch.tsol, 121
+GETPARAM 7
+FIRST
+DEPTH
+ADDCONST -2
+PICK
+SUB
+UFITS 128
+PUSHINT 0
+RAWRESERVE
+.loc ../contracts/DAOBranch.tsol, 123
+PUSHINT 0
+PUSHCONT {
+	PUSH2 S0, S2
+	FIRST
+	GREATER
+}
+PUSHCONT {
+	.loc ../contracts/DAOBranch.tsol, 124
+	PUSH2 S0, S2
+	SECOND
+	PUSHINT 32
+	DICTUGET
+	THROWIFNOT 50
+	CALLREF {
+		LDU 256
+		LDMSGADDR
+		LDREF
+		ENDS
+		TRIPLE
+	}
+	FIRST
+	UFITS 128
+	PUSH2 S1, S3
+	SECOND
+	PUSHINT 32
+	DICTUGET
+	THROWIFNOT 50
+	CALLREF {
+		LDU 256
+		LDMSGADDR
+		LDREF
+		ENDS
+		TRIPLE
+	}
+	SECOND
+	NEWC
+	STSLICECONST x42_
+	STSLICE
+	SWAP
+	STGRAMS
+	PUSHINT 1
+	STUR 107
+	PUSH2 S1, S3
+	SECOND
+	PUSHINT 32
+	DICTUGET
+	THROWIFNOT 50
+	CALLREF {
+		LDU 256
+		LDMSGADDR
+		LDREF
+		ENDS
+		TRIPLE
+	}
+	THIRD
+	STREFR
+	ENDC
+	PUSHINT 1
+	SENDRAWMSG
+	.loc ../contracts/DAOBranch.tsol, 123
+	INC
+	.loc ../contracts/DAOBranch.tsol, 0
+}
+WHILE
+DROP
+.loc ../contracts/DAOBranch.tsol, 131
+CALLREF {
+	CALL $expectedProposalAddress_6c53fa69_internal_macro$
+}
+NEWC
+STSLICECONST x62_
+STSLICE
+PUSHINT 1518600236
+STUR 143
+ENDC
+PUSHPOW2 7
+SENDRAWMSG
+.loc ../contracts/DAOBranch.tsol, 0
+DROP
+
+.globl	_buildProposalStateInit_7cbbb768_internal
+.type	_buildProposalStateInit_7cbbb768_internal, @function
+CALL $_buildProposalStateInit_7cbbb768_internal_macro$
+
+.macro _buildProposalStateInit_7cbbb768_internal_macro
+.loc ../contracts/DAOBranch.tsol, 139
+PUSHINT 0
+NEWC
+STU 256
+PUSHINT 0
+NEWDICT
+PUSHINT 64
+DICTUSETB
+SWAP
+NEWC
+STU 256
+PUSHINT 1
+ROT
+PUSHINT 64
+DICTUSETB
+MYADDR
+PUSHINT 2
+ROT
+PUSHINT 64
+DICTUSET
+NEWC
+STDICT
+ENDC
+GETGLOB 15
+PUSHINT 16
+INDEXVAR
+NEWC
+STSLICECONST x2_
+STOPTREF
+STOPTREF
+STZERO
+ENDC
+.loc ../contracts/DAOBranch.tsol, 0
+
+.macro expectedProposalAddress
+DROP
+GETGLOB 6
+THROWIFNOT 76
+GETGLOB 2
+ISNULL
+IFREF {
+	CALL $c4_to_c7$
+}
+.loc ../contracts/DAOBranch.tsol, 147
+OVER
+PUSHCONT {
+	LDREF
+	ENDS
+	CTOS
+}
+IF
+LDU 256
+ENDS
+.loc ../contracts/DAOBranch.tsol, 0
+CALLREF {
+	CALL $expectedProposalAddress_6c53fa69_internal_macro$
+}
+OVER
+PUSHCONT {
+	PUSH S3
+	CTOS
+	LDU 2
+	LDMSGADDR
+	DROP
+	NIP
+	NEWC
+	STSLICECONST xc
+	STSLICE
+	PUSHINT 1
+	STUR 98
+	SWAP
+	NEWC
+	STSLICECONST x988efcf9
+	STSLICE
+	STBREFR
+	ENDC
+	PUSHINT 0
+	SENDRAWMSG
+}
+PUSHCONT {
+	DROP
+}
+IFELSE
+IFREF {
+	CALL $upd_only_time_in_c4$
+}
+THROW 0
+
+.globl	expectedProposalAddress_6c53fa69_internal
+.type	expectedProposalAddress_6c53fa69_internal, @function
+CALL $expectedProposalAddress_6c53fa69_internal_macro$
+
+.macro expectedProposalAddress_6c53fa69_internal_macro
+.loc ../contracts/DAOBranch.tsol, 148
+CALLREF {
+	CALL $_buildProposalStateInit_7cbbb768_internal_macro$
+}
+HASHCU
+NEWC
+STSLICECONST x801_
+STU 256
+ENDC
+CTOS
+.loc ../contracts/DAOBranch.tsol, 0
+
+.macro expectedTip3VoteWalletAddress
+DROP
+GETGLOB 6
+THROWIFNOT 76
+GETGLOB 2
+ISNULL
+IFREF {
+	CALL $c4_to_c7$
+}
+.loc ../contracts/DAOBranch.tsol, 150
+OVER
+PUSHCONT {
+	LDREF
+	ENDS
+	CTOS
+}
+IF
+LDMSGADDR
+ENDS
+.loc ../contracts/DAOBranch.tsol, 0
+CALLREF {
+	CALL $expectedTip3VoteWalletAddress_22764724_internal_macro$
+}
+OVER
+PUSHCONT {
+	PUSH S3
+	CTOS
+	LDU 2
+	LDMSGADDR
+	DROP
+	NIP
+	NEWC
+	STSLICECONST xc
+	STSLICE
+	PUSHINT 1
+	STUR 98
+	SWAP
+	NEWC
+	STSLICECONST xe5c7e34a
+	STSLICE
+	STBREFR
+	ENDC
+	PUSHINT 0
+	SENDRAWMSG
+}
+PUSHCONT {
+	DROP
+}
+IFELSE
+IFREF {
+	CALL $upd_only_time_in_c4$
+}
+THROW 0
+
+.globl	expectedTip3VoteWalletAddress_22764724_internal
+.type	expectedTip3VoteWalletAddress_22764724_internal, @function
+CALL $expectedTip3VoteWalletAddress_22764724_internal_macro$
+
+.macro expectedTip3VoteWalletAddress_22764724_internal_macro
+.loc ../contracts/DAOBranch.tsol, 151
+PUSHINT 0
+NEWC
+STU 256
+PUSHINT 0
+NEWDICT
+PUSHINT 64
+DICTUSETB
+GETGLOB 15
+FIRST
+PUSHINT 1
+ROT
+PUSHINT 64
+DICTUSET
+SWAP
+PUSHINT 2
+ROT
+PUSHINT 64
+DICTUSET
+NEWC
+STDICT
+ENDC
+GETGLOB 15
+PUSHINT 17
+INDEXVAR
+NEWC
+STSLICECONST x2_
+STOPTREF
+STOPTREF
+STZERO
+ENDC
+HASHCU
+NEWC
+STSLICECONST x801_
+STU 256
+ENDC
+CTOS
+.loc ../contracts/DAOBranch.tsol, 0
+
+.macro getAdmin
+DROP
+GETGLOB 6
+THROWIFNOT 76
+GETGLOB 2
+ISNULL
+IFREF {
+	CALL $c4_to_c7$
+}
+.loc ../contracts/DAOBranch.tsol, 162
+ENDS
+.loc ../contracts/DAOBranch.tsol, 0
+CALLREF {
+	CALL $getAdmin_6e9960c3_internal_macro$
+}
+OVER
+PUSHCONT {
+	PUSH S3
+	CTOS
+	LDU 2
+	LDMSGADDR
+	DROP
+	NIP
+	NEWC
+	STSLICECONST xc
+	STSLICE
+	PUSHINT 1
+	STUR 98
+	SWAP
+	NEWC
+	STSLICECONST xd2e8487f
+	STSLICE
+	STBREFR
+	ENDC
+	PUSHINT 0
+	SENDRAWMSG
+}
+PUSHCONT {
+	DROP
+}
+IFELSE
+IFREF {
+	CALL $upd_only_time_in_c4$
+}
+THROW 0
+
+.globl	getAdmin_6e9960c3_internal
+.type	getAdmin_6e9960c3_internal, @function
+CALL $getAdmin_6e9960c3_internal_macro$
+
+.macro getAdmin_6e9960c3_internal_macro
+.loc ../contracts/DAOBranch.tsol, 163
+GETGLOB 11
+.loc ../contracts/DAOBranch.tsol, 0
+
+.macro getDAOBranchConfig
+DROP
+GETGLOB 6
+THROWIFNOT 76
+GETGLOB 2
+ISNULL
+IFREF {
+	CALL $c4_to_c7$
+}
+.loc ../contracts/DAOBranch.tsol, 165
+ENDS
+.loc ../contracts/DAOBranch.tsol, 0
+CALLREF {
+	CALL $getDAOBranchConfig_38d2688d_internal_macro$
+}
+OVER
+PUSHCONT {
+	PUSH S3
+	CTOS
+	LDU 2
+	LDMSGADDR
+	DROP
+	NIP
+	NEWC
+	STSLICECONST xc
+	STSLICE
+	PUSHINT 1
+	STUR 98
+	SWAP
+	NEWC
+	STSLICECONST xcd8acc02
+	SWAP
+	PUSHINT 18
+	UNTUPLEVAR
+	PUSHINT 19
+	PUSHINT 0
+	REVX
+	STSLICE
+	STU 256
+	STU 128
+	ROLLREV 15
+	NEWC
+	STU 128
+	STU 128
+	STU 128
+	STU 32
+	STU 32
+	STU 32
+	STU 32
+	STU 32
+	STU 32
+	STU 32
+	STU 32
+	STU 16
+	STU 8
+	STREF
+	STREF
+	STBREFR
+	STBREFR
+	ENDC
+	PUSHINT 0
+	SENDRAWMSG
+}
+PUSHCONT {
+	DROP
+}
+IFELSE
+IFREF {
+	CALL $upd_only_time_in_c4$
+}
+THROW 0
+
+.globl	getDAOBranchConfig_38d2688d_internal
+.type	getDAOBranchConfig_38d2688d_internal, @function
+CALL $getDAOBranchConfig_38d2688d_internal_macro$
+
+.macro getDAOBranchConfig_38d2688d_internal_macro
+.loc ../contracts/DAOBranch.tsol, 166
+GETGLOB 15
+.loc ../contracts/DAOBranch.tsol, 0
+
+.macro getTotalProposals
+DROP
+GETGLOB 6
+THROWIFNOT 76
+GETGLOB 2
+ISNULL
+IFREF {
+	CALL $c4_to_c7$
+}
+.loc ../contracts/DAOBranch.tsol, 168
+ENDS
+.loc ../contracts/DAOBranch.tsol, 0
+CALLREF {
+	CALL $getTotalProposals_1a5007dd_internal_macro$
+}
+OVER
+PUSHCONT {
+	PUSH S3
+	CTOS
+	LDU 2
+	LDMSGADDR
+	DROP
+	NIP
+	NEWC
+	STSLICECONST xc
+	STSLICE
+	PUSHINT 4103287362
+	STUR 130
+	STU 256
+	ENDC
+	PUSHINT 0
+	SENDRAWMSG
+}
+PUSHCONT {
+	DROP
+}
+IFELSE
+IFREF {
+	CALL $upd_only_time_in_c4$
+}
+THROW 0
+
+.globl	getTotalProposals_1a5007dd_internal
+.type	getTotalProposals_1a5007dd_internal, @function
+CALL $getTotalProposals_1a5007dd_internal_macro$
+
+.macro getTotalProposals_1a5007dd_internal_macro
+.loc ../contracts/DAOBranch.tsol, 169
+GETGLOB 14
+.loc ../contracts/DAOBranch.tsol, 0
+
+.macro _venomActionTotalValue
+DROP
+GETGLOB 6
+THROWIFNOT 76
+.loc ../contracts/DAOBranch.tsol, 171
+LDU 32
+LDDICT
+ROTREV
+PAIR
+SWAP
+ENDS
+.loc ../contracts/DAOBranch.tsol, 0
+CALLREF {
+	CALL $_venomActionTotalValue_3e9584e6_internal_macro$
+}
+OVER
+PUSHCONT {
+	PUSH S3
+	CTOS
+	LDU 2
+	LDMSGADDR
+	DROP
+	NIP
+	NEWC
+	STSLICECONST xc
+	STSLICE
+	PUSHINT 2505322067
+	STUR 130
+	STU 256
+	ENDC
+	PUSHINT 0
+	SENDRAWMSG
+}
+PUSHCONT {
+	DROP
+}
+IFELSE
+IFREF {
+	CALL $upd_only_time_in_c4$
+}
+THROW 0
+
+.globl	_venomActionTotalValue_3e9584e6_internal
+.type	_venomActionTotalValue_3e9584e6_internal, @function
+CALL $_venomActionTotalValue_3e9584e6_internal_macro$
+
+.macro _venomActionTotalValue_3e9584e6_internal_macro
+.loc ../contracts/DAOBranch.tsol, 173
+PUSHINT 0
+DUP
+.loc ../contracts/DAOBranch.tsol, 174
+PUSHCONT {
+	PUSH2 S0, S2
+	FIRST
+	LESS
+}
+PUSHCONT {
+	.loc ../contracts/DAOBranch.tsol, 176
+	PUSH2 S1, S2
+	UNPAIR
+	PUXC S3, S-1
+	PUSH2 S1, S2
+	LESS
+	THROWIFNOT 50
+	DUP2
+	PUSHINT 32
+	DICTUGET
+	THROWIFNOT 50
+	CALLREF {
+		LDU 256
+		LDMSGADDR
+		LDREF
+		ENDS
+		TRIPLE
+	}
+	DUP
+	FIRST
+	PUSHINT 1000000000
+	CALLREF {
+		CALL $SafeMath_with_obj_add_771602f7_macro$
+	}
+	ROLLREV 5
+	SETINDEX 0
+	CALLREF {
+		UNTRIPLE
+		XCHG S2
+		NEWC
+		STU 256
+		STSLICE
+		STREF
+	}
+	ROTREV
+	PUSHINT 32
+	DICTUSETB
+	PAIR
+	POP S5
+	CALLREF {
+		CALL $SafeMath_with_obj_add_771602f7_macro$
+	}
+	NIP
+	POP S2
+	.loc ../contracts/DAOBranch.tsol, 174
+	INC
+	.loc ../contracts/DAOBranch.tsol, 0
+}
+WHILE
+DROP
+.loc ../contracts/DAOBranch.tsol, 178
+NIP
+.loc ../contracts/DAOBranch.tsol, 0
+
+.macro chnageAdmin
+DROP
+GETGLOB 6
+THROWIFNOT 76
+GETGLOB 2
+ISNULL
+IFREF {
+	CALL $c4_to_c7$
+}
+.loc ../contracts/DAOBranch.tsol, 182
+OVER
+PUSHCONT {
+	LDREF
+	ENDS
+	CTOS
+}
+IF
+LDMSGADDR
+ENDS
+.loc ../contracts/DAOBranch.tsol, 0
+CALLREF {
+	CALL $chnageAdmin_e94c5318_internal_macro$
+}
+DROP
+CALLREF {
+	CALL $c7_to_c4$
+}
+THROW 0
+
+.globl	chnageAdmin_e94c5318_internal
+.type	chnageAdmin_e94c5318_internal, @function
+CALL $chnageAdmin_e94c5318_internal_macro$
+
+.macro chnageAdmin_e94c5318_internal_macro
+.loc ../contracts/DAOBranch.tsol, 52
+GETGLOB 9
+GETGLOB 11
+SDEQ
+THROWIFNOT 103
+.loc ../contracts/DAOBranch.tsol, 185
+GETPARAM 7
+FIRST
+PUSHINT 1000000000
+CALLREF {
+	CALL $SafeMath_no_obj_sub_b67d77c5_macro$
+}
+PUSHINT 0
+RAWRESERVE
+.loc ../contracts/DAOBranch.tsol, 187
+DUP
+GETGLOB 9
+PUSHSLICE xc0000000000000000000000001
+NEWC
+STSLICE
+ROTREV
+NEWC
+STSLICECONST x0c9e5889
+STSLICE
+SWAP
+NEWC
+STSLICE
+STBREFR
+STBREFR
+ENDC
+PUSHINT 0
+SENDRAWMSG
+.loc ../contracts/DAOBranch.tsol, 189
+SETGLOB 13
+.loc ../contracts/DAOBranch.tsol, 0
+
+.macro acceptBeingAdmin
+DROP
+GETGLOB 6
+THROWIFNOT 76
+GETGLOB 2
+ISNULL
+IFREF {
+	CALL $c4_to_c7$
+}
+.loc ../contracts/DAOBranch.tsol, 193
+ENDS
+.loc ../contracts/DAOBranch.tsol, 0
+CALLREF {
+	CALL $acceptBeingAdmin_3f6ff0e4_internal_macro$
+}
+DROP
+CALLREF {
+	CALL $c7_to_c4$
+}
+THROW 0
+
+.globl	acceptBeingAdmin_3f6ff0e4_internal
+.type	acceptBeingAdmin_3f6ff0e4_internal, @function
+CALL $acceptBeingAdmin_3f6ff0e4_internal_macro$
+
+.macro acceptBeingAdmin_3f6ff0e4_internal_macro
+.loc ../contracts/DAOBranch.tsol, 195
+GETGLOB 9
+GETGLOB 13
+SDEQ
+DEPTH
+ADDCONST -2
+PICK
+PUSHINT 1000000000
+GEQ
+AND
+THROWIFNOT 105
+.loc ../contracts/DAOBranch.tsol, 197
+GETPARAM 7
+FIRST
+DEPTH
+ADDCONST -2
+PICK
+CALLREF {
+	CALL $SafeMath_no_obj_sub_b67d77c5_macro$
+}
+PUSHINT 0
+RAWRESERVE
+.loc ../contracts/DAOBranch.tsol, 199
+GETGLOB 13
+GETGLOB 11
+PUSHSLICE xc0000000000000000000000001
+NEWC
+STSLICE
+ROTREV
+NEWC
+STSLICECONST x4812257e
+STSLICE
+SWAP
+NEWC
+STSLICE
+STBREFR
+STBREFR
+ENDC
+PUSHINT 0
+SENDRAWMSG
+.loc ../contracts/DAOBranch.tsol, 201
+GETGLOB 13
+SETGLOB 11
+.loc ../contracts/DAOBranch.tsol, 203
+PUSHREFSLICE {
+	.blob x8000000000000000000000000000000000000000000000000000000000000000001_
+}
+SETGLOB 13
+.loc ../contracts/DAOBranch.tsol, 205
+GETGLOB 11
+NEWC
+STSLICECONST x62_
+STSLICE
+PUSHINT 111
+STZEROES
+ENDC
+PUSHINT 64
+SENDRAWMSG
+.loc ../contracts/DAOBranch.tsol, 0
+
+.macro changeDAOBranchprefrences
+DROP
+GETGLOB 6
+THROWIFNOT 76
+GETGLOB 2
+ISNULL
+IFREF {
+	CALL $c4_to_c7$
+}
+.loc ../contracts/DAOBranch.tsol, 208
+OVER
+PUSHCONT {
+	LDREF
+	ENDS
+	CTOS
+}
+IF
+LDMSGADDR
+LDU 256
+LDU 128
+LDREF
+ENDS
+CTOS
+LDU 128
+LDU 128
+LDU 128
+LDU 32
+LDU 32
+LDU 32
+LDU 32
+LDU 32
+LDU 32
+LDU 32
+LDU 32
+LDU 16
+LDU 8
+LDREF
+LDREF
+PUSHINT 18
+ROLLREVX
+PUSHINT 18
+TUPLEVAR
+SWAP
+ENDS
+.loc ../contracts/DAOBranch.tsol, 0
+CALLREF {
+	CALL $changeDAOBranchprefrences_17e43aa2_internal_macro$
+}
+DROP
+CALLREF {
+	CALL $c7_to_c4$
+}
+THROW 0
+
+.globl	changeDAOBranchprefrences_17e43aa2_internal
+.type	changeDAOBranchprefrences_17e43aa2_internal, @function
+CALL $changeDAOBranchprefrences_17e43aa2_internal_macro$
+
+.macro changeDAOBranchprefrences_17e43aa2_internal_macro
+.loc ../contracts/DAOBranch.tsol, 52
+GETGLOB 9
+GETGLOB 11
+SDEQ
+THROWIFNOT 103
+.loc ../contracts/DAOBranch.tsol, 210
+ACCEPT
+.loc ../contracts/DAOBranch.tsol, 212
+PUSHREF {
+	.blob xc000000000000000000000000011340154
+}
+PUSHINT 0
+SENDRAWMSG
+.loc ../contracts/DAOBranch.tsol, 214
+SETGLOB 15
+.loc ../contracts/DAOBranch.tsol, 0
+
+.globl	checkParams_d06dacd3_internal
+.type	checkParams_d06dacd3_internal, @function
+CALL $checkParams_d06dacd3_internal_macro$
+
+.macro checkParams_d06dacd3_internal_macro
+.loc ../contracts/helpers/ProposalInitialCheck.tsol, 17
+PUSHREFSLICE {
+	.blob x8000000000000000000000000000000000000000000000000000000000000000001_
+}
+SDEQ
+PUSHCONT {
+	BLKDROP 3
+	PUSHINT 132
+}
+IFJMP
+.loc ../contracts/helpers/ProposalInitialCheck.tsol, 19
+OVER
+SECOND
+PUSHPOW2DEC 32
+CDATASIZE
+DROP
+NIP
+RSHIFT 3
+PUSH S3
+INDEX 14
+GREATER
+DUP
+PUSHCONT {
+	DROP
+	OVER
+	SECOND
+	PUSHPOW2DEC 32
+	CDATASIZE
+	DROP
+	NIP
+	RSHIFT 3
+	EQINT 0
+}
+IFNOT
+PUSHCONT {
+	BLKDROP 3
+	PUSHINT 114
+}
+IFJMP
+.loc ../contracts/helpers/ProposalInitialCheck.tsol, 21
+DUP
+FIRST
+PUSH S3
+INDEX 15
+GREATER
+SWAP
+FIRST
+EQINT 0
+AND
+PUSHCONT {
+	DROP2
+	PUSHINT 110
+}
+IFJMP
+.loc ../contracts/helpers/ProposalInitialCheck.tsol, 25
+DUP
+INDEX 4
+PUSH S2
+INDEX 9
+GREATER
+OVER
+INDEX 4
+PUSH S3
+INDEX 8
+LESS
+OR
+PUSHCONT {
+	DROP2
+	PUSHINT 121
+}
+IFJMP
+.loc ../contracts/helpers/ProposalInitialCheck.tsol, 26
+DUP
+INDEX 5
+PUSH S2
+INDEX 7
+GREATER
+OVER
+INDEX 5
+PUSH S3
+INDEX 6
+LESS
+OR
+PUSHCONT {
+	DROP2
+	PUSHINT 120
+}
+IFJMP
+.loc ../contracts/helpers/ProposalInitialCheck.tsol, 27
+DUP
+INDEX 6
+PUSH S2
+INDEX 4
+GREATER
+OVER
+INDEX 6
+PUSH S3
+INDEX 5
+LESS
+OR
+PUSHCONT {
+	DROP2
+	PUSHINT 124
+}
+IFJMP
+.loc ../contracts/helpers/ProposalInitialCheck.tsol, 28
+DUP
+INDEX 7
+PUSH S2
+INDEX 11
+GREATER
+OVER
+INDEX 7
+PUSH S3
+INDEX 10
+LESS
+OR
+PUSHCONT {
+	DROP2
+	PUSHINT 122
+}
+IFJMP
+.loc ../contracts/helpers/ProposalInitialCheck.tsol, 29
+DUP
+INDEX 9
+PUSH S2
+INDEX 13
+GREATER
+OVER
+INDEX 9
+PUSH S3
+INDEX 12
+LESS
+OR
+PUSHCONT {
+	DROP2
+	PUSHINT 125
+}
+IFJMP
+.loc ../contracts/helpers/ProposalInitialCheck.tsol, 30
+DUP
+INDEX 8
+PUSH S2
+INDEX 3
+GREATER
+SWAP
+INDEX 8
+ROT
+THIRD
+LESS
+OR
+PUSHCONT {
+	PUSHINT 123
+}
+IFJMP
+.loc ../contracts/helpers/ProposalInitialCheck.tsol, 31
+PUSHINT 200
+.loc ../contracts/helpers/ProposalInitialCheck.tsol, 0
+
+.macro c4_to_c7
+PUSHROOT
+CTOS
+LDU 256 ; pubkey c4
+LDU 64 ; pubkey timestamp c4
+LDU 1 ; ctor flag
+NIP
+LDU 32
+LDMSGADDR
+LDREF
+ENDS
+CTOS
+LDMSGADDR
+LDREF
+ENDS
+CTOS
+LDMSGADDR
+LDU 256
+LDREF
+ENDS
+CTOS
+LDMSGADDR
+LDU 256
+LDU 128
+LDREF
+ENDS
+CTOS
+LDU 128
+LDU 128
+LDU 128
+LDU 32
+LDU 32
+LDU 32
+LDU 32
+LDU 32
+LDU 32
+LDU 32
+LDU 32
+LDU 16
+LDU 8
+LDREF
+LDREF
+PUSHINT 18
+ROLLREVX
+PUSHINT 18
+TUPLEVAR
+SWAP
+ENDS
+SETGLOB 15
+SETGLOB 14
+SETGLOB 13
+SETGLOB 12
+SETGLOB 11
+SETGLOB 10
+SETGLOB 3
+SETGLOB 2
+
+.macro c4_to_c7_with_init_storage
+PUSHROOT
+CTOS
+SBITS
+GTINT 1
+PUSHCONT {
+	PUSHINT 0
+	PUSHROOT
+	CTOS
+	PLDDICT ; D
+	PUSHINT 1
+	OVER
+	PUSHINT 64
+	DICTUGET
+	ZEROSWAPIFNOT
+	PUSHCONT {
+		PLDU 32
+	}
+	IF
+	PUSHINT 2
+	PUSH S2
+	PUSHINT 64
+	DICTUGET
+	PUSHCONT {
+		PUSHREFSLICE {
+			.blob x8000000000000000000000000000000000000000000000000000000000000000001_
+		}
+	}
+	IFNOT
+	PUSHINT 3
+	PUSH S3
+	PUSHINT 64
+	DICTUGET
+	PUSHCONT {
+		PUSHREFSLICE {
+			.blob x8000000000000000000000000000000000000000000000000000000000000000001_
+		}
+	}
+	IFNOT
+	PUSHREFSLICE {
+		.blob x8000000000000000000000000000000000000000000000000000000000000000001_
+	}
+	PUSHINT 0
+	PUSHREFSLICE {
+		.blob x8000000000000000000000000000000000000000000000000000000000000000001_
+	}
+	PUSHINT 0
+	BLKPUSH 14, 0
+	PUSHREF {
+	}
+	DUP
+	PUSHINT 18
+	TUPLEVAR
+	SETGLOB 15
+	SETGLOB 14
+	SETGLOB 13
+	SETGLOB 12
+	SETGLOB 11
+	SETGLOB 10
+	PUSHINT 64
+	DICTUGET
+	THROWIFNOT 61
+	PLDU 256
+	SETGLOB 2
+	PUSHINT 0 ; timestamp
+	SETGLOB 3
+}
+IFREFELSE {
+	CALL $c4_to_c7$
+}
+
+.macro c7_to_c4
+GETGLOB 15
+GETGLOB 14
+GETGLOB 13
+GETGLOB 12
+GETGLOB 11
+GETGLOB 10
+GETGLOB 3
+GETGLOB 2
+NEWC
+STU 256
+STU 64
+STONE
+STU 32
+STSLICE
+ROLLREV 4
+NEWC
+STSLICE
+ROLLREV 3
+NEWC
+STSLICE
+STU 256
+SWAP
+PUSHINT 18
+UNTUPLEVAR
+PUSHINT 19
+PUSHINT 0
+REVX
+PUSHINT 18
+ROLLREVX
+NEWC
+STSLICE
+STU 256
+STU 128
+ROLLREV 15
+NEWC
+STU 128
+STU 128
+STU 128
+STU 32
+STU 32
+STU 32
+STU 32
+STU 32
+STU 32
+STU 32
+STU 32
+STU 16
+STU 8
+STREF
+STREF
+STBREFR
+STBREFR
+STBREFR
+STBREFR
+ENDC
+POPROOT
+
+.macro upd_only_time_in_c4
+PUSHROOT
+CTOS
+LDU 256
+LDU 64
+NIP
+GETGLOB 3
+ROT
+NEWC
+STU 256
+STU 64
+STSLICE
+ENDC
+POPROOT
+
+.internal-alias :main_internal, 0
+.internal :main_internal
+PUSHROOT
+CTOS
+SBITS
+NEQINT 1
+SETGLOB 6
+PUSH S2
+CTOS
+LDU 4 ; bounced tail
+LDMSGADDR ; bounced src tail
+DROP
+SETGLOB 9
+MODPOW2 1
+IFRET
+OVER
+SEMPTY ; isEmpty
+IFJMPREF {
+	GETGLOB 6
+	THROWIFNOT 76
+}
+OVER
+LDUQ 32  ; [funcId] body' ok
+THROWIFNOT 60
+OVER
+IFNOTJMPREF {
+	GETGLOB 6
+	THROWIFNOT 76
+}
+SWAP
+CALLREF {
+	CALL $public_function_selector$
+}
+THROW 60
+
+.internal-alias :main_external, -1
+.internal :main_external
+PUSHROOT
+CTOS
+SBITS
+NEQINT 1
+SETGLOB 6
+PUSHREFSLICE {
+	.blob x8000000000000000000000000000000000000000000000000000000000000000001_
+}
+SETGLOB 9
+OVER
+CALLREF {
+	CALL $c4_to_c7_with_init_storage$
+}
+LDU 1 ; haveSign msgSlice
+SWAP
+PUSHCONT {
+	PUSHPOW2 9
+	LDSLICEX ; signatureSlice msgSlice
+	DUP
+	HASHSU ; signatureSlice msgSlice hashMsgSlice
+	SWAP
+	LDU 1 ; signatureSlice hashMsgSlice hasPubkey msgSlice
+	SWAP
+	PUSHCONT {
+		LDU 256 ; signatureSlice hashMsgSlice pubkey msgSlice
+		XCHG S3
+		SWAP
+	}
+	PUSHCONT {
+		XCHG S2
+		GETGLOB 2
+	}
+	IFELSE
+	CHKSIGNU ; msgSlice isSigned
+	THROWIFNOT 40
+}
+PUSHCONT {
+	LDU 1 ; hasPubkey msgSlice
+	SWAP
+	THROWIF 58
+}
+IFELSE
+LDU 64 ; timestamp msgSlice
+SWAP
+CALL $replay_protection_macro$
+LDU 32 ; expireAt msgSlice
+SWAP
+NOW ; msgSlice expireAt now
+GREATER ; msgSlice expireAt>now
+THROWIFNOT 57
+LDU 32 ; funcId body
+SWAP
+CALLREF {
+	CALL $public_function_selector$
+}
+THROW 60
+
+.macro pendingAdmin
+DROP
+ENDS
+CALLREF {
+	CALL $c4_to_c7$
+}
+GETGLOB 13
+OVER
+PUSHCONT {
+	PUSHSLICE xc0000000000000000000000000dfd854de
+	NEWC
+	STSLICE
+	STSLICE
+	ENDC
+	PUSHINT 0
+	SENDRAWMSG
+}
+IF
+THROW 0
+
+.macro totalProposals
+DROP
+ENDS
+CALLREF {
+	CALL $c4_to_c7$
+}
+GETGLOB 14
+OVER
+PUSHCONT {
+	PUSHSLICE xc0000000000000000000000000a52c2cf8
+	NEWC
+	STSLICE
+	STU 256
+	ENDC
+	PUSHINT 0
+	SENDRAWMSG
+}
+IF
+THROW 0
+
+.macro BranchConfig
+DROP
+ENDS
+CALLREF {
+	CALL $c4_to_c7$
+}
+GETGLOB 15
+OVER
+PUSHCONT {
+	PUSHSLICE xc0000000000000000000000001
+	NEWC
+	STSLICE
+	SWAP
+	NEWC
+	STSLICECONST xfa850842
+	SWAP
+	PUSHINT 18
+	UNTUPLEVAR
+	PUSHINT 19
+	PUSHINT 0
+	REVX
+	STSLICE
+	STU 256
+	STU 128
+	ROLLREV 15
+	NEWC
+	STU 128
+	STU 128
+	STU 128
+	STU 32
+	STU 32
+	STU 32
+	STU 32
+	STU 32
+	STU 32
+	STU 32
+	STU 32
+	STU 16
+	STU 8
+	STREF
+	STREF
+	STBREFR
+	STBREFR
+	ENDC
+	PUSHINT 0
+	SENDRAWMSG
+}
+IF
+THROW 0
+
+.globl	SafeMath_with_obj_add_771602f7
+.type	SafeMath_with_obj_add_771602f7, @function
+CALL $SafeMath_with_obj_add_771602f7_macro$
+
+.macro SafeMath_with_obj_add_771602f7_macro
+.loc ../contracts/libraries/SafeMath.tsol, 7
+OVER
+ADD
+.loc ../contracts/libraries/SafeMath.tsol, 8
+PUSH2 S0, S1
+GEQ
+THROWIFNOT 101
+.loc ../contracts/libraries/SafeMath.tsol, 0
+
+.globl	SafeMath_no_obj_add_771602f7
+.type	SafeMath_no_obj_add_771602f7, @function
+CALL $SafeMath_no_obj_add_771602f7_macro$
+
+.macro SafeMath_no_obj_add_771602f7_macro
+.loc ../contracts/libraries/SafeMath.tsol, 7
+OVER
+ADD
+.loc ../contracts/libraries/SafeMath.tsol, 8
+DUP
+ROT
+GEQ
+THROWIFNOT 101
+.loc ../contracts/libraries/SafeMath.tsol, 0
+
+.globl	SafeMath_with_obj_sub_b67d77c5
+.type	SafeMath_with_obj_sub_b67d77c5, @function
+CALL $SafeMath_with_obj_sub_b67d77c5_macro$
+
+.macro SafeMath_with_obj_sub_b67d77c5_macro
+.loc ../contracts/libraries/SafeMath.tsol, 14
+PUSH2 S0, S1
+LEQ
+THROWIFNOT 102
+.loc ../contracts/libraries/SafeMath.tsol, 15
+OVER
+SUBR
+UFITS 256
+.loc ../contracts/libraries/SafeMath.tsol, 0
+
+.globl	SafeMath_no_obj_sub_b67d77c5
+.type	SafeMath_no_obj_sub_b67d77c5, @function
+CALL $SafeMath_no_obj_sub_b67d77c5_macro$
+
+.macro SafeMath_no_obj_sub_b67d77c5_macro
+.loc ../contracts/libraries/SafeMath.tsol, 14
+PUSH2 S0, S1
+LEQ
+THROWIFNOT 102
+.loc ../contracts/libraries/SafeMath.tsol, 15
+SUB
+UFITS 256
+.loc ../contracts/libraries/SafeMath.tsol, 0
+
+.macro public_function_selector
+DUP
+PUSHINT 357838419
+LEQ
+IFJMPREF {
+	DUP
+	PUSHINT 82796548
+	EQUAL
+	IFJMPREF {
+		CALL $deployProposal$
+	}
+	DUP
+	PUSHINT 171727630
+	EQUAL
+	IFJMPREF {
+		CALL $changeDAOBranchprefrences$
+	}
+	DUP
+	PUSHINT 267722917
+	EQUAL
+	IFJMPREF {
+		CALL $propose$
+	}
+	DUP
+	PUSHINT 357838419
+	EQUAL
+	IFJMPREF {
+		CALL $_venomActionTotalValue$
+	}
+}
+DUP
+PUSHINT 638814643
+LEQ
+IFJMPREF {
+	DUP
+	PUSHINT 378053431
+	EQUAL
+	IFJMPREF {
+		CALL $onProposalSucceeded$
+	}
+	DUP
+	PUSHINT 412024057
+	EQUAL
+	IFJMPREF {
+		CALL $expectedProposalAddress$
+	}
+	DUP
+	PUSHINT 623652088
+	EQUAL
+	IFJMPREF {
+		CALL $totalProposals$
+	}
+	DUP
+	PUSHINT 638814643
+	EQUAL
+	IFJMPREF {
+		CALL $acceptBeingAdmin$
+	}
+}
+DUP
+PUSHINT 1501542961
+LEQ
+IFJMPREF {
+	DUP
+	PUSHINT 677328943
+	EQUAL
+	IFJMPREF {
+		CALL $constructor$
+	}
+	DUP
+	PUSHINT 1300941826
+	EQUAL
+	IFJMPREF {
+		CALL $getDAOBranchConfig$
+	}
+	DUP
+	PUSHINT 1390954623
+	EQUAL
+	IFJMPREF {
+		CALL $getAdmin$
+	}
+	DUP
+	PUSHINT 1501542961
+	EQUAL
+	IFJMPREF {
+		CALL $chnageAdmin$
+	}
+}
+DUP
+PUSHINT 2055538754
+LEQ
+IFJMPREF {
+	DUP
+	PUSHINT 1608013022
+	EQUAL
+	IFJMPREF {
+		CALL $pendingAdmin$
+	}
+	DUP
+	PUSHINT 1707598666
+	EQUAL
+	IFJMPREF {
+		CALL $expectedTip3VoteWalletAddress$
+	}
+	DUP
+	PUSHINT 1955803714
+	EQUAL
+	IFJMPREF {
+		CALL $getTotalProposals$
+	}
+	DUP
+	PUSHINT 2055538754
+	EQUAL
+	IFJMPREF {
+		CALL $BranchConfig$
+	}
+}
+

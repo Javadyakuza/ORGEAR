@@ -1,0 +1,8 @@
+pragma ever-solidity >= 0.61.2;
+
+interface ActionTestPersonalData{
+
+    function setAge(uint256 _age) external;
+    function setName(string _name) external;
+
+}

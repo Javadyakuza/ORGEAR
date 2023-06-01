@@ -1,39 +1,34 @@
-pragma ever-solidity >=0.61.2;
+pragma ever-solidity >= 0.61.2;
+
 pragma AbiHeader expire;
 pragma AbiHeader pubkey;
 
-import "../structures/ProposalConfigurationStructure.tsol";
-import "../structures/ProposalActionStruct.tsol";
-import "../structures/DAORootConfigurationStruct.tsol";
-import "../interfaces/IProposal.tsol";
+import "../DAOBranch.tsol";
+import "../libraries/DAOErrors.tsol";
+import "../interfaces/IDAOBranch.tsol";
+import "@broxus/contracts/contracts/libraries/MsgFlag.tsol";
+import "../libraries/SafeMath.tsol";
+import "../libraries/Gas.tsol";
+import "../structures/DAOBranchConfigurationStruct.tsol";
+
+interface IDAORoot is DAOBranchConfigurationStruct{
 
 
 
-interface IDAORoot is ProposalConfigurationStructure, DAORootConfigurationStruct, Action {
+    // this function deploys A dao Branch
+    function DeployDaoBranch(DaoBranchConfig _DaoBranchConfig) external returns(address newBranchAddr_);
 
-  ///@notice the proposal expected address will be calculated from  a postion id wich is totalProposals + 1 
-  function propose(ProposalInitConfiguration _ProposalInitConfiguration, VenomActions[] _venomActions) external;
-  function deployProposal( uint256 _balance, TvmCell _payload) external internalMsg;
+    // -- admin functions -- //
+    // this function chages the DaoBranch code 
+    function updateDaoBranchCode(TvmCell _DaoBranchCode) external ;
 
-  // this  function is used to perfomrm the planned operation in case a proposal is approved and has got the votes
-  function onProposalSucceeded(VenomActions[] _venomActions, uint256 _proposalId) external view ;
-  // -- get funcs -- // 
-  function expectedProposalAddress(uint256 _proposalId) external view returns (address expectedProposalAddress_);
-  function expectedTip3VoteWalletAddress(address _walletOwner) external view returns (address expectedTip3WalletAddress_);
-  function getAdmin() external view returns (address admin_) ;
+    function transferAdmin(address _newAdmin) external;
+    function acceptBeingAdmin() external;
+    // -- admin functions -- //
+    // -- get function -- //
+    function getAdmin() external view returns(address admin_);
+        // this function calculates the daoranch address 
+    function expectedDaoBranchAddress (uint32 _nonce_, address _admin_) external view returns(address);
+    // -- get function -- //
 
-  function getDAORootConfig() external view returns (initializingVars DAORootConfig_);
-
-  function getTotalProposals() external view returns (uint256 totalProposal_);
-
-  function _venomActionTotalValue(VenomActions[] _venomActions) external pure returns(uint256 totalValue_);
-  // -- get funcs -- // 
-  // -- ADMIN FUNCTION -- //
-  function chnageAdmin(address _newAdmin) external;
-
-  function acceptBeingAdmin() external;
-
-  function changeDAORootprefrences(initializingVars _newInitializingVars) external;
-  // -- ADMIN FUNCTION -- //
-
-}
+ }

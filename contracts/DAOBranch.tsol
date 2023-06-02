@@ -85,9 +85,8 @@ contract DAOBranch is ProposalConfigurationStructure, DAOBranchConfigurationStru
   }
   function deployProposal( uint256 _balance, TvmCell _payload) public override internalMsg {
     // unpacking the tvm cell 
-    (TvmCell ProposalConf, VenomActions[] _venomActions, address _proposer, uint128 allowedValue)
-                = abi.decode(_payload, (TvmCell, VenomActions[], address, uint128));   
-    ProposalInitConfiguration _ProposalConf = abi.decode(ProposalConf, (ProposalInitConfiguration)); 
+    (ProposalInitConfiguration _ProposalConf, VenomActions[] _venomActions, address _proposer, uint128 allowedValue)
+                = abi.decode(_payload, (ProposalInitConfiguration, VenomActions[], address, uint128));   
     require(msg.sender == admin || msg.sender == expectedTip3VoteWalletAddress(_proposer), DaoErrors.NOT_ADMIN_OR_VOTE_WALLET);
 
     // checking if the sender has the enough value to deploy the porposal 

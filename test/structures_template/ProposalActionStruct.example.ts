@@ -1,6 +1,5 @@
 import { Hash } from "crypto";
 import { Address } from "locklift";
-
 var ProposalAction = [
   {
     value: locklift.utils.toNano(2),

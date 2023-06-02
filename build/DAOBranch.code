@@ -128,13 +128,24 @@ OVER
 CALLREF {
 	CALL $_venomActionTotalValue_3e9584e6_internal_macro$
 }
-PUSHINT 1000000000
+PUSHINT 2000000000
 ADD
 GEQ
 THROWIFNOT 112
 .loc ../contracts/DAOBranch.tsol, 67
+GETPARAM 7
+FIRST
+DEPTH
+ADDCONST -2
+PICK
+PUSHINT 1000000000
+CALLREF {
+	CALL $SafeMath_no_obj_sub_b67d77c5_macro$
+}
+CALLREF {
+	CALL $SafeMath_no_obj_add_771602f7_macro$
+}
 PUSHINT 0
-PUSHINT 4
 RAWRESERVE
 .loc ../contracts/DAOBranch.tsol, 69
 GETGLOB 15
@@ -186,7 +197,11 @@ STSLICER
 DEPTH
 ADDCONST -2
 PICK
-STUR 128
+PUSHINT 1000000000
+CALLREF {
+	CALL $SafeMath_no_obj_sub_b67d77c5_macro$
+}
+STUR 256
 .loc ../contracts/DAOBranch.tsol, 78
 GETGLOB 9
 GETGLOB 11
@@ -215,7 +230,7 @@ PUSHCONT {
 	STUR 175
 	STREF
 	ENDC
-	PUSHINT 1
+	PUSHPOW2 7
 	SENDRAWMSG
 }
 IFELSE

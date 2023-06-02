@@ -6,7 +6,7 @@ import { DaoBranchConfig } from "./structures_template/DAOBranchConfig.example";
 import { ProposalAction } from "./structures_template/ProposalActionStruct.example";
 import { FactoryType } from "locklift/internal/factory";
 let DAORootAddr: Address;
-let DAOBranch: Address;
+let DAOBranchAddr: Address;
 let Tip3voteRootAddr: Address;
 let Tip3voteWalletAddr: Address;
 let ActionTestPersonalDataAddr: Address;
@@ -161,6 +161,10 @@ describe("shuold deploy Dao Branch ", async function () {
       ).value0,
     );
     console.log("Dao Branch address : ", DaoBranch.address.toString());
+    console.log("branch balance : ", await locklift.provider.getBalance(DaoBranch.address));
+    // setting the state varibale
+    DAOBranchAddr = DaoBranch.address;
+    // testing the branch
     expect((await DaoBranch.methods.getAdmin({}).call({})).admin_.toString()).to.eq(
       WalletV3.account.address.toString(),
     );

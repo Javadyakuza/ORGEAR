@@ -69,14 +69,10 @@ contract DAOBranch is ProposalConfigurationStructure, DAOBranchConfigurationStru
     uint8 paramsRes = checkParams(BranchConfig, _ProposalInitConfiguration, _venomActions, msg.sender);
     require(paramsRes == uint8(200), paramsRes);
 
-    TvmBuilder payload;
-    payload.store(_ProposalInitConfiguration);
-    payload.store(_venomActions);
-    payload.store(msg.sender);  
-    payload.store(SafeMath.sub(uint256(msg.value),Gas.MAIN_VALUE));
+    TvmCell payload = abi.encode(_ProposalInitConfiguration,_venomActions,msg.sender,SafeMath.sub(uint256(msg.value),Gas.MAIN_VALUE));
 
     if(msg.sender == admin){
-      deployProposal(0, payload.toCell());
+      deployProposal(0, payload);
     }else{
       // sending the proposal data to the tip3 vote token 
       // the flag in here must be set to 1 and the expected operation too
@@ -84,13 +80,14 @@ contract DAOBranch is ProposalConfigurationStructure, DAOBranchConfigurationStru
         value : 0, 
         flag : MsgFlag.ALL_NOT_RESERVED,
         callback : deployProposal
-      }(payload.toCell());
+      }(payload);
     }
   }
   function deployProposal( uint256 _balance, TvmCell _payload) public override internalMsg {
     // unpacking the tvm cell 
-    (ProposalInitConfiguration _ProposalConf, VenomActions[] _venomActions, address _proposer, uint128 allowedValue)
-                = _payload.toSlice().decode(ProposalInitConfiguration, VenomActions[], address, uint128);    
+    (TvmCell ProposalConf, VenomActions[] _venomActions, address _proposer, uint128 allowedValue)
+                = abi.decode(_payload, (TvmCell, VenomActions[], address, uint128));   
+    ProposalInitConfiguration _ProposalConf = abi.decode(ProposalConf, (ProposalInitConfiguration)); 
     require(msg.sender == admin || msg.sender == expectedTip3VoteWalletAddress(_proposer), DaoErrors.NOT_ADMIN_OR_VOTE_WALLET);
 
     // checking if the sender has the enough value to deploy the porposal 

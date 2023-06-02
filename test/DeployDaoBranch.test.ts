@@ -58,7 +58,6 @@ describe("shuold deploy Dao Branch ", async function () {
       //owner publicKey
       publicKey: signer.publicKey,
     });
-    WalletV3.account.prepareMessage;
     console.log("walletv3 : ", WalletV3.account.address.toString());
     expect(WalletV3.account.address).to.not.eq(zeroAddress);
     // in this operation we will send the intial supplu to the owner of the root and this will deploya wallet for us and reduces the work that we need to do

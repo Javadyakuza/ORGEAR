@@ -13,12 +13,10 @@ import "tip3vote/contracts/interfaces/IVoteTokenRoot.tsol";
 import "tip3vote/contracts/VoteTokenWallet.tsol";
 import "./Proposal.tsol";
 import "./libraries/Gas.tsol";
-import "./libraries/SafeMath.tsol";
 import "@broxus/contracts/contracts/libraries/MsgFlag.tsol";
 
 
 contract DAOBranch is ProposalConfigurationStructure, DAOBranchConfigurationStruct, Action, ProposalInitialCheck, IDAOBranch {
-  using SafeMath for uint256;
 
   event ProposalDeployed(address _proposer, address _proposal, uint256 proposalId, string description);
   event ProposaDeployFailed(address _proposer, uint256 _futuredProposalId, TvmCell Payload);
@@ -92,13 +90,13 @@ contract DAOBranch is ProposalConfigurationStructure, DAOBranchConfigurationStru
     // checking if the sender has the enough value to deploy the porposal 
       if (_balance < BranchConfig.TIP3_VOTE_PROPPOSING_QUORUM && msg.sender != admin){
         // user is not admin and doesnt have the quorum token neither
-        emit ProposaDeployFailed(_proposer, totalProposals.add(1), _payload);
+        emit ProposaDeployFailed(_proposer, totalProposals + 1, _payload);
         revert(DaoErrors.TIP3_VOTE_TOO_LOW_TO_CREATE_PROPOSAL);
       }
     
     // deploying the contract
     address proposalAddr = new Proposal{
-      stateInit: _buildProposalStateInit(totalProposals.add(1)),
+      stateInit: _buildProposalStateInit(totalProposals + 1),
       value: 0, // it must be somhow the sender in the prropose function  
       flag: TokenMsgFlag.ALL_NOT_RESERVED
     }(
@@ -107,7 +105,7 @@ contract DAOBranch is ProposalConfigurationStructure, DAOBranchConfigurationStru
       msg.sender // msg sender checked
     );
     // adding one to the total proposals the totalProposals
-    emit ProposalDeployed(_proposer, proposalAddr, totalProposals.add(1), _ProposalConf.description);
+    emit ProposalDeployed(_proposer, proposalAddr, totalProposals + 1, _ProposalConf.description);
     totalProposals++;
   }
 
@@ -172,7 +170,7 @@ contract DAOBranch is ProposalConfigurationStructure, DAOBranchConfigurationStru
     uint256 totalValue = 0;
     for (uint i = 0; i < _venomActions.length; i++) {
       /// @dev Gas.MAIN_VALUE in here is the value for excuting 
-      totalValue = totalValue.add(_venomActions[i].value.add(Gas.MAIN_VALUE));
+      totalValue += _venomActions[i].value + Gas.MAIN_VALUE;
     }
     return totalValue;
   } 

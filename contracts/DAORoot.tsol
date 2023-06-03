@@ -8,12 +8,10 @@ import "./libraries/DAOErrors.tsol";
 import "./interfaces/IDAOBranch.tsol";
 import "./interfaces/IDAORoot.tsol";
 import "@broxus/contracts/contracts/libraries/MsgFlag.tsol";
-import "./libraries/SafeMath.tsol";
 import "./libraries/Gas.tsol";
 import "./structures/DAOBranchConfigurationStruct.tsol";
 
 contract DAORoot is DAOBranchConfigurationStruct, IDAORoot{
-    using SafeMath for uint256;
 
     event newBranchDepoyed(address _branchAddress, address _admin);
     event DAORootAdminTransferreq(address _oldAdmin, address _newAdmin);

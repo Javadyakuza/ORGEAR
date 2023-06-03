@@ -9,12 +9,10 @@ import "tip3vote/contracts/interfaces/IVoteTokenWallet.tsol";
 import "tip3vote/contracts/interfaces/IVoteTokenRoot.tsol";
 import "tip3vote/contracts/VoteTokenWallet.tsol";
 import "./libraries/DAOErrors.tsol";
-import "./libraries/SafeMath.tsol";
 import "./libraries/Gas.tsol";
 import "@broxus/contracts/contracts/libraries/MsgFlag.tsol";
 
 contract Proposal is  ProposalConfigurationStructure, Action, ProposalStates, IProposal{
-  using SafeMath for uint256;
   // static //
   uint256 public static PROPOSAL_ID;
   address public static DaoBranchAddress;
@@ -71,9 +69,9 @@ contract Proposal is  ProposalConfigurationStructure, Action, ProposalStates, IP
     require(_balance != 0 , DaoErrors.VALUE_ZERO);
     // casting the vote 
     if (_support) {
-        initConfig.forVotes.add(_balance);
+        initConfig.forVotes += _balance;
         } else {
-        initConfig.againstVotes.add(_balance);
+        initConfig.againstVotes += _balance;
         }
         emit VoteCasted(_voter, _support, _balance, _reason);
 
@@ -85,7 +83,7 @@ contract Proposal is  ProposalConfigurationStructure, Action, ProposalStates, IP
     // accepting puuting the proposal state in queue fees
     tvm.accept();
     // putting the end time plus the time lock as the excution time 
-    initConfig.executionTime = initConfig.endTime.add(initConfig.timeLock);
+    initConfig.executionTime = initConfig.endTime + initConfig.timeLock;
     // changing the proposal state
     state = ProposalState.Queued; 
     // emiting the event 
@@ -121,7 +119,7 @@ contract Proposal is  ProposalConfigurationStructure, Action, ProposalStates, IP
     /// @dev Gas.MAIN_VALUE is the state change basically 
     require(msg.value >= Gas.MAIN_VALUE, DaoErrors.VALUE_TOO_LOW);
     // saving the contract value 
-    tvm.rawReserve(SafeMath.sub(uint256(address(this).balance),msg.value) , 0);
+    tvm.rawReserve(0, 4);
     // chaking that the proposer is calling this function 
     require(msg.sender == proposer, DaoErrors.NOT_OWNER);
     // checking that the contract is not excuted yet 
@@ -139,7 +137,7 @@ contract Proposal is  ProposalConfigurationStructure, Action, ProposalStates, IP
         // saving the inital balance of the contract Gas.MAIN_VALUE, : inital balance 
         tvm.rawReserve(Gas.MAIN_VALUE, 2);
         // emiting a event 
-        emit ProposerFundedBack(proposer, SafeMath.sub(uint256(address(this).balance), Gas.MAIN_VALUE));
+        emit ProposerFundedBack(proposer, address(this).balance - Gas.MAIN_VALUE);
         // transfering all the remaining balance to the proposers
         proposer.transfer({value: 0, flag: MsgFlag.ALL_NOT_RESERVED});
   }
@@ -182,7 +180,7 @@ contract Proposal is  ProposalConfigurationStructure, Action, ProposalStates, IP
         } else if (initConfig.executionTime == 0) {
           // return succesdded if the execution time was zero , why ?
             return ProposalState.Succeeded;
-        } else if (block.timestamp > SafeMath.add(initConfig.executionTime, uint256(initConfig.gracePeriod))) {
+        } else if (block.timestamp > initConfig.executionTime + initConfig.gracePeriod) {
             // return expired if the excution time plus grace periosd time were less thatn now time 
             return ProposalState.Expired;
         } else {

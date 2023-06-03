@@ -7,7 +7,6 @@ import "../DAOBranch.tsol";
 import "../libraries/DAOErrors.tsol";
 import "../interfaces/IDAOBranch.tsol";
 import "@broxus/contracts/contracts/libraries/MsgFlag.tsol";
-import "../libraries/SafeMath.tsol";
 import "../libraries/Gas.tsol";
 import "../structures/DAOBranchConfigurationStruct.tsol";
 

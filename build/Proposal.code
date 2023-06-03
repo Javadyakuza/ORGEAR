@@ -52,16 +52,16 @@ ENDS
 CTOS
 LDMSGADDR
 ENDS
-.loc ../contracts/Proposal.tsol, 40
+.loc ../contracts/Proposal.tsol, 38
 ROT
 SETGLOB 13
-.loc ../contracts/Proposal.tsol, 41
+.loc ../contracts/Proposal.tsol, 39
 SWAP
 SETGLOB 12
-.loc ../contracts/Proposal.tsol, 42
+.loc ../contracts/Proposal.tsol, 40
 BLOCKLT
 SETGLOB 15
-.loc ../contracts/Proposal.tsol, 43
+.loc ../contracts/Proposal.tsol, 41
 SETGLOB 16
 .loc ../contracts/Proposal.tsol, 0
 CALLREF {
@@ -78,7 +78,7 @@ ISNULL
 IFREF {
 	CALL $c4_to_c7$
 }
-.loc ../contracts/Proposal.tsol, 50
+.loc ../contracts/Proposal.tsol, 48
 LDI 1
 LDREF
 ENDS
@@ -96,16 +96,16 @@ THROW 0
 CALL $vote_efcee869_internal_macro$
 
 .macro vote_efcee869_internal_macro
-.loc ../contracts/Proposal.tsol, 53
+.loc ../contracts/Proposal.tsol, 51
 GETGLOB 9
 NEWC
 STSLICE
-.loc ../contracts/Proposal.tsol, 54
+.loc ../contracts/Proposal.tsol, 52
 XCHG S1, S2
 STI 1
-.loc ../contracts/Proposal.tsol, 55
+.loc ../contracts/Proposal.tsol, 53
 STREF
-.loc ../contracts/Proposal.tsol, 58
+.loc ../contracts/Proposal.tsol, 56
 ENDC
 GETGLOB 15
 GETGLOB 9
@@ -138,7 +138,7 @@ ISNULL
 IFREF {
 	CALL $c4_to_c7$
 }
-.loc ../contracts/Proposal.tsol, 64
+.loc ../contracts/Proposal.tsol, 62
 LDU 256
 LDREF
 ENDS
@@ -157,54 +157,50 @@ THROW 0
 CALL $castVote_508c0bc6_internal_macro$
 
 .macro castVote_508c0bc6_internal_macro
-.loc ../contracts/Proposal.tsol, 64
+.loc ../contracts/Proposal.tsol, 62
 DEPTH
 ADDCONST -5
 PICK
 THROWIF 72
-.loc ../contracts/Proposal.tsol, 66
+.loc ../contracts/Proposal.tsol, 64
 CALLREF {
 	CALL $getProposalState_aade375b_internal_macro$
 }
 EQINT 1
 THROWIFNOT 143
-.loc ../contracts/Proposal.tsol, 68
+.loc ../contracts/Proposal.tsol, 66
 CTOS
 LDMSGADDR
 LDI 1
 PLDREF
-.loc ../contracts/Proposal.tsol, 71
+.loc ../contracts/Proposal.tsol, 69
 PUSH S3
 THROWIFNOT 131
-.loc ../contracts/Proposal.tsol, 73
+.loc ../contracts/Proposal.tsol, 71
 OVER
 PUSHCONT {
-	.loc ../contracts/Proposal.tsol, 74
+	.loc ../contracts/Proposal.tsol, 72
+	PUSH S3
 	GETGLOB 13
 	DUP
 	INDEX 11
-	PUSH S5
-	CALLREF {
-		CALL $SafeMath_with_obj_add_771602f7_macro$
-	}
-	DROP
+	ROT
+	ADD
 	SETINDEX 11
 }
 PUSHCONT {
-	.loc ../contracts/Proposal.tsol, 76
+	.loc ../contracts/Proposal.tsol, 74
+	PUSH S3
 	GETGLOB 13
 	DUP
 	INDEX 12
-	PUSH S5
-	CALLREF {
-		CALL $SafeMath_with_obj_add_771602f7_macro$
-	}
-	DROP
+	ROT
+	ADD
 	SETINDEX 12
 }
 IFELSE
 SETGLOB 13
-.loc ../contracts/Proposal.tsol, 78
+.loc ../contracts/Proposal.tsol, 76
 ROLLREV 3
 SWAP
 PUSHSLICE xc000000000000000000000000075399b4a
@@ -228,7 +224,7 @@ ISNULL
 IFREF {
 	CALL $c4_to_c7$
 }
-.loc ../contracts/Proposal.tsol, 82
+.loc ../contracts/Proposal.tsol, 80
 ENDS
 .loc ../contracts/Proposal.tsol, 0
 CALLREF {
@@ -245,34 +241,28 @@ THROW 0
 CALL $Queue_1e074d7c_internal_macro$
 
 .macro Queue_1e074d7c_internal_macro
-.loc ../contracts/Proposal.tsol, 84
+.loc ../contracts/Proposal.tsol, 82
 CALLREF {
 	CALL $getProposalState_aade375b_internal_macro$
 }
 EQINT 4
 THROWIFNOT 140
-.loc ../contracts/Proposal.tsol, 86
+.loc ../contracts/Proposal.tsol, 84
 ACCEPT
-.loc ../contracts/Proposal.tsol, 88
+.loc ../contracts/Proposal.tsol, 86
 GETGLOB 13
-DUP
 INDEX 3
 GETGLOB 13
 INDEX 7
-CALLREF {
-	CALL $SafeMath_with_obj_add_771602f7_macro$
-}
-ROTREV
-SETINDEX 3
-DUP
-SETGLOB 13
+ADD
+GETGLOB 13
 SWAP
 SETINDEX 10
 SETGLOB 13
-.loc ../contracts/Proposal.tsol, 90
+.loc ../contracts/Proposal.tsol, 88
 PUSHINT 6
 SETGLOB 14
-.loc ../contracts/Proposal.tsol, 92
+.loc ../contracts/Proposal.tsol, 90
 GETGLOB 13
 INDEX 10
 PUSHSLICE xc00000000000000000000000007894a2d3
@@ -293,7 +283,7 @@ ISNULL
 IFREF {
 	CALL $c4_to_c7$
 }
-.loc ../contracts/Proposal.tsol, 96
+.loc ../contracts/Proposal.tsol, 94
 ENDS
 .loc ../contracts/Proposal.tsol, 0
 CALLREF {
@@ -310,35 +300,35 @@ THROW 0
 CALL $execute_61461954_internal_macro$
 
 .macro execute_61461954_internal_macro
-.loc ../contracts/Proposal.tsol, 98
+.loc ../contracts/Proposal.tsol, 96
 CALLREF {
 	CALL $getProposalState_aade375b_internal_macro$
 }
 EQINT 6
 THROWIFNOT 141
-.loc ../contracts/Proposal.tsol, 100
+.loc ../contracts/Proposal.tsol, 98
 BLOCKLT
 GETGLOB 13
 INDEX 10
 GEQ
 THROWIFNOT 144
-.loc ../contracts/Proposal.tsol, 102
+.loc ../contracts/Proposal.tsol, 100
 ACCEPT
-.loc ../contracts/Proposal.tsol, 104
+.loc ../contracts/Proposal.tsol, 102
 GETGLOB 13
 TRUE
 SETINDEX 14
 SETGLOB 13
-.loc ../contracts/Proposal.tsol, 106
+.loc ../contracts/Proposal.tsol, 104
 PUSHINT 7
 SETGLOB 14
-.loc ../contracts/Proposal.tsol, 108
+.loc ../contracts/Proposal.tsol, 106
 PUSHREF {
 	.blob xc00000000000000000000000000bee1343
 }
 PUSHINT 0
 SENDRAWMSG
-.loc ../contracts/Proposal.tsol, 110
+.loc ../contracts/Proposal.tsol, 108
 GETGLOB 10
 GETGLOB 12
 GETGLOB 11
@@ -371,7 +361,7 @@ ISNULL
 IFREF {
 	CALL $c4_to_c7$
 }
-.loc ../contracts/Proposal.tsol, 119
+.loc ../contracts/Proposal.tsol, 117
 ENDS
 .loc ../contracts/Proposal.tsol, 0
 CALLREF {
@@ -388,39 +378,32 @@ THROW 0
 CALL $cancell_a10ab3a0_internal_macro$
 
 .macro cancell_a10ab3a0_internal_macro
-.loc ../contracts/Proposal.tsol, 122
+.loc ../contracts/Proposal.tsol, 120
 DEPTH
 ADDCONST -2
 PICK
 PUSHINT 1000000000
 GEQ
 THROWIFNOT 130
-.loc ../contracts/Proposal.tsol, 124
-GETPARAM 7
-FIRST
-DEPTH
-ADDCONST -2
-PICK
-CALLREF {
-	CALL $SafeMath_no_obj_sub_b67d77c5_macro$
-}
+.loc ../contracts/Proposal.tsol, 122
 PUSHINT 0
+PUSHINT 4
 RAWRESERVE
-.loc ../contracts/Proposal.tsol, 126
+.loc ../contracts/Proposal.tsol, 124
 GETGLOB 9
 GETGLOB 16
 SDEQ
 THROWIFNOT 109
-.loc ../contracts/Proposal.tsol, 128
+.loc ../contracts/Proposal.tsol, 126
 GETGLOB 13
 INDEX 14
 THROWIF 142
-.loc ../contracts/Proposal.tsol, 130
+.loc ../contracts/Proposal.tsol, 128
 GETGLOB 13
 TRUE
 SETINDEX 13
 SETGLOB 13
-.loc ../contracts/Proposal.tsol, 132
+.loc ../contracts/Proposal.tsol, 130
 PUSHREF {
 	.blob xc00000000000000000000000005bb64056
 }
@@ -437,7 +420,7 @@ ISNULL
 IFREF {
 	CALL $c4_to_c7$
 }
-.loc ../contracts/Proposal.tsol, 136
+.loc ../contracts/Proposal.tsol, 134
 ENDS
 .loc ../contracts/Proposal.tsol, 0
 CALLREF {
@@ -453,22 +436,21 @@ THROW 0
 CALL $onActionsExecuted_480439bb_internal_macro$
 
 .macro onActionsExecuted_480439bb_internal_macro
-.loc ../contracts/Proposal.tsol, 138
+.loc ../contracts/Proposal.tsol, 136
 GETGLOB 9
 GETGLOB 11
 SDEQ
 THROWIFNOT 106
-.loc ../contracts/Proposal.tsol, 140
+.loc ../contracts/Proposal.tsol, 138
 PUSHINT 1000000000
 PUSHINT 2
 RAWRESERVE
-.loc ../contracts/Proposal.tsol, 142
+.loc ../contracts/Proposal.tsol, 140
 GETPARAM 7
 FIRST
 PUSHINT 1000000000
-CALLREF {
-	CALL $SafeMath_no_obj_sub_b67d77c5_macro$
-}
+SUB
+UFITS 128
 GETGLOB 16
 PUSHSLICE xc00000000000000000000000005277dfe1
 NEWC
@@ -478,7 +460,7 @@ STU 256
 ENDC
 PUSHINT 0
 SENDRAWMSG
-.loc ../contracts/Proposal.tsol, 144
+.loc ../contracts/Proposal.tsol, 142
 GETGLOB 16
 NEWC
 STSLICECONST x62_
@@ -495,7 +477,7 @@ SENDRAWMSG
 CALL $_expectedTip3VoteWalletAddress_98a69cb2_internal_macro$
 
 .macro _expectedTip3VoteWalletAddress_98a69cb2_internal_macro
-.loc ../contracts/Proposal.tsol, 147
+.loc ../contracts/Proposal.tsol, 145
 PUSHINT 0
 NEWC
 STU 256
@@ -542,7 +524,7 @@ ISNULL
 IFREF {
 	CALL $c4_to_c7$
 }
-.loc ../contracts/Proposal.tsol, 160
+.loc ../contracts/Proposal.tsol, 158
 ENDS
 .loc ../contracts/Proposal.tsol, 0
 CALLREF {
@@ -610,7 +592,7 @@ THROW 0
 CALL $getPorosposalOverview_eeb387b9_internal_macro$
 
 .macro getPorosposalOverview_eeb387b9_internal_macro
-.loc ../contracts/Proposal.tsol, 161
+.loc ../contracts/Proposal.tsol, 159
 GETGLOB 13
 GETGLOB 14
 .loc ../contracts/Proposal.tsol, 0
@@ -624,7 +606,7 @@ ISNULL
 IFREF {
 	CALL $c4_to_c7$
 }
-.loc ../contracts/Proposal.tsol, 163
+.loc ../contracts/Proposal.tsol, 161
 ENDS
 .loc ../contracts/Proposal.tsol, 0
 CALLREF {
@@ -666,7 +648,7 @@ THROW 0
 CALL $getActions_504d080b_internal_macro$
 
 .macro getActions_504d080b_internal_macro
-.loc ../contracts/Proposal.tsol, 164
+.loc ../contracts/Proposal.tsol, 162
 GETGLOB 12
 .loc ../contracts/Proposal.tsol, 0
 
@@ -679,7 +661,7 @@ ISNULL
 IFREF {
 	CALL $c4_to_c7$
 }
-.loc ../contracts/Proposal.tsol, 166
+.loc ../contracts/Proposal.tsol, 164
 ENDS
 .loc ../contracts/Proposal.tsol, 0
 CALLREF {
@@ -717,13 +699,13 @@ THROW 0
 CALL $getProposalState_aade375b_internal_macro$
 
 .macro getProposalState_aade375b_internal_macro
-.loc ../contracts/Proposal.tsol, 166
+.loc ../contracts/Proposal.tsol, 164
 PUSHINT 0
-.loc ../contracts/Proposal.tsol, 167
+.loc ../contracts/Proposal.tsol, 165
 GETGLOB 13
 INDEX 13
 PUSHCONT {
-	.loc ../contracts/Proposal.tsol, 169
+	.loc ../contracts/Proposal.tsol, 167
 	DROP
 	PUSHINT 2
 	.loc ../contracts/Proposal.tsol, 0
@@ -732,7 +714,7 @@ PUSHCONT {
 	GETGLOB 13
 	INDEX 14
 	PUSHCONT {
-		.loc ../contracts/Proposal.tsol, 172
+		.loc ../contracts/Proposal.tsol, 170
 		DROP
 		PUSHINT 7
 		.loc ../contracts/Proposal.tsol, 0
@@ -743,7 +725,7 @@ PUSHCONT {
 		THIRD
 		LEQ
 		PUSHCONT {
-			.loc ../contracts/Proposal.tsol, 175
+			.loc ../contracts/Proposal.tsol, 173
 			DROP
 			PUSHINT 0
 			.loc ../contracts/Proposal.tsol, 0
@@ -754,7 +736,7 @@ PUSHCONT {
 			INDEX 3
 			LEQ
 			PUSHCONT {
-				.loc ../contracts/Proposal.tsol, 178
+				.loc ../contracts/Proposal.tsol, 176
 				DROP
 				PUSHINT 1
 				.loc ../contracts/Proposal.tsol, 0
@@ -772,7 +754,7 @@ PUSHCONT {
 				LESS
 				OR
 				PUSHCONT {
-					.loc ../contracts/Proposal.tsol, 181
+					.loc ../contracts/Proposal.tsol, 179
 					DROP
 					PUSHINT 3
 					.loc ../contracts/Proposal.tsol, 0
@@ -786,18 +768,16 @@ PUSHCONT {
 						INDEX 10
 						GETGLOB 13
 						INDEX 9
-						CALLREF {
-							CALL $SafeMath_no_obj_add_771602f7_macro$
-						}
+						ADD
 						GREATER
 						PUSHCONT {
-							.loc ../contracts/Proposal.tsol, 187
+							.loc ../contracts/Proposal.tsol, 185
 							DROP
 							PUSHINT 5
 							.loc ../contracts/Proposal.tsol, 0
 						}
 						PUSHCONT {
-							.loc ../contracts/Proposal.tsol, 190
+							.loc ../contracts/Proposal.tsol, 188
 							DROP
 							PUSHINT 6
 							.loc ../contracts/Proposal.tsol, 0
@@ -805,7 +785,7 @@ PUSHCONT {
 						IFELSE
 					}
 					PUSHCONT {
-						.loc ../contracts/Proposal.tsol, 184
+						.loc ../contracts/Proposal.tsol, 182
 						DROP
 						PUSHINT 4
 						.loc ../contracts/Proposal.tsol, 0
@@ -1279,64 +1259,6 @@ PUSHCONT {
 }
 IF
 THROW 0
-
-.globl	SafeMath_with_obj_add_771602f7
-.type	SafeMath_with_obj_add_771602f7, @function
-CALL $SafeMath_with_obj_add_771602f7_macro$
-
-.macro SafeMath_with_obj_add_771602f7_macro
-.loc ../contracts/libraries/SafeMath.tsol, 7
-OVER
-ADD
-.loc ../contracts/libraries/SafeMath.tsol, 8
-PUSH2 S0, S1
-GEQ
-THROWIFNOT 101
-.loc ../contracts/libraries/SafeMath.tsol, 0
-
-.globl	SafeMath_no_obj_add_771602f7
-.type	SafeMath_no_obj_add_771602f7, @function
-CALL $SafeMath_no_obj_add_771602f7_macro$
-
-.macro SafeMath_no_obj_add_771602f7_macro
-.loc ../contracts/libraries/SafeMath.tsol, 7
-OVER
-ADD
-.loc ../contracts/libraries/SafeMath.tsol, 8
-DUP
-ROT
-GEQ
-THROWIFNOT 101
-.loc ../contracts/libraries/SafeMath.tsol, 0
-
-.globl	SafeMath_with_obj_sub_b67d77c5
-.type	SafeMath_with_obj_sub_b67d77c5, @function
-CALL $SafeMath_with_obj_sub_b67d77c5_macro$
-
-.macro SafeMath_with_obj_sub_b67d77c5_macro
-.loc ../contracts/libraries/SafeMath.tsol, 14
-PUSH2 S0, S1
-LEQ
-THROWIFNOT 102
-.loc ../contracts/libraries/SafeMath.tsol, 15
-OVER
-SUBR
-UFITS 256
-.loc ../contracts/libraries/SafeMath.tsol, 0
-
-.globl	SafeMath_no_obj_sub_b67d77c5
-.type	SafeMath_no_obj_sub_b67d77c5, @function
-CALL $SafeMath_no_obj_sub_b67d77c5_macro$
-
-.macro SafeMath_no_obj_sub_b67d77c5_macro
-.loc ../contracts/libraries/SafeMath.tsol, 14
-PUSH2 S0, S1
-LEQ
-THROWIFNOT 102
-.loc ../contracts/libraries/SafeMath.tsol, 15
-SUB
-UFITS 256
-.loc ../contracts/libraries/SafeMath.tsol, 0
 
 .macro public_function_selector
 DUP

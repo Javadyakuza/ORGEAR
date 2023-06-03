@@ -1,9 +1,0 @@
-pragma ton-solidity >= 0.57.0;
-
-library TokenMsgFlag {
-    uint8 constant SENDER_PAYS_FEES     = 1;   // uses the sender balance to pay for the transaction
-    uint8 constant IGNORE_ERRORS        = 2;   // ingnores errors
-    uint8 constant DESTROY_IF_ZERO      = 32;  //flag + 32 - means that the current account must be destroyed if its resulting balance is zero. For example, flag: 128 + 32 is used to send all balance and destroy the contract.
-    uint8 constant REMAINING_GAS        = 64;  // the value eq to value param is attached to the tx
-    uint8 constant ALL_NOT_RESERVED     = 128; // all the contract balance is attached to the tx
-}

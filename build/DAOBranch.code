@@ -128,7 +128,7 @@ OVER
 CALLREF {
 	CALL $_venomActionTotalValue_3e9584e6_internal_macro$
 }
-PUSHINT 2000000000
+PUSHINT 1000000000
 ADD
 GEQ
 THROWIFNOT 112
@@ -481,11 +481,7 @@ SENDRAWMSG
 .loc ../contracts/DAOBranch.tsol, 111
 DROP2
 GETGLOB 14
-PUSHINT 1
-CALLREF {
-	CALL $SafeMath_with_obj_add_771602f7_macro$
-}
-DROP
+INC
 SETGLOB 14
 .loc ../contracts/DAOBranch.tsol, 0
 

@@ -61,8 +61,8 @@ contract DAOBranch is ProposalConfigurationStructure, DAOBranchConfigurationStru
   ///@notice the proposal expected address will be calculated from  a postion id wich is totalProposals + 1 
   function propose(ProposalInitConfiguration _ProposalInitConfiguration, VenomActions[] _venomActions) public override {
     // cheking if the user has provided enough venom for deploying and actioning the proposal  
-    /// @dev Gas.MAIN_VALUE in here is the value for deploying the proposal  we have to add this function fee to the main value @dev the second  Gas.MAIN_VALUE is for calling the getVotes
-    require(msg.value >= _venomActionTotalValue(_venomActions) + Gas.MAIN_VALUE + Gas.MAIN_VALUE, DaoErrors.MSG_VALUE_TOO_LOW_TO_CREATE_PROPOSAL);
+    /// @dev Gas.MAIN_VALUE in here is the value for deploying the proposal  
+    require(msg.value >= _venomActionTotalValue(_venomActions) + Gas.MAIN_VALUE, DaoErrors.MSG_VALUE_TOO_LOW_TO_CREATE_PROPOSAL);
     // reserving the contract balance to not be spent on this trnasaction
     tvm.rawReserve(0,4); 
     // cheking the deploying params
@@ -108,7 +108,7 @@ contract DAOBranch is ProposalConfigurationStructure, DAOBranchConfigurationStru
     );
     // adding one to the total proposals the totalProposals
     emit ProposalDeployed(_proposer, proposalAddr, totalProposals.add(1), _ProposalConf.description);
-    totalProposals.add(1);
+    totalProposals++;
   }
 
   // this  function is used to perfomrm the planned operation in case a proposal is approved and has got the votes

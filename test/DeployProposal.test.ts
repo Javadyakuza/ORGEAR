@@ -210,7 +210,7 @@ describe("shuold deploy Dao Branch ", async function () {
         })
         .send({
           from: WalletV3.account.address,
-          amount: locklift.utils.toNano(10),
+          amount: locklift.utils.toNano(20),
         }),
     );
     // fetching the emmited event reffering to ther propoal deploying

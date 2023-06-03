@@ -133,19 +133,8 @@ ADD
 GEQ
 THROWIFNOT 112
 .loc ../contracts/DAOBranch.tsol, 67
-GETPARAM 7
-FIRST
-DEPTH
-ADDCONST -2
-PICK
-PUSHINT 1000000000
-CALLREF {
-	CALL $SafeMath_no_obj_sub_b67d77c5_macro$
-}
-CALLREF {
-	CALL $SafeMath_no_obj_add_771602f7_macro$
-}
 PUSHINT 0
+PUSHINT 4
 RAWRESERVE
 .loc ../contracts/DAOBranch.tsol, 69
 GETGLOB 15
@@ -163,24 +152,17 @@ PUSHINT 200
 EQUAL
 THROWANYIFNOT
 .loc ../contracts/DAOBranch.tsol, 72
-DEPTH
-ADDCONST -2
-PICK
-PUSHINT 1000000000
-CALLREF {
-	CALL $SafeMath_no_obj_sub_b67d77c5_macro$
-}
 GETGLOB 9
-SWAP2
+XCHG S2
 NEWC
-ROT
+SWAP
 PUSHINT 16
 UNTUPLEVAR
 REVERSE 17, 0
 STSLICE
 STREF
 STU 256
-ROLLREV 16
+ROLLREV 15
 NEWC
 STU 256
 STU 32
@@ -190,7 +172,7 @@ STU 32
 STU 128
 STU 32
 STU 256
-ROLLREV 8
+ROLLREV 7
 NEWC
 STU 256
 STU 256
@@ -202,10 +184,9 @@ UNPAIR
 XCHG S2
 STU 32
 STDICT
-ROTREV
+SWAP
 NEWC
 STSLICE
-STU 256
 STBREFR
 STBREFR
 STBREFR
@@ -321,7 +302,6 @@ LDREF
 ENDS
 CTOS
 LDMSGADDR
-LDU 128
 ENDS
 .loc ../contracts/DAOBranch.tsol, 90
 GETGLOB 9
@@ -331,7 +311,7 @@ DUP
 PUSHCONT {
 	DROP
 	GETGLOB 9
-	PUSH S2
+	OVER
 	CALLREF {
 		CALL $expectedTip3VoteWalletAddress_22764724_internal_macro$
 	}
@@ -340,7 +320,7 @@ PUSHCONT {
 IFNOT
 THROWIFNOT 102
 .loc ../contracts/DAOBranch.tsol, 93
-PUSH S5
+PUSH S4
 GETGLOB 15
 SECOND
 LESS
@@ -351,7 +331,7 @@ NOT
 AND
 PUSHCONT {
 	.loc ../contracts/DAOBranch.tsol, 95
-	ROLL 4
+	ROLL 3
 	GETGLOB 14
 	PUSHINT 1
 	CALLREF {
@@ -359,7 +339,7 @@ PUSHCONT {
 	}
 	SWAP
 	SETGLOB 14
-	ROLL 3
+	ROT
 	PUSHSLICE xc000000000000000000000000062031524
 	NEWC
 	STSLICE
@@ -374,15 +354,6 @@ PUSHCONT {
 	.loc ../contracts/DAOBranch.tsol, 0
 }
 IF
-.loc ../contracts/DAOBranch.tsol, 98
-GETPARAM 7
-FIRST
-SWAP
-CALLREF {
-	CALL $SafeMath_no_obj_sub_b67d77c5_macro$
-}
-PUSHINT 0
-RAWRESERVE
 .loc ../contracts/DAOBranch.tsol, 100
 GETGLOB 9
 ROT
@@ -1967,35 +1938,6 @@ DUP
 ROT
 GEQ
 THROWIFNOT 101
-.loc ../contracts/libraries/SafeMath.tsol, 0
-
-.globl	SafeMath_with_obj_sub_b67d77c5
-.type	SafeMath_with_obj_sub_b67d77c5, @function
-CALL $SafeMath_with_obj_sub_b67d77c5_macro$
-
-.macro SafeMath_with_obj_sub_b67d77c5_macro
-.loc ../contracts/libraries/SafeMath.tsol, 14
-PUSH2 S0, S1
-LEQ
-THROWIFNOT 102
-.loc ../contracts/libraries/SafeMath.tsol, 15
-OVER
-SUBR
-UFITS 256
-.loc ../contracts/libraries/SafeMath.tsol, 0
-
-.globl	SafeMath_no_obj_sub_b67d77c5
-.type	SafeMath_no_obj_sub_b67d77c5, @function
-CALL $SafeMath_no_obj_sub_b67d77c5_macro$
-
-.macro SafeMath_no_obj_sub_b67d77c5_macro
-.loc ../contracts/libraries/SafeMath.tsol, 14
-PUSH2 S0, S1
-LEQ
-THROWIFNOT 102
-.loc ../contracts/libraries/SafeMath.tsol, 15
-SUB
-UFITS 256
 .loc ../contracts/libraries/SafeMath.tsol, 0
 
 .macro public_function_selector

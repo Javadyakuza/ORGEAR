@@ -64,12 +64,12 @@ contract DAOBranch is ProposalConfigurationStructure, DAOBranchConfigurationStru
     /// @dev Gas.MAIN_VALUE in here is the value for deploying the proposal  we have to add this function fee to the main value @dev the second  Gas.MAIN_VALUE is for calling the getVotes
     require(msg.value >= _venomActionTotalValue(_venomActions) + Gas.MAIN_VALUE + Gas.MAIN_VALUE, DaoErrors.MSG_VALUE_TOO_LOW_TO_CREATE_PROPOSAL);
     // reserving the contract balance to not be spent on this trnasaction
-    tvm.rawReserve(SafeMath.add(address(this).balance,SafeMath.sub(uint256(msg.value),Gas.MAIN_VALUE)),0); 
+    tvm.rawReserve(0,4); 
     // cheking the deploying params
     uint8 paramsRes = checkParams(BranchConfig, _ProposalInitConfiguration, _venomActions, msg.sender);
     require(paramsRes == uint8(200), paramsRes);
 
-    TvmCell payload = abi.encode(_ProposalInitConfiguration,_venomActions,msg.sender,SafeMath.sub(uint256(msg.value),Gas.MAIN_VALUE));
+    TvmCell payload = abi.encode(_ProposalInitConfiguration,_venomActions,msg.sender);
 
     if(msg.sender == admin){
       deployProposal(0, payload);
@@ -85,8 +85,8 @@ contract DAOBranch is ProposalConfigurationStructure, DAOBranchConfigurationStru
   }
   function deployProposal( uint256 _balance, TvmCell _payload) public override internalMsg {
     // unpacking the tvm cell 
-    (ProposalInitConfiguration _ProposalConf, VenomActions[] _venomActions, address _proposer, uint128 allowedValue)
-                = abi.decode(_payload, (ProposalInitConfiguration, VenomActions[], address, uint128));   
+    (ProposalInitConfiguration _ProposalConf, VenomActions[] _venomActions, address _proposer)
+                = abi.decode(_payload, (ProposalInitConfiguration, VenomActions[], address));   
     require(msg.sender == admin || msg.sender == expectedTip3VoteWalletAddress(_proposer), DaoErrors.NOT_ADMIN_OR_VOTE_WALLET);
 
     // checking if the sender has the enough value to deploy the porposal 
@@ -95,7 +95,7 @@ contract DAOBranch is ProposalConfigurationStructure, DAOBranchConfigurationStru
         emit ProposaDeployFailed(_proposer, totalProposals.add(1), _payload);
         revert(DaoErrors.TIP3_VOTE_TOO_LOW_TO_CREATE_PROPOSAL);
       }
-    tvm.rawReserve(SafeMath.sub(uint256(address(this).balance) ,uint256(allowedValue)), 0);
+    
     // deploying the contract
     address proposalAddr = new Proposal{
       stateInit: _buildProposalStateInit(totalProposals.add(1)),

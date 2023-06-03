@@ -3,6 +3,7 @@ pragma ever-solidity >= 0.39.0;
 library Gas {
     /// @dev for developing and testing purposes we consider all the operation needs one venom to be done 
     uint128 constant MAIN_VALUE = 1_000_000_000;     
+    uint128 constant PROPOSE_LOCK_VALUE = 2_000_000_000;
     // uint128 constant DEPLOY_PROPOSAL_VALUE = 10 ever;
     // uint128 constant PROPOSAL_INITIAL_BALANCE = 1 ever;
     // uint128 constant ACCOUNT_INITIAL_BALANCE = 0.2 ever;

@@ -3,8 +3,8 @@ import { Address } from "locklift";
 var ProposalConfigurationStructure = {
   TIP3_VOTE_ROOT_ADDRESS: new Address("0x1234567890123456789012345678901234567890"),
   description: "venom DAO",
-  startTime: 3600, // start time in 1 hour
-  endTime: 8640, // end time in 24 hours
+  startTime: 0, // start time in 1 hour
+  endTime: locklift.testing.getCurrentTime() + 8640, // end time in 24 hours
   votingDelay: 20, // 1 minute delay
   votingPeriod: 80, // 30 minutes period
   quorumVotes: 30, // 10 quorum votes required

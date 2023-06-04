@@ -1,12 +1,7 @@
-import { expect } from "chai";
 import { Address, Contract, Signer, zeroAddress } from "locklift";
-import { FactorySource } from "../build/factorySource";
-import { CreateAccountOutput, WalletTypes } from "locklift/types/index";
 import { DaoBranchConfig } from "../test/structures_template/DAOBranchConfig.example";
 import { ProposalConfigurationStructure } from "../test/structures_template/ProposalConfigurationStructure.example";
 import { ProposalAction } from "../test/structures_template/ProposalActionStruct.example";
-import { FactoryType } from "locklift/internal/factory";
-import { WarningAmber } from "@mui/icons-material";
 // dao details
 async function GetDaoDetails(DaoAddres: Address) {
   let DeployedDaoCon = await locklift.factory.getDeployedContract("DAOBranch", DaoAddres);
@@ -105,4 +100,22 @@ async function GetBranchProposalList(DaoBranchAddress: Address) {
     branchProposalsAddrs.push(proposaldeployEvents[0]?.data?._proposal);
   }
   return branchProposalsAddrs;
+}
+async function VoteOnProposal(poroposalAddress: Address, wallet: Address) {
+  let voteWeight = "1000000000000";
+  // fetching the proposal contraact
+  const ProposalCon = await locklift.factory.getDeployedContract("Proposal", poroposalAddress);
+  const voteres = await ProposalCon.methods
+    .vote({
+      _reason: "a good reason",
+      _support: false,
+    })
+    .send({
+      from: wallet,
+      amount: locklift.utils.toNano(1),
+    });
+  console.log(
+    "is vote casted ?",
+    (await ProposalCon.methods.getPorosposalOverview({}).call({})).initConf_.againstVotes == voteWeight,
+  );
 }

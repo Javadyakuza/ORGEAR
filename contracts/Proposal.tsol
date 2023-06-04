@@ -46,26 +46,23 @@ contract Proposal is  ProposalConfigurationStructure, Action, ProposalStates, IP
   @notice this function support the delegate voting by getting the voter  
    */
   function vote(bool _support, string _reason) public override internalMsg view{
-    tvm.accept();
+    tvm.rawReserve(0,4);
     // packing the data 
-    TvmBuilder votePayload;
-    votePayload.store(msg.sender);
-    votePayload.store(_support);
-    votePayload.store(_reason);
-    
+    TvmCell votePayload = abi.encode(msg.sender, _support, _reason);
+
     // calling the expected tip3 vote wallet to return the past votes for us 
     IVoteTokenWallet(_expectedTip3VoteWalletAddress(msg.sender)).getPastVotes{
       value : 0 ,
-      flag : MsgFlag.SENDER_PAYS_FEES,
+      flag : MsgFlag.ALL_NOT_RESERVED,
       callback : castVote
-    }(creationBlockTS, votePayload.toCell()); 
+    }(creationBlockTS, votePayload); 
   }
   function castVote(uint256 _balance, TvmCell _votePayload) public override internalMsg { 
     // checking that state is active 
     require(getProposalState() == ProposalState.Active, DaoErrors.PROPOSAL_IS_NOT_ACTIVVE);
     // unpacking the data 
     (address _voter, bool _support, string _reason) 
-              = _votePayload.toSlice().decode(address, bool, string);
+              = abi.decode(_votePayload,(address, bool, string));
     // checking the vpte weight is greater than 0 
     require(_balance != 0 , DaoErrors.VALUE_ZERO);
     // casting the vote 

@@ -22,7 +22,7 @@ contract DAOBranch is ProposalConfigurationStructure, DAOBranchConfigurationStru
   event ProposaDeployFailed(address _proposer, uint256 _futuredProposalId, TvmCell Payload);
   event AdminTransferRequest(address _oldAdmin, address _newAdmin);
   event AdminTransfered(address _oldAdmin, address _newAdmin);
-  event DAORootPrefrencesChanged();
+  event DAOBranchPrefrencesChanged();
 
   // static //
   uint32 static _nonce;
@@ -30,7 +30,7 @@ contract DAOBranch is ProposalConfigurationStructure, DAOBranchConfigurationStru
   address static DaoRoot;
   // static //
 
-  // the constant variables are wrapped into a struct see {"DAORootConfiguarationStruct.tsol"}.
+  // the constant variables are wrapped into a struct see {"DAOBranchConfiguarationStruct.tsol"}.
 
   // normal //
 
@@ -159,7 +159,7 @@ contract DAOBranch is ProposalConfigurationStructure, DAOBranchConfigurationStru
   function getAdmin() public override view returns (address admin_) {
     return admin;
   }
-  function getDAOBranchConfig() public override view returns (DaoBranchConfig DAORootConfig_) {
+  function getDAOBranchConfig() public override view returns (DaoBranchConfig DAOBranchConfig_) {
     return BranchConfig;
   }
   function getTotalProposals() public override view returns (uint256 totalProposal_) {
@@ -204,7 +204,7 @@ contract DAOBranch is ProposalConfigurationStructure, DAOBranchConfigurationStru
     // this contract is patying for the state changing since the admin is calling 
     tvm.accept();
     // emiting the event
-    emit DAORootPrefrencesChanged();
+    emit DAOBranchPrefrencesChanged();
     // setting the new ones
     BranchConfig = _BranchConfig;
   }

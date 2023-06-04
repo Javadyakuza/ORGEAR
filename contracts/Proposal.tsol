@@ -45,7 +45,8 @@ contract Proposal is  ProposalConfigurationStructure, Action, ProposalStates, IP
   /**
   @notice this function support the delegate voting by getting the voter  
    */
-  function vote(bool _support, string _reason) public override view{
+  function vote(bool _support, string _reason) public override internalMsg view{
+    tvm.accept();
     // packing the data 
     TvmBuilder votePayload;
     votePayload.store(msg.sender);

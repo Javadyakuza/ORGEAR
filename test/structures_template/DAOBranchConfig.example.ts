@@ -2,8 +2,8 @@ import { Address } from "locklift";
 var DaoBranchConfig = {
   TIP3_VOTE_ROOT_ADDRESS: new Address(""),
   TIP3_VOTE_PROPPOSING_QUORUM: 10,
-  MIN_TIP3_VOTE_THRESHOLD: 100,
-  MAX_TIP3_VOTE_THRESHOLD: 1000,
+  MIN_TIP3_VOTE_THRESHOLD: locklift.utils.toNano(100),
+  MAX_TIP3_VOTE_THRESHOLD: locklift.utils.toNano(1000),
   MAX_PROPOSAL_QUORUM: 50,
   MIN_PROPOSAL_QUORUM: 20,
   MIN_VOTING_PERIOD: 60,

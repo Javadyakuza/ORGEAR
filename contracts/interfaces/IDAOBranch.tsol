@@ -22,7 +22,7 @@ interface IDAOBranch is ProposalConfigurationStructure, DAOBranchConfigurationSt
   function expectedTip3VoteWalletAddress(address _walletOwner) external view returns (address expectedTip3WalletAddress_);
   function getAdmin() external view returns (address admin_) ;
 
-  function getDAOBranchConfig() external view returns (DaoBranchConfig DAORootConfig_);
+  function getDAOBranchConfig() external view returns (DaoBranchConfig DAOBranchConfig_);
 
   function getTotalProposals() external view returns (uint256 totalProposal_);
 

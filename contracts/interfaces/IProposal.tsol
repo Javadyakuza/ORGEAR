@@ -6,7 +6,7 @@ import "../structures/ProposalStates.tsol";
 interface IProposal is  ProposalConfigurationStructure, Action, ProposalStates{
 
   // set function //
-  function vote(bool _support, string _reason) external view ;
+  function vote(bool _support, string _reason) external internalMsg view ;
   function castVote(uint256 _balance, TvmCell _votePayload) external internalMsg;
   // queue the proposal means that propoposal is ready to be excuited and was successfull
   function Queue() external ;

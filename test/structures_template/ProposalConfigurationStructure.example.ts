@@ -9,7 +9,7 @@ var ProposalConfigurationStructure = {
   votingPeriod: 80, // 30 minutes period
   quorumVotes: 30, // 10 quorum votes required
   timeLock: 4000, // 2 minutes timelock
-  threshold: 500, // 5 threshold votes required
+  threshold: locklift.utils.toNano(100), // 5 threshold votes required
   gracePeriod: 600, // 10 minutes grace period
   executionTime: 0,
   forVotes: 0,

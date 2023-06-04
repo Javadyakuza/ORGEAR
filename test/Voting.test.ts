@@ -5,7 +5,6 @@ import { CreateAccountOutput, WalletTypes } from "locklift/types/index";
 import { DaoBranchConfig } from "./structures_template/DAOBranchConfig.example";
 import { ProposalConfigurationStructure } from "./structures_template/ProposalConfigurationStructure.example";
 import { ProposalAction } from "./structures_template/ProposalActionStruct.example";
-
 import { FactoryType } from "locklift/internal/factory";
 var DAOBranchCon: Contract<FactorySource["DAOBranch"]>;
 let DAORootAddr: Address;
@@ -13,12 +12,13 @@ let DAOBranchAddr: Address;
 let Tip3voteRootAddr: Address;
 let Tip3voteWalletAddr: Address;
 let ActionTestPersonalDataAddr: Address;
-let ProposalAddr: Address;
+let ProposalAddr_1: Address;
+let ProposalAddr_2: Address;
 let WalletV3: CreateAccountOutput;
 let signer: Signer;
 let WalletV3_2: CreateAccountOutput;
 let signer2: Signer;
-describe("shuold deploy proposal", async function () {
+describe("shuold perform vote casting", async function () {
   before(async () => {
     // checking the codes of contracts are availbale or no
     expect(locklift.factory.getContractArtifacts("VoteTokenRoot").code).not.to.equal(
@@ -95,7 +95,7 @@ describe("shuold deploy proposal", async function () {
       },
       constructorParams: {
         initialSupplyTo: WalletV3_2.account.address,
-        initialSupply: 100,
+        initialSupply: locklift.utils.toNano(1000),
         deployWalletValue: locklift.utils.toNano(0.1),
         mintDisabled: false,
         burnByRootDisabled: false,
@@ -118,7 +118,7 @@ describe("shuold deploy proposal", async function () {
       WalletV3_2.account.address.toString(),
     );
     // testing wallet
-    expect((await Tip3voteWallet.methods.balance({ answerId: 0 }).call({})).value0.toString()).to.eq("100");
+    expect((await Tip3voteWallet.methods.balance({ answerId: 0 }).call({})).value0.toString()).to.eq("1000000000000");
 
     // deploying the DAORoot contract
     const { contract: DAORoot } = await locklift.factory.deployContract({
@@ -140,10 +140,6 @@ describe("shuold deploy proposal", async function () {
     expect((await DAORoot.methods.getAdmin({}).call({})).admin_.toString()).to.eq(WalletV3.account.address.toString());
 
     // fetching the contracts
-    const ActionTestPersonalData = await locklift.factory.getDeployedContract(
-      "ActionTestPersonalData",
-      ActionTestPersonalDataAddr,
-    );
 
     // changing the Dao Branch Configuration
     DaoBranchConfig.TIP3_VOTE_ROOT_ADDRESS = Tip3voteRootAddr;
@@ -182,12 +178,10 @@ describe("shuold deploy proposal", async function () {
     expect((await DaoBranch.methods.getAdmin({}).call({})).admin_.toString()).to.eq(
       WalletV3.account.address.toString(),
     );
-  });
-  it("should deploy ActionTestPersonalData", async function () {
     // deploying it
     const { contract: ActionTestPersonalData } = await locklift.factory.deployContract({
       contract: "ActionTestPersonalData",
-      publicKey: signer.publicKey,
+      publicKey: signer2.publicKey,
       initParams: {},
       constructorParams: {
         _age: 43,
@@ -200,14 +194,8 @@ describe("shuold deploy proposal", async function () {
     ActionTestPersonalDataAddr = ActionTestPersonalData.address;
     // testing the date
     expect((await ActionTestPersonalData.methods.age({}).call({})).age.toString()).to.eq("43");
-  });
-  it("shuold deploy a proposal by admin from daoBranch ", async function () {
     // fetching tha DaoBranch contract and the action tester
-    const DaoBranch = await locklift.factory.getDeployedContract("DAOBranch", DAOBranchAddr);
-    const ActionTestPersonalData = await locklift.factory.getDeployedContract(
-      "ActionTestPersonalData",
-      ActionTestPersonalDataAddr,
-    );
+
     ProposalAction[0].target = ActionTestPersonalDataAddr;
     ProposalAction[1].target = ActionTestPersonalDataAddr;
     ProposalAction[0].payload = await ActionTestPersonalData.methods.setAge({ _age: 9 }).encodeInternal();
@@ -239,26 +227,12 @@ describe("shuold deploy proposal", async function () {
         await DaoBranch.methods.expectedProposalAddress({ _proposalId: ProposalEvents![0].proposalId }).call({})
       ).expectedProposalAddress_,
     );
-    console.log("proposal 1 : ", Proposal.address.toString());
-
     expect((await Proposal.methods.PROPOSAL_ID({}).call({})).PROPOSAL_ID).to.eq(ProposalEvents![0].proposalId);
-  });
-
-  it("shuold deploy a proposal by DAOTokenHolder from daoBranch ", async function () {
     // fetching tha DaoBranch contract and the action tester
-    const DaoBranch = await locklift.factory.getDeployedContract("DAOBranch", DAOBranchAddr);
-    const ActionTestPersonalData = await locklift.factory.getDeployedContract(
-      "ActionTestPersonalData",
-      ActionTestPersonalDataAddr,
-    );
-    ProposalAction[0].target = ActionTestPersonalDataAddr;
-    ProposalAction[1].target = ActionTestPersonalDataAddr;
-    ProposalAction[0].payload = await ActionTestPersonalData.methods.setAge({ _age: 9 }).encodeInternal();
-    ProposalAction[1].payload = await ActionTestPersonalData.methods.setName({ _name: "hamed" }).encodeInternal();
     // changing the actions
     // changing the poroposal configuration tip3 vote address
     ProposalConfigurationStructure.TIP3_VOTE_ROOT_ADDRESS = Tip3voteRootAddr;
-    const { traceTree: data } = await locklift.tracing.trace(
+    const { traceTree: data_2 } = await locklift.tracing.trace(
       DaoBranch.methods
         .propose({
           _ProposalInitConfiguration: ProposalConfigurationStructure,
@@ -270,19 +244,49 @@ describe("shuold deploy proposal", async function () {
         }),
     );
     // fetching the emmited event reffering to ther propoal deploying
-    const ProposalEvents = data?.findEventsForContract({
+    const ProposalEvents_2 = data_2?.findEventsForContract({
       contract: DAOBranchCon,
       name: "ProposalDeployed" as const, // 'as const' is important thing for type saving
     });
-    console.log("this is the proposal id : ", ProposalEvents![0].proposalId);
+    console.log("this is the proposal id : ", ProposalEvents_2![0].proposalId);
     // fetching the deployed proposal
-    const Proposal = await locklift.factory.getDeployedContract(
+    const Proposal_2 = await locklift.factory.getDeployedContract(
       "Proposal",
       (
-        await DaoBranch.methods.expectedProposalAddress({ _proposalId: ProposalEvents![0].proposalId }).call({})
+        await DaoBranch.methods.expectedProposalAddress({ _proposalId: ProposalEvents_2![0].proposalId }).call({})
       ).expectedProposalAddress_,
     );
-    console.log("proposal 2 : ", Proposal.address.toString());
-    expect((await Proposal.methods.PROPOSAL_ID({}).call({})).PROPOSAL_ID).to.eq(ProposalEvents![0].proposalId);
+    expect((await Proposal_2.methods.PROPOSAL_ID({}).call({})).PROPOSAL_ID).to.eq(ProposalEvents_2![0].proposalId);
+    // setting the state variables
+    ProposalAddr_1 = Proposal.address;
+    ProposalAddr_2 = Proposal_2.address;
+    console.log("proposal : ", ProposalAddr_1.toString());
+    console.log("proposal 2 : ", ProposalAddr_2.toString());
   });
+  it("shuold cast a for vote", async function () {
+    // fetching the firsst poroposal contract
+    const proposal = await locklift.factory.getDeployedContract("Proposal", ProposalAddr_1);
+    const DaoBranch = await locklift.factory.getDeployedContract("DAOBranch", DAOBranchAddr);
+
+    // casting the vote with the second account
+    const voteres = await locklift.tracing.trace(
+      proposal.methods
+        .vote({
+          _reason: "a good reason",
+          _support: true,
+        })
+        .send({
+          from: WalletV3_2.account.address,
+          amount: locklift.utils.toNano(1),
+        }),
+    );
+    console.log(
+      "thi si the expected address : ",
+      (
+        await DaoBranch.methods.expectedTip3VoteWalletAddress({ _walletOwner: WalletV3_2.account.address }).call({})
+      ).expectedTip3WalletAddress_.toString(),
+    );
+    console.log("voting result :", (await proposal.methods.getPorosposalOverview({}).call({})).initConf_.forVotes);
+  });
+  //   it("shuold cast a against vote", async function () {});
 });

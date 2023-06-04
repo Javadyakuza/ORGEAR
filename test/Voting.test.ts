@@ -11,6 +11,7 @@ let DAORootAddr: Address;
 let DAOBranchAddr: Address;
 let Tip3voteRootAddr: Address;
 let Tip3voteWalletAddr: Address;
+let Tip3voteWalletAddr_2: Address; // this is actually for the first signer
 let ActionTestPersonalDataAddr: Address;
 let ProposalAddr_1: Address;
 let ProposalAddr_2: Address;
@@ -72,9 +73,8 @@ describe("shuold perform vote casting", async function () {
       //Value which will send to the new account from a giver
       value: locklift.utils.toNano(100),
       //owner publicKey
-      publicKey: signer.publicKey,
+      publicKey: signer2.publicKey,
     });
-    WalletV3.account.prepareMessage;
     console.log("walletv3_2 : ", WalletV3.account.address.toString());
     expect(WalletV3.account.address).to.not.eq(zeroAddress);
     // in this operation we will send the intial supplu to the owner of the root and this will deploya wallet for us and reduces the work that we need to do
@@ -119,7 +119,33 @@ describe("shuold perform vote casting", async function () {
     );
     // testing wallet
     expect((await Tip3voteWallet.methods.balance({ answerId: 0 }).call({})).value0.toString()).to.eq("1000000000000");
-
+    // minting for the first sigenr
+    await Tip3voteRoot.methods
+      .mint({
+        recipient: WalletV3.account.address,
+        amount: locklift.utils.toNano(500),
+        deployWalletValue: locklift.utils.toNano(0.5),
+        remainingGasTo: zeroAddress,
+        notify: false,
+        payload: "",
+      })
+      .send({
+        from: WalletV3.account.address,
+        amount: locklift.utils.toNano(1),
+      });
+    // confirming that first signer  got the amount
+    const tokenwallet = await locklift.factory.getDeployedContract(
+      "VoteTokenWallet",
+      (
+        await Tip3voteRoot.methods.walletOf({ answerId: 0, walletOwner: WalletV3.account.address }).call({})
+      ).value0,
+    );
+    console.log((await tokenwallet.methods.balance({ answerId: 0 }).call({})).value0);
+    expect((await tokenwallet.methods.balance({ answerId: 0 }).call({})).value0).to.eq(locklift.utils.toNano(500));
+    // setting the state
+    Tip3voteWalletAddr_2 = (
+      await Tip3voteRoot.methods.walletOf({ answerId: 0, walletOwner: WalletV3.account.address }).call({})
+    ).value0;
     // deploying the DAORoot contract
     const { contract: DAORoot } = await locklift.factory.deployContract({
       contract: "DAORoot",
@@ -266,7 +292,6 @@ describe("shuold perform vote casting", async function () {
   it("shuold cast 1000 for vote", async function () {
     // fetching the firsst poroposal contract
     const proposal = await locklift.factory.getDeployedContract("Proposal", ProposalAddr_1);
-    const DaoBranch = await locklift.factory.getDeployedContract("DAOBranch", DAOBranchAddr);
     console.log("time ", locklift.testing.getCurrentTime());
     // casting the vote with the second account
     const voteres = await locklift.tracing.trace(
@@ -287,42 +312,12 @@ describe("shuold perform vote casting", async function () {
     // minting for the second sigenr from the token root
     // fetching the firsst poroposal contract
     const proposal = await locklift.factory.getDeployedContract("Proposal", ProposalAddr_1);
-    const DaoBranch = await locklift.factory.getDeployedContract("DAOBranch", DAOBranchAddr);
-    console.log("time ", locklift.testing.getCurrentTime());
-    // casting the vote with the first account
-    // fethcing the token root
-    const TokenRootcon = await locklift.factory.getDeployedContract("VoteTokenRoot", Tip3voteRootAddr);
-    // minting foor the first signer
-    const tokenwallet = await locklift.factory.getDeployedContract(
-      "VoteTokenWallet",
-      (
-        await TokenRootcon.methods.walletOf({ answerId: 0, walletOwner: WalletV3.account.address }).call({})
-      ).value0,
-    );
-    console.log(
-      "thi is the balance before mint ",
-      (await tokenwallet.methods.balance({ answerId: 0 }).call({})).value0,
-    );
-    await TokenRootcon.methods
-      .mint({
-        recipient: WalletV3.account.address,
-        amount: locklift.utils.toNano(500),
-        deployWalletValue: locklift.utils.toNano(1),
-        notify: false,
-        payload: "",
-        remainingGasTo: zeroAddress,
-      })
-      .send({
-        from: WalletV3.account.address,
-        amount: locklift.utils.toNano(1),
-      });
-    // confirming that first signer  got the amount
 
     // expect((await tokenwallet.methods.balance({ answerId: 0 }).call({})).value0).to.eq("500000000000");
     const voteres = await locklift.tracing.trace(
       proposal.methods
         .vote({
-          _reason: "a good reason",
+          _reason: "a bad reason",
           _support: false,
         })
         .send({

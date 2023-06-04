@@ -102,6 +102,7 @@ async function GetBranchProposalList(DaoBranchAddress: Address) {
   return branchProposalsAddrs;
 }
 async function VoteOnProposal(poroposalAddress: Address, wallet: Address) {
+  // notice the token root and wallet and mminitng must be before deploying the pooroposal
   let voteWeight = "1000000000000";
   // fetching the proposal contraact
   const ProposalCon = await locklift.factory.getDeployedContract("Proposal", poroposalAddress);

@@ -283,6 +283,7 @@ describe("shuold deploy proposal", async function () {
       ).expectedProposalAddress_,
     );
     console.log("proposal 2 : ", Proposal.address.toString());
+
     expect((await Proposal.methods.PROPOSAL_ID({}).call({})).PROPOSAL_ID).to.eq(ProposalEvents![0].proposalId);
   });
 });

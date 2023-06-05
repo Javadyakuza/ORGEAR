@@ -110,6 +110,7 @@ async function VoteOnProposal(poroposalAddress: Address, wallet: Address) {
     .vote({
       _reason: "a good reason",
       _support: false,
+      nowTime: 5,
     })
     .send({
       from: wallet,
@@ -117,6 +118,6 @@ async function VoteOnProposal(poroposalAddress: Address, wallet: Address) {
     });
   console.log(
     "is vote casted ?",
-    (await ProposalCon.methods.getPorosposalOverview({}).call({})).initConf_.againstVotes == voteWeight,
+    (await ProposalCon.methods.getPorosposalOverview({ nowTime: 5 }).call({})).initConf_.againstVotes == voteWeight,
   );
 }

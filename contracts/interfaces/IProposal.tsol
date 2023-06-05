@@ -6,21 +6,21 @@ import "../structures/ProposalStates.tsol";
 interface IProposal is  ProposalConfigurationStructure, Action, ProposalStates{
 
   // set function //
-  function vote(bool _support, string _reason) external internalMsg view ;
+  function vote(bool _support, string _reason, /*will be removed in productioin */ uint128 nowTime) external internalMsg view ;
   function castVote(uint256 _balance, TvmCell _votePayload) external internalMsg;
   // queue the proposal means that propoposal is ready to be excuited and was successfull
-  function Queue() external ;
+  function Queue(/*will be removed in productioin */ uint128 nowTime) external ;
   // this func call the "onProposalSuccess" fiunction on the dao root 
   /// @notice payer : this   
-  function execute() external;
+  function execute(/*will be removed in productioin */ uint128 nowTime) external;
   // this function cancells the proposal
   /// @notice payer : sender   
   function cancell() external ;
   function onActionsExecuted() external view ;
   // get funcs 
-  function getPorosposalOverview() external view returns (ProposalInitConfiguration initConf_, ProposalState states_);
+  function getPorosposalOverview(/*will be removed in productioin */ uint128 nowTime) external view returns (ProposalInitConfiguration initConf_, ProposalState states_);
   function getActions() external view returns (VenomActions[]  venomActions_);
-  function getProposalState() external view returns (ProposalState state_);
+  function getProposalState(/*will be removed in productioin */ uint128 nowTime) external view returns (ProposalState state_);
     
  // get funcs 
 }

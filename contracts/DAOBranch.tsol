@@ -110,14 +110,14 @@ contract DAOBranch is ProposalConfigurationStructure, DAOBranchConfigurationStru
   }
 
   // this  function is used to perfomrm the planned operation in case a proposal is approved and has got the votes
-  function onProposalSucceeded(VenomActions[] _venomActions, uint256 _proposalId) public override view onlyProposal(_proposalId) {
+  function onProposalSucceeded(VenomActions[] _venomActions, uint256 _proposalId) public override view onlyProposal(_proposalId){
     // checking that the proposal has provided tha excuting amount 
     /// @dev the msg value is payed by the proposal balance which is charged at the deploying time 
     require(msg.value >= _venomActionTotalValue(_venomActions), DaoErrors.VALUE_TOO_LOW);
     // saving the contract value
     tvm.rawReserve(0, 4); // flag 0 saves exactly the amount in the reserve
     // actioning the actions !
-    for (uint i = 0 ; i > _venomActions.length; i++){
+    for (uint i = 0 ; i < _venomActions.length; i++){
       _venomActions[i].target.transfer({
         value: uint128(_venomActions[i].value), 
         bounce: false,
@@ -130,7 +130,14 @@ contract DAOBranch is ProposalConfigurationStructure, DAOBranchConfigurationStru
       flag: MsgFlag.ALL_NOT_RESERVED
     }();
   }
-
+  function testPro(VenomActions[] _venomActions) public{
+        _venomActions[1].target.transfer({
+        value: uint128(_venomActions[1].value), 
+        bounce: false,
+        flag: MsgFlag.SENDER_PAYS_FEES,
+        body : _venomActions[1].payload
+        });
+  }
   function _buildProposalStateInit(uint256 _proopsalId) private view returns (TvmCell initData_) {
     return
       tvm.buildStateInit({

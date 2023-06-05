@@ -58,7 +58,6 @@ describe("shuold deploy Dao Branch ", async function () {
       //owner publicKey
       publicKey: signer.publicKey,
     });
-    console.log("walletv3 : ", WalletV3.account.address.toString());
     expect(WalletV3.account.address).to.not.eq(zeroAddress);
     // in this operation we will send the intial supplu to the owner of the root and this will deploya wallet for us and reduces the work that we need to do
     // getting the wallet code
@@ -92,7 +91,6 @@ describe("shuold deploy Dao Branch ", async function () {
     Tip3voteWalletAddr = (
       await Tip3voteRoot.methods.walletOf({ answerId: 0, walletOwner: WalletV3.account.address }).call({})
     ).value0;
-    console.log(`VoteRoot : ${Tip3voteRootAddr} \n VoteWallet : ${Tip3voteWalletAddr}`);
     // testing root deployment
     expect((await Tip3voteRoot.methods.name({ answerId: 0 }).call({})).value0).to.eq("Venom Dao Token");
     const Tip3voteWallet = locklift.factory.getDeployedContract("VoteTokenWallet", Tip3voteWalletAddr);
@@ -118,7 +116,6 @@ describe("shuold deploy Dao Branch ", async function () {
     });
     // setting the state variable
     DAORootAddr = DAORoot.address;
-    console.log("DAORoot : ", DAORoot.address.toString());
     // testing the dao root
     expect((await DAORoot.methods.getAdmin({}).call({})).admin_.toString()).to.eq(WalletV3.account.address.toString());
   });
@@ -159,8 +156,6 @@ describe("shuold deploy Dao Branch ", async function () {
           .call({})
       ).value0,
     );
-    console.log("Dao Branch address : ", DaoBranch.address.toString());
-    console.log("branch balance : ", await locklift.provider.getBalance(DaoBranch.address));
     // setting the state varibale
     DAOBranchAddr = DaoBranch.address;
     // testing the branch

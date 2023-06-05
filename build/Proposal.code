@@ -81,31 +81,38 @@ IFREF {
 .loc ../contracts/Proposal.tsol, 48
 LDI 1
 LDREF
+LDU 128
 ENDS
 .loc ../contracts/Proposal.tsol, 0
 CALLREF {
-	CALL $vote_efcee869_internal_macro$
+	CALL $vote_98d719a4_internal_macro$
 }
 IFREF {
 	CALL $upd_only_time_in_c4$
 }
 THROW 0
 
-.globl	vote_efcee869_internal
-.type	vote_efcee869_internal, @function
-CALL $vote_efcee869_internal_macro$
+.globl	vote_98d719a4_internal
+.type	vote_98d719a4_internal, @function
+CALL $vote_98d719a4_internal_macro$
 
-.macro vote_efcee869_internal_macro
+.macro vote_98d719a4_internal_macro
 .loc ../contracts/Proposal.tsol, 48
 DEPTH
 ADDCONST -5
 PICK
 THROWIF 72
 .loc ../contracts/Proposal.tsol, 49
+CALLREF {
+	CALL $getProposalState_e2cb0f41_internal_macro$
+}
+EQINT 1
+THROWIFNOT 143
+.loc ../contracts/Proposal.tsol, 50
 PUSHINT 0
 PUSHINT 4
 RAWRESERVE
-.loc ../contracts/Proposal.tsol, 51
+.loc ../contracts/Proposal.tsol, 52
 SWAP
 GETGLOB 9
 NEWC
@@ -113,7 +120,7 @@ STSLICE
 STI 1
 STREF
 ENDC
-.loc ../contracts/Proposal.tsol, 54
+.loc ../contracts/Proposal.tsol, 55
 GETGLOB 15
 GETGLOB 9
 CALLREF {
@@ -145,7 +152,7 @@ ISNULL
 IFREF {
 	CALL $c4_to_c7$
 }
-.loc ../contracts/Proposal.tsol, 60
+.loc ../contracts/Proposal.tsol, 61
 LDU 256
 LDREF
 ENDS
@@ -164,17 +171,11 @@ THROW 0
 CALL $castVote_508c0bc6_internal_macro$
 
 .macro castVote_508c0bc6_internal_macro
-.loc ../contracts/Proposal.tsol, 60
+.loc ../contracts/Proposal.tsol, 61
 DEPTH
 ADDCONST -5
 PICK
 THROWIF 72
-.loc ../contracts/Proposal.tsol, 62
-CALLREF {
-	CALL $getProposalState_aade375b_internal_macro$
-}
-EQINT 1
-THROWIFNOT 143
 .loc ../contracts/Proposal.tsol, 64
 CTOS
 LDMSGADDR
@@ -233,10 +234,11 @@ IFREF {
 	CALL $c4_to_c7$
 }
 .loc ../contracts/Proposal.tsol, 78
+LDU 128
 ENDS
 .loc ../contracts/Proposal.tsol, 0
 CALLREF {
-	CALL $Queue_1e074d7c_internal_macro$
+	CALL $Queue_21b9a79b_internal_macro$
 }
 DROP
 CALLREF {
@@ -244,14 +246,14 @@ CALLREF {
 }
 THROW 0
 
-.globl	Queue_1e074d7c_internal
-.type	Queue_1e074d7c_internal, @function
-CALL $Queue_1e074d7c_internal_macro$
+.globl	Queue_21b9a79b_internal
+.type	Queue_21b9a79b_internal, @function
+CALL $Queue_21b9a79b_internal_macro$
 
-.macro Queue_1e074d7c_internal_macro
+.macro Queue_21b9a79b_internal_macro
 .loc ../contracts/Proposal.tsol, 80
 CALLREF {
-	CALL $getProposalState_aade375b_internal_macro$
+	CALL $getProposalState_e2cb0f41_internal_macro$
 }
 EQINT 4
 THROWIFNOT 140
@@ -292,10 +294,11 @@ IFREF {
 	CALL $c4_to_c7$
 }
 .loc ../contracts/Proposal.tsol, 92
+LDU 128
 ENDS
 .loc ../contracts/Proposal.tsol, 0
 CALLREF {
-	CALL $execute_61461954_internal_macro$
+	CALL $execute_4dec3739_internal_macro$
 }
 DROP
 CALLREF {
@@ -303,14 +306,14 @@ CALLREF {
 }
 THROW 0
 
-.globl	execute_61461954_internal
-.type	execute_61461954_internal, @function
-CALL $execute_61461954_internal_macro$
+.globl	execute_4dec3739_internal
+.type	execute_4dec3739_internal, @function
+CALL $execute_4dec3739_internal_macro$
 
-.macro execute_61461954_internal_macro
+.macro execute_4dec3739_internal_macro
 .loc ../contracts/Proposal.tsol, 94
 CALLREF {
-	CALL $getProposalState_aade375b_internal_macro$
+	CALL $getProposalState_e2cb0f41_internal_macro$
 }
 EQINT 6
 THROWIFNOT 141
@@ -356,7 +359,7 @@ STDICT
 STU 256
 STBREFR
 ENDC
-PUSHINT 0
+PUSHPOW2 7
 SENDRAWMSG
 .loc ../contracts/Proposal.tsol, 0
 
@@ -533,10 +536,11 @@ IFREF {
 	CALL $c4_to_c7$
 }
 .loc ../contracts/Proposal.tsol, 156
+LDU 128
 ENDS
 .loc ../contracts/Proposal.tsol, 0
 CALLREF {
-	CALL $getPorosposalOverview_eeb387b9_internal_macro$
+	CALL $getPorosposalOverview_a15df660_internal_macro$
 }
 PUSH S2
 PUSHCONT {
@@ -553,7 +557,7 @@ PUSHCONT {
 	STUR 98
 	XCHG S2
 	NEWC
-	STSLICECONST xec3d85d0
+	STSLICECONST xe392b967
 	SWAP
 	PUSHINT 16
 	UNTUPLEVAR
@@ -595,14 +599,17 @@ IFREF {
 }
 THROW 0
 
-.globl	getPorosposalOverview_eeb387b9_internal
-.type	getPorosposalOverview_eeb387b9_internal, @function
-CALL $getPorosposalOverview_eeb387b9_internal_macro$
+.globl	getPorosposalOverview_a15df660_internal
+.type	getPorosposalOverview_a15df660_internal, @function
+CALL $getPorosposalOverview_a15df660_internal_macro$
 
-.macro getPorosposalOverview_eeb387b9_internal_macro
+.macro getPorosposalOverview_a15df660_internal_macro
 .loc ../contracts/Proposal.tsol, 157
 GETGLOB 13
-GETGLOB 14
+SWAP
+CALLREF {
+	CALL $getProposalState_e2cb0f41_internal_macro$
+}
 .loc ../contracts/Proposal.tsol, 0
 
 .macro getActions
@@ -670,10 +677,11 @@ IFREF {
 	CALL $c4_to_c7$
 }
 .loc ../contracts/Proposal.tsol, 162
+LDU 128
 ENDS
 .loc ../contracts/Proposal.tsol, 0
 CALLREF {
-	CALL $getProposalState_aade375b_internal_macro$
+	CALL $getProposalState_e2cb0f41_internal_macro$
 }
 OVER
 PUSHCONT {
@@ -686,7 +694,7 @@ PUSHCONT {
 	NEWC
 	STSLICECONST xc
 	STSLICE
-	PUSHINT 2429980445
+	PUSHINT 2926577539
 	STUR 130
 	STU 8
 	ENDC
@@ -702,11 +710,11 @@ IFREF {
 }
 THROW 0
 
-.globl	getProposalState_aade375b_internal
-.type	getProposalState_aade375b_internal, @function
-CALL $getProposalState_aade375b_internal_macro$
+.globl	getProposalState_e2cb0f41_internal
+.type	getProposalState_e2cb0f41_internal, @function
+CALL $getProposalState_e2cb0f41_internal_macro$
 
-.macro getProposalState_aade375b_internal_macro
+.macro getProposalState_e2cb0f41_internal_macro
 .loc ../contracts/Proposal.tsol, 162
 PUSHINT 0
 .loc ../contracts/Proposal.tsol, 163
@@ -714,7 +722,7 @@ GETGLOB 13
 INDEX 13
 PUSHCONT {
 	.loc ../contracts/Proposal.tsol, 165
-	DROP
+	DROP2
 	PUSHINT 2
 	.loc ../contracts/Proposal.tsol, 0
 }
@@ -723,29 +731,29 @@ PUSHCONT {
 	INDEX 14
 	PUSHCONT {
 		.loc ../contracts/Proposal.tsol, 168
-		DROP
+		DROP2
 		PUSHINT 7
 		.loc ../contracts/Proposal.tsol, 0
 	}
 	PUSHCONT {
-		BLOCKLT
+		OVER
 		GETGLOB 13
 		THIRD
 		LEQ
 		PUSHCONT {
 			.loc ../contracts/Proposal.tsol, 171
-			DROP
+			DROP2
 			PUSHINT 0
 			.loc ../contracts/Proposal.tsol, 0
 		}
 		PUSHCONT {
-			BLOCKLT
+			OVER
 			GETGLOB 13
 			INDEX 3
 			LEQ
 			PUSHCONT {
 				.loc ../contracts/Proposal.tsol, 174
-				DROP
+				DROP2
 				PUSHINT 1
 				.loc ../contracts/Proposal.tsol, 0
 			}
@@ -763,7 +771,7 @@ PUSHCONT {
 				OR
 				PUSHCONT {
 					.loc ../contracts/Proposal.tsol, 177
-					DROP
+					DROP2
 					PUSHINT 3
 					.loc ../contracts/Proposal.tsol, 0
 				}
@@ -771,30 +779,20 @@ PUSHCONT {
 					GETGLOB 13
 					INDEX 10
 					PUSHCONT {
-						BLOCKLT
+						DROP
 						GETGLOB 13
 						INDEX 10
 						GETGLOB 13
 						INDEX 9
 						ADD
 						GREATER
-						PUSHCONT {
-							.loc ../contracts/Proposal.tsol, 183
-							DROP
-							PUSHINT 5
-							.loc ../contracts/Proposal.tsol, 0
-						}
-						PUSHCONT {
-							.loc ../contracts/Proposal.tsol, 186
-							DROP
-							PUSHINT 6
-							.loc ../contracts/Proposal.tsol, 0
-						}
-						IFELSE
+						PUSHINT 5
+						PUSHINT 6
+						CONDSEL
 					}
 					PUSHCONT {
 						.loc ../contracts/Proposal.tsol, 180
-						DROP
+						DROP2
 						PUSHINT 4
 						.loc ../contracts/Proposal.tsol, 0
 					}
@@ -1270,11 +1268,11 @@ THROW 0
 
 .macro public_function_selector
 DUP
-PUSHINT 1815971280
+PUSHINT 1741864541
 LEQ
 IFJMPREF {
 	DUP
-	PUSHINT 292725491
+	PUSHINT 325905283
 	LEQ
 	IFJMPREF {
 		DUP
@@ -1284,28 +1282,11 @@ IFJMPREF {
 			CALL $constructor$
 		}
 		DUP
-		PUSHINT 171160520
-		EQUAL
-		IFJMPREF {
-			CALL $vote$
-		}
-		DUP
-		PUSHINT 282496797
-		EQUAL
-		IFJMPREF {
-			CALL $getProposalState$
-		}
-		DUP
 		PUSHINT 292725491
 		EQUAL
 		IFJMPREF {
 			CALL $DaoBranchAddress$
 		}
-	}
-	DUP
-	PUSHINT 528352003
-	LEQ
-	IFJMPREF {
 		DUP
 		PUSHINT 320678970
 		EQUAL
@@ -1318,6 +1299,11 @@ IFJMPREF {
 		IFJMPREF {
 			CALL $venomActions$
 		}
+	}
+	DUP
+	PUSHINT 779093891
+	LEQ
+	IFJMPREF {
 		DUP
 		PUSHINT 337776229
 		EQUAL
@@ -1330,11 +1316,6 @@ IFJMPREF {
 		IFJMPREF {
 			CALL $state$
 		}
-	}
-	DUP
-	PUSHINT 1064795976
-	LEQ
-	IFJMPREF {
 		DUP
 		PUSHINT 626376772
 		EQUAL
@@ -1342,13 +1323,24 @@ IFJMPREF {
 			CALL $creationBlockTS$
 		}
 		DUP
+		PUSHINT 779093891
+		EQUAL
+		IFJMPREF {
+			CALL $getProposalState$
+		}
+	}
+	DUP
+	PUSHINT 1370768978
+	LEQ
+	IFJMPREF {
+		DUP
 		PUSHINT 900421755
 		EQUAL
 		IFJMPREF {
 			CALL $cancell$
 		}
 		DUP
-		PUSHINT 972038137
+		PUSHINT 943715382
 		EQUAL
 		IFJMPREF {
 			CALL $Queue$
@@ -1359,16 +1351,22 @@ IFJMPREF {
 		IFJMPREF {
 			CALL $PROPOSAL_ID$
 		}
-	}
-	DUP
-	PUSHINT 1815971280
-	LEQ
-	IFJMPREF {
 		DUP
 		PUSHINT 1370768978
 		EQUAL
 		IFJMPREF {
 			CALL $getActions$
+		}
+	}
+	DUP
+	PUSHINT 1741864541
+	LEQ
+	IFJMPREF {
+		DUP
+		PUSHINT 1403011590
+		EQUAL
+		IFJMPREF {
+			CALL $execute$
 		}
 		DUP
 		PUSHINT 1518600236
@@ -1377,16 +1375,16 @@ IFJMPREF {
 			CALL $onActionsExecuted$
 		}
 		DUP
-		PUSHINT 1781288325
-		EQUAL
-		IFJMPREF {
-			CALL $execute$
-		}
-		DUP
-		PUSHINT 1815971280
+		PUSHINT 1670560103
 		EQUAL
 		IFJMPREF {
 			CALL $getPorosposalOverview$
+		}
+		DUP
+		PUSHINT 1741864541
+		EQUAL
+		IFJMPREF {
+			CALL $vote$
 		}
 	}
 }

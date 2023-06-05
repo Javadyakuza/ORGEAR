@@ -57,14 +57,13 @@ describe("shuold perform vote casting", async function () {
     // making the wallet v3 and the token root  and wallet \
     // deploying it
     WalletV3 = await locklift.factory.accounts.addNewAccount({
-      type: WalletTypes.WalletV3, // or WalletTypes.HighLoadWallet or WalletTypes.WalletV3,
+      type: WalletTypes.WalletV3, // or WalletTypes.HighLoadWallet or WalletTypes.WalletV3
       //Value which will send to the new account from a giver
       value: locklift.utils.toNano(100),
       //owner publicKey
       publicKey: signer.publicKey,
     });
     WalletV3.account.prepareMessage;
-    console.log("walletv3 : ", WalletV3.account.address.toString());
     signer2 = (await locklift.keystore.getSigner("1"))!;
     // making the wallet v3 and the token root  and wallet \
     // deploying it
@@ -75,7 +74,6 @@ describe("shuold perform vote casting", async function () {
       //owner publicKey
       publicKey: signer2.publicKey,
     });
-    console.log("walletv3_2 : ", WalletV3.account.address.toString());
     expect(WalletV3.account.address).to.not.eq(zeroAddress);
     // in this operation we will send the intial supplu to the owner of the root and this will deploya wallet for us and reduces the work that we need to do
     // getting the wallet code
@@ -109,7 +107,6 @@ describe("shuold perform vote casting", async function () {
     Tip3voteWalletAddr = (
       await Tip3voteRoot.methods.walletOf({ answerId: 0, walletOwner: WalletV3_2.account.address }).call({})
     ).value0;
-    console.log(`VoteRoot : ${Tip3voteRootAddr} \n VoteWallet : ${Tip3voteWalletAddr}`);
     // testing root deployment
     expect((await Tip3voteRoot.methods.name({ answerId: 0 }).call({})).value0).to.eq("Venom Dao Token");
     const Tip3voteWallet = locklift.factory.getDeployedContract("VoteTokenWallet", Tip3voteWalletAddr);
@@ -140,7 +137,6 @@ describe("shuold perform vote casting", async function () {
         await Tip3voteRoot.methods.walletOf({ answerId: 0, walletOwner: WalletV3.account.address }).call({})
       ).value0,
     );
-    console.log((await tokenwallet.methods.balance({ answerId: 0 }).call({})).value0);
     expect((await tokenwallet.methods.balance({ answerId: 0 }).call({})).value0).to.eq(locklift.utils.toNano(500));
     // setting the state
     Tip3voteWalletAddr_2 = (
@@ -161,7 +157,6 @@ describe("shuold perform vote casting", async function () {
     });
     // setting the state variable
     DAORootAddr = DAORoot.address;
-    console.log("DAORoot : ", DAORoot.address.toString());
     // testing the dao root
     expect((await DAORoot.methods.getAdmin({}).call({})).admin_.toString()).to.eq(WalletV3.account.address.toString());
 
@@ -196,8 +191,6 @@ describe("shuold perform vote casting", async function () {
       ).value0,
     );
     DAOBranchCon = DaoBranch;
-    console.log("Dao Branch address : ", DaoBranch.address.toString());
-    console.log("branch balance : ", await locklift.provider.getBalance(DaoBranch.address));
     // setting the state varibale
     DAOBranchAddr = DaoBranch.address;
     // testing the branch
@@ -215,7 +208,6 @@ describe("shuold perform vote casting", async function () {
       },
       value: locklift.utils.toNano("2"),
     });
-    console.log("ActionTestPersonalData address : ", ActionTestPersonalData.address.toString());
     // setting the state varibale
     ActionTestPersonalDataAddr = ActionTestPersonalData.address;
     // testing the date
@@ -245,7 +237,6 @@ describe("shuold perform vote casting", async function () {
       contract: DAOBranchCon,
       name: "ProposalDeployed" as const, // 'as const' is important thing for type saving
     });
-    console.log("this is the proposal id : ", ProposalEvents![0].proposalId);
     // fetching the deployed proposal
     const Proposal = await locklift.factory.getDeployedContract(
       "Proposal",
@@ -274,7 +265,6 @@ describe("shuold perform vote casting", async function () {
       contract: DAOBranchCon,
       name: "ProposalDeployed" as const, // 'as const' is important thing for type saving
     });
-    console.log("this is the proposal id : ", ProposalEvents_2![0].proposalId);
     // fetching the deployed proposal
     const Proposal_2 = await locklift.factory.getDeployedContract(
       "Proposal",
@@ -286,27 +276,28 @@ describe("shuold perform vote casting", async function () {
     // setting the state variables
     ProposalAddr_1 = Proposal.address;
     ProposalAddr_2 = Proposal_2.address;
-    console.log("proposal : ", ProposalAddr_1.toString());
-    console.log("proposal 2 : ", ProposalAddr_2.toString());
   });
   it("shuold cast 1000 for vote", async function () {
     // fetching the firsst poroposal contract
     const proposal = await locklift.factory.getDeployedContract("Proposal", ProposalAddr_1);
-    console.log("time ", locklift.testing.getCurrentTime());
     // casting the vote with the second account
     const voteres = await locklift.tracing.trace(
       proposal.methods
         .vote({
           _reason: "a good reason",
           _support: true,
+          nowTime: 5,
         })
         .send({
           from: WalletV3_2.account.address,
           amount: locklift.utils.toNano(1),
         }),
     );
-    console.log("voting result :", (await proposal.methods.getPorosposalOverview({}).call({})).initConf_.forVotes);
-    expect((await proposal.methods.getPorosposalOverview({}).call({})).initConf_.forVotes).to.eq("1000000000000");
+
+    expect(
+      (await proposal.methods.getPorosposalOverview({ nowTime: locklift.testing.getCurrentTime() }).call({})).initConf_
+        .forVotes,
+    ).to.eq("1000000000000");
   });
   it("shuold cast 500 against vote", async function () {
     // minting for the second sigenr from the token root
@@ -319,14 +310,18 @@ describe("shuold perform vote casting", async function () {
         .vote({
           _reason: "a bad reason",
           _support: false,
+          nowTime: 5,
         })
         .send({
           from: WalletV3.account.address,
           amount: locklift.utils.toNano(1),
         }),
     );
-    console.log("voting result :", (await proposal.methods.getPorosposalOverview({}).call({})).initConf_.againstVotes);
-    expect((await proposal.methods.getPorosposalOverview({}).call({})).initConf_.againstVotes).to.eq("500000000000");
+
+    expect(
+      (await proposal.methods.getPorosposalOverview({ nowTime: locklift.testing.getCurrentTime() }).call({})).initConf_
+        .againstVotes,
+    ).to.eq("500000000000");
   });
   //   it("shuold cast a against vote", async function () {});
 });

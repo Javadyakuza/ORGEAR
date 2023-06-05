@@ -45,7 +45,8 @@ contract Proposal is  ProposalConfigurationStructure, Action, ProposalStates, IP
   /**
   @notice this function support the delegate voting by getting the voter  
    */
-  function vote(bool _support, string _reason) public override internalMsg view{
+  function vote(bool _support, string _reason, /*will be removed in productioin */ uint128 nowTime) public override internalMsg view{
+    require(getProposalState(nowTime) == ProposalState.Active, DaoErrors.PROPOSAL_IS_NOT_ACTIVVE);
     tvm.rawReserve(0,4);
     // packing the data 
     TvmCell votePayload = abi.encode(msg.sender, _support, _reason);
@@ -59,7 +60,6 @@ contract Proposal is  ProposalConfigurationStructure, Action, ProposalStates, IP
   }
   function castVote(uint256 _balance, TvmCell _votePayload) public override internalMsg { 
     // checking that state is active 
-    require(getProposalState() == ProposalState.Active, DaoErrors.PROPOSAL_IS_NOT_ACTIVVE);
     // unpacking the data 
     (address _voter, bool _support, string _reason) 
               = abi.decode(_votePayload,(address, bool, string));
@@ -75,9 +75,9 @@ contract Proposal is  ProposalConfigurationStructure, Action, ProposalStates, IP
 
     } 
   // queue the proposal means that propoposal is ready to be excuited and was successfull
-  function Queue() public override{
+  function Queue(/*will be removed in productioin */ uint128 nowTime) public override{
     // checking if the positioin was successfull or not 
-    require(getProposalState() == ProposalState.Succeeded, DaoErrors.PROPOSAL_IS_NOT_SUCCEEDED);
+    require(getProposalState(nowTime) == ProposalState.Succeeded, DaoErrors.PROPOSAL_IS_NOT_SUCCEEDED);
     // accepting puuting the proposal state in queue fees
     tvm.accept();
     // putting the end time plus the time lock as the excution time 
@@ -89,10 +89,10 @@ contract Proposal is  ProposalConfigurationStructure, Action, ProposalStates, IP
   }
   // this func call the "onProposalSuccess" fiunction on the dao root 
   /// @notice payer : this   
-  function execute() public override{
+  function execute(/*will be removed in productioin */ uint128 nowTime) public override{
     // checking the state of the proopsal is queued 
-    require(getProposalState() == ProposalState.Queued, DaoErrors.PROPOSAL_IS_NOT_QUEUED);
-    // cheking that the its the time to execute the contrac, the execution time must be greater that now time  
+    require(getProposalState(nowTime) == ProposalState.Queued, DaoErrors.PROPOSAL_IS_NOT_QUEUED);
+    // cheking that the its the time to execute the contrac, the execution time must be greater that now time  PROPOSAL_IS_NOT_SUCCEEDED
     require(block.timestamp >= initConfig.executionTime, DaoErrors.EXECUTION_TIME_NOT_COME_YET);
     // accepting the fees 
     tvm.accept();
@@ -105,7 +105,7 @@ contract Proposal is  ProposalConfigurationStructure, Action, ProposalStates, IP
      // excuting the contract from the dao root channel 
      IDAOBranch(DaoBranchAddress).onProposalSucceeded{
       value : 0, 
-      flag : 0
+      flag : MsgFlag.ALL_NOT_RESERVED
      }(venomActions, PROPOSAL_ID);
 
   }
@@ -153,23 +153,23 @@ contract Proposal is  ProposalConfigurationStructure, Action, ProposalStates, IP
   }  // set function //
 
   // get funcs 
-  function getPorosposalOverview() public override view returns (ProposalInitConfiguration initConf_, ProposalState states_){
-        return (initConfig, state);
+  function getPorosposalOverview(/*will be removed in productioin */ uint128 nowTime) public override view returns (ProposalInitConfiguration initConf_, ProposalState states_){
+        return (initConfig, getProposalState(nowTime));
   } 
   function getActions() public override view returns (VenomActions[]  venomActions_){
       return venomActions;
   }
-  function getProposalState() public override view returns (ProposalState state_){
+  function getProposalState(/*will be removed in productioin */ uint128 nowTime) public override view returns (ProposalState state_){
         if (initConfig.canceled) {
           // returns the cencelled if the inti config struct cancelled was true 
             return ProposalState.Canceled;
         } else if (initConfig.executed) {
           // returnexcuted if the init config file excuted was true
             return ProposalState.Executed;
-        } else if (block.timestamp <= initConfig.startTime) {
+        } else if (nowTime <= initConfig.startTime) {
           // return pending if the init config file start time was freater than block.timestamp time
             return ProposalState.Pending;
-        } else if (block.timestamp <= initConfig.endTime) {
+        } else if (nowTime <= initConfig.endTime) {
             // return the active if the block.timestamp time was less than the end time from the iitconfig struct 
             return ProposalState.Active;
         } else if (initConfig.forVotes <= initConfig.againstVotes || initConfig.forVotes < initConfig.quorumVotes) {
@@ -178,7 +178,7 @@ contract Proposal is  ProposalConfigurationStructure, Action, ProposalStates, IP
         } else if (initConfig.executionTime == 0) {
           // return succesdded if the execution time was zero , why ?
             return ProposalState.Succeeded;
-        } else if (block.timestamp > initConfig.executionTime + initConfig.gracePeriod) {
+        } else if (nowTime > initConfig.executionTime + initConfig.gracePeriod) {
             // return expired if the excution time plus grace periosd time were less thatn now time 
             return ProposalState.Expired;
         } else {

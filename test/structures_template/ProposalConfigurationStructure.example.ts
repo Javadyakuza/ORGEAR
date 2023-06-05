@@ -2,15 +2,15 @@ import { Address } from "locklift";
 
 var ProposalConfigurationStructure = {
   TIP3_VOTE_ROOT_ADDRESS: new Address("0x1234567890123456789012345678901234567890"),
-  description: "venom DAO",
+  description: "venom DAO test Proposal",
   startTime: 0, // start time in 1 hour
-  endTime: locklift.testing.getCurrentTime() + 8640, // end time in 24 hours
+  endTime: 20, // end time in 24 hours
   votingDelay: 20, // 1 minute delay
   votingPeriod: 80, // 30 minutes period
   quorumVotes: 30, // 10 quorum votes required
-  timeLock: 4000, // 2 minutes timelock
-  threshold: locklift.utils.toNano(100), // 5 threshold votes required
-  gracePeriod: 600, // 10 minutes grace period
+  timeLock: 0, // 2 minutes timelock
+  threshold: locklift.utils.toNano(10), // 5 threshold votes required
+  gracePeriod: 50, // 10 minutes grace period
   executionTime: 0,
   forVotes: 0,
   againstVotes: 0,

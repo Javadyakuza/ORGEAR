@@ -17,7 +17,8 @@
 			"name": "vote",
 			"inputs": [
 				{"name":"_support","type":"bool"},
-				{"name":"_reason","type":"string"}
+				{"name":"_reason","type":"string"},
+				{"name":"nowTime","type":"uint128"}
 			],
 			"outputs": [
 			]
@@ -34,6 +35,7 @@
 		{
 			"name": "Queue",
 			"inputs": [
+				{"name":"nowTime","type":"uint128"}
 			],
 			"outputs": [
 			]
@@ -41,6 +43,7 @@
 		{
 			"name": "execute",
 			"inputs": [
+				{"name":"nowTime","type":"uint128"}
 			],
 			"outputs": [
 			]
@@ -62,6 +65,7 @@
 		{
 			"name": "getPorosposalOverview",
 			"inputs": [
+				{"name":"nowTime","type":"uint128"}
 			],
 			"outputs": [
 				{"components":[{"name":"TIP3_VOTE_ROOT_ADDRESS","type":"address"},{"name":"description","type":"string"},{"name":"startTime","type":"uint256"},{"name":"endTime","type":"uint256"},{"name":"votingDelay","type":"uint32"},{"name":"votingPeriod","type":"uint32"},{"name":"quorumVotes","type":"uint128"},{"name":"timeLock","type":"uint32"},{"name":"threshold","type":"uint128"},{"name":"gracePeriod","type":"uint32"},{"name":"executionTime","type":"uint256"},{"name":"forVotes","type":"uint256"},{"name":"againstVotes","type":"uint256"},{"name":"canceled","type":"bool"},{"name":"executed","type":"bool"},{"name":"Tip3VoteWalletCode","type":"cell"}],"name":"initConf_","type":"tuple"},
@@ -79,6 +83,7 @@
 		{
 			"name": "getProposalState",
 			"inputs": [
+				{"name":"nowTime","type":"uint128"}
 			],
 			"outputs": [
 				{"name":"state_","type":"uint8"}

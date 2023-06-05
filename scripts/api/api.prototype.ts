@@ -1,7 +1,7 @@
 import { Address, Contract, Signer, zeroAddress } from "locklift";
-import { DaoBranchConfig } from "../test/structures_template/DAOBranchConfig.example";
-import { ProposalConfigurationStructure } from "../test/structures_template/ProposalConfigurationStructure.example";
-import { ProposalAction } from "../test/structures_template/ProposalActionStruct.example";
+import { DaoBranchConfig } from "../../test/structures_template/DAOBranchConfig.example";
+import { ProposalConfigurationStructure } from "../../test/structures_template/ProposalConfigurationStructure.example";
+import { ProposalAction } from "../../test/structures_template/ProposalActionStruct.example";
 // dao details
 async function GetDaoDetails(DaoAddres: Address) {
   let DeployedDaoCon = await locklift.factory.getDeployedContract("DAOBranch", DaoAddres);

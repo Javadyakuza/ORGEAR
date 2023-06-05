@@ -1,10 +1,10 @@
 import { expect } from "chai";
 import { Address, Contract, Signer, zeroAddress } from "locklift";
-import { FactorySource } from "../build/factorySource";
+import { FactorySource } from "../../build/factorySource";
 import { CreateAccountOutput, WalletTypes } from "locklift/types/index";
-import { DaoBranchConfig } from "../test/structures_template/DAOBranchConfig.example";
-import { ProposalConfigurationStructure } from "../test/structures_template/ProposalConfigurationStructure.example";
-import { ProposalAction } from "../test/structures_template/ProposalActionStruct.example";
+import { DaoBranchConfig } from "../../test/structures_template/DAOBranchConfig.example";
+import { ProposalConfigurationStructure } from "../../test/structures_template/ProposalConfigurationStructure.example";
+import { ProposalAction } from "../../test/structures_template/ProposalActionStruct.example";
 import { FactoryType } from "locklift/internal/factory";
 import { Queue } from "@mui/icons-material";
 var DAOBranchCon: Contract<FactorySource["DAOBranch"]>;

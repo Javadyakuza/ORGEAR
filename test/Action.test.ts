@@ -5,8 +5,7 @@ import { CreateAccountOutput, WalletTypes } from "locklift/types/index";
 import { DaoBranchConfig } from "./structures_template/DAOBranchConfig.example";
 import { ProposalConfigurationStructure } from "./structures_template/ProposalConfigurationStructure.example";
 import { ProposalAction } from "./structures_template/ProposalActionStruct.example";
-import { FactoryType } from "locklift/internal/factory";
-import { Queue } from "@mui/icons-material";
+
 var DAOBranchCon: Contract<FactorySource["DAOBranch"]>;
 let DAORootAddr: Address;
 let DAOBranchAddr: Address;

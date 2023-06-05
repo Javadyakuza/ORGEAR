@@ -1,12 +1,16 @@
 import { LockliftConfig } from "locklift";
 import { FactorySource } from "./build/factorySource";
-
+require("dotenv").config();
 declare global {
   const locklift: import("locklift").Locklift<FactorySource>;
 }
 
 const LOCAL_NETWORK_ENDPOINT = process.env.NETWORK_ENDPOINT || "http://localhost/graphql";
-const DEV_NET_NETWORK_ENDPOINT = process.env.DEV_NET_NETWORK_ENDPOINT || "https://devnet-sandbox.evercloud.dev/graphql";
+// const DEV_NET_NETWORK_ENDPOINT = process.env.DEV_NET_NETWORK_ENDPOINT || "https://devnet-sandbox.evercloud.dev/graphql";
+
+const DEV_NET_NETWORK_ENDPOINT = process.env.DEV_NET_NETWORK_ENDPOINT || "https://jrpc-devnet.venom.foundation/";
+
+const DEV_NET_TRACE_ENDPOINT = process.env.DEV_NET_TRACE_ENDPOINT || "https://gql-devnet.venom.network/graphql";
 
 const VENOM_TESTNET_ENDPOINT = process.env.VENOM_TESTNET_ENDPOINT || "https://jrpc-testnet.venom.foundation/rpc";
 const VENOM_TESTNET_TRACE_ENDPOINT =
@@ -91,6 +95,27 @@ const config: LockliftConfig = {
         amount: 20,
       },
     },
+    venom_devnet: {
+      connection: {
+        id: 1002,
+        type: "jrpc",
+        group: "dev",
+        data: {
+          endpoint: DEV_NET_NETWORK_ENDPOINT,
+        },
+      },
+      giver: {
+        address: process.env.ADDRESS!,
+        phrase: process.env.PHRASE!,
+        accountId: 0,
+      },
+      keys: {
+        // Use everdev to generate your phrase
+        // !!! Never commit it in your repos !!!
+        phrase: process.env.PHRASE!,
+        amount: 20,
+      },
+    },
     venom_testnet: {
       connection: {
         id: 1000,
@@ -102,8 +127,8 @@ const config: LockliftConfig = {
       },
       giver: {
         address: process.env.ADDRESS!,
-        phrase: "phrase",
-        accountId: 0,
+        phrase: process.env.PHRASE!,
+        accountId: 10,
       },
       tracing: {
         endpoint: VENOM_TESTNET_TRACE_ENDPOINT,
@@ -111,7 +136,7 @@ const config: LockliftConfig = {
       keys: {
         // Use everdev to generate your phrase
         // !!! Never commit it in your repos !!!
-        // phrase : process.env.PHRASE, // uncomment this line to use your account
+        phrase: process.env.PHRASE!,
         amount: 20,
       },
     },
@@ -129,8 +154,8 @@ const config: LockliftConfig = {
       },
       // This giver is default Wallet
       giver: {
-        address: process.env.ADDRESS!,
-        key: "secret key",
+        address: "0:0",
+        key: "secret",
       },
       tracing: {
         endpoint: MAIN_NET_NETWORK_ENDPOINT,

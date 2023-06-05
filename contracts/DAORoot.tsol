@@ -37,7 +37,7 @@ contract DAORoot is DAOBranchConfigurationStruct, IDAORoot{
     } 
 
     // this function deploys A dao Branch
-    function DeployDaoBranch(uint32 _branchNonce, DaoBranchConfig _DaoBranchConfig) public override{
+    function DeployDaoBranch(uint32 _branchNonce, DaoBranchConfig _DaoBranchConfig) public override internalMsg{
         // chaking the msg.value 
         require(msg.value >= Gas.MAIN_VALUE, DaoErrors.VALUE_TOO_LOW);
         // reserving the contract value 

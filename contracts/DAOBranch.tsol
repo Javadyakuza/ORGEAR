@@ -57,7 +57,7 @@ contract DAOBranch is ProposalConfigurationStructure, DAOBranchConfigurationStru
 
 
   ///@notice the proposal expected address will be calculated from  a postion id wich is totalProposals + 1 
-  function propose(ProposalInitConfiguration _ProposalInitConfiguration, VenomActions[] _venomActions) public override {
+  function propose(ProposalInitConfiguration _ProposalInitConfiguration, VenomActions[] _venomActions) public override internalMsg{
     // cheking if the user has provided enough venom for deploying and actioning the proposal  
     /// @dev Gas.MAIN_VALUE in here is the value for deploying the proposal  
     require(msg.value >= _venomActionTotalValue(_venomActions) + Gas.MAIN_VALUE, DaoErrors.MSG_VALUE_TOO_LOW_TO_CREATE_PROPOSAL);
@@ -130,14 +130,7 @@ contract DAOBranch is ProposalConfigurationStructure, DAOBranchConfigurationStru
       flag: MsgFlag.ALL_NOT_RESERVED
     }();
   }
-  function testPro(VenomActions[] _venomActions) public{
-        _venomActions[1].target.transfer({
-        value: uint128(_venomActions[1].value), 
-        bounce: false,
-        flag: MsgFlag.SENDER_PAYS_FEES,
-        body : _venomActions[1].payload
-        });
-  }
+
   function _buildProposalStateInit(uint256 _proopsalId) private view returns (TvmCell initData_) {
     return
       tvm.buildStateInit({

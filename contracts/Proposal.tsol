@@ -75,7 +75,7 @@ contract Proposal is  ProposalConfigurationStructure, Action, ProposalStates, IP
 
     } 
   // queue the proposal means that propoposal is ready to be excuited and was successfull
-  function Queue(/*will be removed in productioin */ uint128 nowTime) public override{
+  function Queue(/*will be removed in productioin */ uint128 nowTime) public override internalMsg{
     // checking if the positioin was successfull or not 
     require(getProposalState(nowTime) == ProposalState.Succeeded, DaoErrors.PROPOSAL_IS_NOT_SUCCEEDED);
     // accepting puuting the proposal state in queue fees
@@ -89,7 +89,7 @@ contract Proposal is  ProposalConfigurationStructure, Action, ProposalStates, IP
   }
   // this func call the "onProposalSuccess" fiunction on the dao root 
   /// @notice payer : this   
-  function execute(/*will be removed in productioin */ uint128 nowTime) public override{
+  function execute(/*will be removed in productioin */ uint128 nowTime) public override internalMsg{
     // checking the state of the proopsal is queued 
     require(getProposalState(nowTime) == ProposalState.Queued, DaoErrors.PROPOSAL_IS_NOT_QUEUED);
     // cheking that the its the time to execute the contrac, the execution time must be greater that now time  PROPOSAL_IS_NOT_SUCCEEDED
@@ -112,7 +112,7 @@ contract Proposal is  ProposalConfigurationStructure, Action, ProposalStates, IP
 
   // this function cancells the proposal
   /// @notice payer : sender   
-  function cancell() public override {
+  function cancell() public override internalMsg{
     // cheking that the sender hsa attached enogh venom to change the state 
     /// @dev Gas.MAIN_VALUE is the state change basically 
     require(msg.value >= Gas.MAIN_VALUE, DaoErrors.VALUE_TOO_LOW);

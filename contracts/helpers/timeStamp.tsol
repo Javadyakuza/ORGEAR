@@ -1,7 +1,0 @@
-pragma ever-solidity >= 0.61.2;
-
-contract timestamp {
- function getTimestamp() public view returns(uint64){
-    return block.timestamp;
- }   
-}

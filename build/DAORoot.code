@@ -102,6 +102,11 @@ THROW 0
 CALL $DeployDaoBranch_38f0bf2f_internal_macro$
 
 .macro DeployDaoBranch_38f0bf2f_internal_macro
+.loc ../contracts/DAORoot.tsol, 40
+DEPTH
+ADDCONST -5
+PICK
+THROWIF 72
 .loc ../contracts/DAORoot.tsol, 42
 DEPTH
 ADDCONST -2

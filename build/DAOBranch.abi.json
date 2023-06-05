@@ -39,14 +39,6 @@
 			]
 		},
 		{
-			"name": "testPro",
-			"inputs": [
-				{"components":[{"name":"value","type":"uint256"},{"name":"target","type":"address"},{"name":"payload","type":"cell"}],"name":"_venomActions","type":"tuple[]"}
-			],
-			"outputs": [
-			]
-		},
-		{
 			"name": "expectedProposalAddress",
 			"inputs": [
 				{"name":"_proposalId","type":"uint256"}

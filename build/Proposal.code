@@ -251,6 +251,11 @@ THROW 0
 CALL $Queue_21b9a79b_internal_macro$
 
 .macro Queue_21b9a79b_internal_macro
+.loc ../contracts/Proposal.tsol, 78
+DEPTH
+ADDCONST -5
+PICK
+THROWIF 72
 .loc ../contracts/Proposal.tsol, 80
 CALLREF {
 	CALL $getProposalState_e2cb0f41_internal_macro$
@@ -311,6 +316,11 @@ THROW 0
 CALL $execute_4dec3739_internal_macro$
 
 .macro execute_4dec3739_internal_macro
+.loc ../contracts/Proposal.tsol, 92
+DEPTH
+ADDCONST -5
+PICK
+THROWIF 72
 .loc ../contracts/Proposal.tsol, 94
 CALLREF {
 	CALL $getProposalState_e2cb0f41_internal_macro$
@@ -389,6 +399,11 @@ THROW 0
 CALL $cancell_a10ab3a0_internal_macro$
 
 .macro cancell_a10ab3a0_internal_macro
+.loc ../contracts/Proposal.tsol, 115
+DEPTH
+ADDCONST -5
+PICK
+THROWIF 72
 .loc ../contracts/Proposal.tsol, 118
 DEPTH
 ADDCONST -2

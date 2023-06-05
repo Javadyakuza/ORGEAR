@@ -12,7 +12,7 @@ import "../interfaces/IProposal.tsol";
 interface IDAOBranch is ProposalConfigurationStructure, DAOBranchConfigurationStruct, Action {
 
   ///@notice the proposal expected address will be calculated from  a postion id wich is totalProposals + 1 
-  function propose(ProposalInitConfiguration _ProposalInitConfiguration, VenomActions[] _venomActions) external;
+  function propose(ProposalInitConfiguration _ProposalInitConfiguration, VenomActions[] _venomActions) external internalMsg;
   function deployProposal( uint256 _balance, TvmCell _payload) external internalMsg;
 
   // this  function is used to perfomrm the planned operation in case a proposal is approved and has got the votes

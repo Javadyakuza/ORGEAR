@@ -374,16 +374,6 @@ async function main() {
     console.log("the result :", await actionCon.methods.name({}).call({}));
     console.log("the result :", await actionCon.methods.age({}).call({}));
   }, 5000);
-  const { contract: timeCon } = await locklift.factory.deployContract({
-    contract: "timeStamp",
-    publicKey: signer.publicKey,
-    initParams: {},
-    constructorParams: {},
-    value: locklift.utils.toNano(1),
-  });
-  console.log("block timstamp fetched from contract : ", (await timeCon.methods.getTimestamp({}).call({})).value0);
-  console.log("block timstamp fetched locally  : ", locklift.testing.getCurrentTime());
-  console.log("block time stamp fetched from js :", Math.floor(new Date().getTime()));
 }
 main()
   .then(res => {

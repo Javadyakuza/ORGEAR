@@ -285,7 +285,6 @@ describe("shuold take the actions ", async function () {
         .vote({
           _reason: "a good reason",
           _support: true,
-          nowTime: 5,
         })
         .send({
           from: WalletV3_2.account.address,
@@ -293,9 +292,7 @@ describe("shuold take the actions ", async function () {
         }),
     );
 
-    expect(
-      (await Proposal.methods.getPorosposalOverview({ nowTime: locklift.testing.getCurrentTime() }).call({})).forVotes_,
-    ).to.eq("1000000000000");
+    expect((await Proposal.methods.getPorosposalOverview({}).call({})).forVotes_).to.eq("1000000000000");
     // minting for the second sigenr from the token root
     // fetching the firsst poroposal contract
     //
@@ -305,7 +302,6 @@ describe("shuold take the actions ", async function () {
         .vote({
           _reason: "a bad reason",
           _support: false,
-          nowTime: 5,
         })
         .send({
           from: WalletV3.account.address,
@@ -313,10 +309,7 @@ describe("shuold take the actions ", async function () {
         }),
     );
 
-    expect(
-      (await Proposal.methods.getPorosposalOverview({ nowTime: locklift.testing.getCurrentTime() }).call({}))
-        .againstVotes_,
-    ).to.eq("500000000000");
+    expect((await Proposal.methods.getPorosposalOverview({}).call({})).againstVotes_).to.eq("500000000000");
   });
   it("shuold the take the actioin on proposal succeded", async function () {
     const Proposalcon = await locklift.factory.getDeployedContract("Proposal", ProposalAddr_1);
@@ -328,17 +321,13 @@ describe("shuold take the actions ", async function () {
     // // fetching the propposal contract
     // // queueingng
     await locklift.tracing.trace(
-      Proposalcon.methods
-        .Queue({ nowTime: 21 })
-        .send({ from: WalletV3.account.address, amount: locklift.utils.toNano(0.1) }),
+      Proposalcon.methods.Queue({}).send({ from: WalletV3.account.address, amount: locklift.utils.toNano(0.1) }),
     );
     // // confirming that its qeueud
 
     // excutiong
     await locklift.tracing.trace(
-      Proposalcon.methods
-        .execute({ nowTime: 22 })
-        .send({ from: WalletV3.account.address, amount: locklift.utils.toNano(20) }),
+      Proposalcon.methods.execute({}).send({ from: WalletV3.account.address, amount: locklift.utils.toNano(20) }),
     );
     // fetcing the action contract
     const actionCon = await locklift.factory.getDeployedContract("ActionTestPersonalData", ActionTestPersonalDataAddr);

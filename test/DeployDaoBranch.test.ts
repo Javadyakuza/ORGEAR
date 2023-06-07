@@ -111,6 +111,8 @@ describe("shuold deploy Dao Branch ", async function () {
       },
       constructorParams: {
         _DaoBranchCode: locklift.factory.getContractArtifacts("DAOBranch").code,
+        _ProposalCode: locklift.factory.getContractArtifacts("Proposal").code,
+        _Tip3VoteWalletCode: locklift.factory.getContractArtifacts("VoteTokenWallet").code,
       },
       value: locklift.utils.toNano(50),
     });

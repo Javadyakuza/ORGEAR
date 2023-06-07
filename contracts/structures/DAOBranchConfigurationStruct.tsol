@@ -2,6 +2,8 @@ pragma ever-solidity >= 0.61.2;
 
 interface DAOBranchConfigurationStruct{
         struct DaoBranchConfig{
+            string   Name;
+            string   Logo;
             address  TIP3_VOTE_ROOT_ADDRESS; // constant 
             uint256  TIP3_VOTE_PROPPOSING_QUORUM; // thw quorum for proposing  
             uint128  MIN_TIP3_VOTE_THRESHOLD;  // 
@@ -18,7 +20,5 @@ interface DAOBranchConfigurationStruct{
             uint32   MAX_GRACE_PERIOD;
             uint16   proposalMaxDescriptionLen; 
             uint8    proposalMaxOperations; 
-            TvmCell  proposalCode;
-            TvmCell  Tip3VoteWalletCode;
         }
 }

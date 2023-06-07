@@ -1,5 +1,7 @@
 import { Address } from "locklift";
 var DaoBranchConfig = {
+  Name: "",
+  Logo: "",
   TIP3_VOTE_ROOT_ADDRESS: new Address(""),
   TIP3_VOTE_PROPPOSING_QUORUM: 10,
   MIN_TIP3_VOTE_THRESHOLD: locklift.utils.toNano(10),
@@ -16,7 +18,5 @@ var DaoBranchConfig = {
   MAX_GRACE_PERIOD: 1800,
   proposalMaxDescriptionLen: 255,
   proposalMaxOperations: 10,
-  proposalCode: locklift.factory.getContractArtifacts("Proposal").code,
-  Tip3VoteWalletCode: locklift.factory.getContractArtifacts("VoteTokenWallet").code,
 };
 export { DaoBranchConfig };

@@ -6,7 +6,9 @@
 		{
 			"name": "constructor",
 			"inputs": [
-				{"name":"_DaoBranchCode","type":"cell"}
+				{"name":"_DaoBranchCode","type":"cell"},
+				{"name":"_ProposalCode","type":"cell"},
+				{"name":"_Tip3VoteWalletCode","type":"cell"}
 			],
 			"outputs": [
 			]
@@ -14,7 +16,7 @@
 		{
 			"name": "DeployDaoBranch",
 			"inputs": [
-				{"components":[{"name":"TIP3_VOTE_ROOT_ADDRESS","type":"address"},{"name":"TIP3_VOTE_PROPPOSING_QUORUM","type":"uint256"},{"name":"MIN_TIP3_VOTE_THRESHOLD","type":"uint128"},{"name":"MAX_TIP3_VOTE_THRESHOLD","type":"uint128"},{"name":"MAX_PROPOSAL_QUORUM","type":"uint128"},{"name":"MIN_PROPOSAL_QUORUM","type":"uint128"},{"name":"MIN_VOTING_PERIOD","type":"uint32"},{"name":"MAX_VOTING_PERIOD","type":"uint32"},{"name":"MIN_VOTING_DELAY","type":"uint32"},{"name":"MAX_VOTING_DELAY","type":"uint32"},{"name":"MIN_TIME_LOCK","type":"uint32"},{"name":"MAX_TIME_LOCK","type":"uint32"},{"name":"MIN_GRACE_PERIOD","type":"uint32"},{"name":"MAX_GRACE_PERIOD","type":"uint32"},{"name":"proposalMaxDescriptionLen","type":"uint16"},{"name":"proposalMaxOperations","type":"uint8"},{"name":"proposalCode","type":"cell"},{"name":"Tip3VoteWalletCode","type":"cell"}],"name":"_DaoBranchConfig","type":"tuple"}
+				{"components":[{"name":"Name","type":"string"},{"name":"Logo","type":"string"},{"name":"TIP3_VOTE_ROOT_ADDRESS","type":"address"},{"name":"TIP3_VOTE_PROPPOSING_QUORUM","type":"uint256"},{"name":"MIN_TIP3_VOTE_THRESHOLD","type":"uint128"},{"name":"MAX_TIP3_VOTE_THRESHOLD","type":"uint128"},{"name":"MAX_PROPOSAL_QUORUM","type":"uint128"},{"name":"MIN_PROPOSAL_QUORUM","type":"uint128"},{"name":"MIN_VOTING_PERIOD","type":"uint32"},{"name":"MAX_VOTING_PERIOD","type":"uint32"},{"name":"MIN_VOTING_DELAY","type":"uint32"},{"name":"MAX_VOTING_DELAY","type":"uint32"},{"name":"MIN_TIME_LOCK","type":"uint32"},{"name":"MAX_TIME_LOCK","type":"uint32"},{"name":"MIN_GRACE_PERIOD","type":"uint32"},{"name":"MAX_GRACE_PERIOD","type":"uint32"},{"name":"proposalMaxDescriptionLen","type":"uint16"},{"name":"proposalMaxOperations","type":"uint8"}],"name":"_DaoBranchConfig","type":"tuple"}
 			],
 			"outputs": [
 			]
@@ -69,6 +71,22 @@
 			]
 		},
 		{
+			"name": "ProposalCode",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"ProposalCode","type":"cell"}
+			]
+		},
+		{
+			"name": "Tip3VoteWalletCode",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"Tip3VoteWalletCode","type":"cell"}
+			]
+		},
+		{
 			"name": "TotalDaoBranches",
 			"inputs": [
 			],
@@ -93,6 +111,8 @@
 		{
 			"name": "newBranchDepoyed",
 			"inputs": [
+				{"name":"_name","type":"string"},
+				{"name":"_logo","type":"string"},
 				{"name":"_branchAddress","type":"address"},
 				{"name":"_admin","type":"address"}
 			],
@@ -132,6 +152,8 @@
 		{"name":"admin","type":"address"},
 		{"name":"_nonce","type":"uint32"},
 		{"name":"DaoBranchCode","type":"cell"},
+		{"name":"ProposalCode","type":"cell"},
+		{"name":"Tip3VoteWalletCode","type":"cell"},
 		{"name":"TotalDaoBranches","type":"uint32"},
 		{"name":"pendingAdmin","type":"address"}
 	]

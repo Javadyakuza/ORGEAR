@@ -36,13 +36,17 @@ contract DAOBranch is ProposalConfigurationStructure, DAOBranchConfigurationStru
 
   address public pendingAdmin;
   uint256 public totalProposals;
+  TvmCell public ProposalCode;
+  TvmCell public Tip3VoteWalletCode;
   DaoBranchConfig public BranchConfig;
 
   // normal //
 
-  constructor(DaoBranchConfig _BranchConfig) public {
+  constructor(DaoBranchConfig _BranchConfig,TvmCell _proposalCode, TvmCell _tip3VoteWalletCode) public {
     require(msg.sender == DaoRoot, DaoErrors.NOT_ROOT);
     // initializing the state variabls
+    ProposalCode = _proposalCode;
+    Tip3VoteWalletCode = _tip3VoteWalletCode;
     BranchConfig = _BranchConfig;
   }
 
@@ -134,7 +138,7 @@ contract DAOBranch is ProposalConfigurationStructure, DAOBranchConfigurationStru
   function _buildProposalStateInit(uint256 _proopsalId) private view returns (TvmCell initData_) {
     return
       tvm.buildStateInit({
-        code: BranchConfig.proposalCode,
+        code: ProposalCode,
         contr: Proposal,
         varInit: { PROPOSAL_ID: _proopsalId, DaoBranchAddress: address(this) }
       });
@@ -153,7 +157,7 @@ contract DAOBranch is ProposalConfigurationStructure, DAOBranchConfigurationStru
                 owner_: _walletOwner
             },
             pubkey: 0,
-            code: BranchConfig.Tip3VoteWalletCode
+            code: Tip3VoteWalletCode
         }))); 
   }
   function getAdmin() public override view returns (address admin_) {

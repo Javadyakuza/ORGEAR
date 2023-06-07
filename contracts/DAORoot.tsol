@@ -13,7 +13,7 @@ import "./structures/DAOBranchConfigurationStruct.tsol";
 
 contract DAORoot is DAOBranchConfigurationStruct, IDAORoot{
 
-    event newBranchDepoyed(address _branchAddress, address _admin);
+    event newBranchDepoyed(string _name, string _logo, address _branchAddress, address _admin);
     event DAORootAdminTransferreq(address _oldAdmin, address _newAdmin);
     event DAORootAdminTransfered(address _oldAdmin, address _newAdmin);
     event DAOBranchCodeUpdated();
@@ -22,13 +22,17 @@ contract DAORoot is DAOBranchConfigurationStruct, IDAORoot{
     uint32 static _nonce;
 
     TvmCell public DaoBranchCode;
+    TvmCell public ProposalCode;
+    TvmCell public Tip3VoteWalletCode;
     uint32 public TotalDaoBranches;
     address public pendingAdmin;
 
-    constructor(TvmCell _DaoBranchCode) public {
+    constructor(TvmCell _DaoBranchCode,TvmCell _ProposalCode,TvmCell _Tip3VoteWalletCode) public {
         require(tvm.pubkey() == msg.pubkey(), DaoErrors.NOT_ADMIN);
         tvm.accept();
         DaoBranchCode = _DaoBranchCode;
+        ProposalCode = _ProposalCode;
+        Tip3VoteWalletCode = _Tip3VoteWalletCode;
     }
 
     modifier onlyAdmin () {
@@ -48,9 +52,12 @@ contract DAORoot is DAOBranchConfigurationStruct, IDAORoot{
             value : 0,
             flag : MsgFlag.ALL_NOT_RESERVED
         }(
-            _DaoBranchConfig
+            _DaoBranchConfig,
+            ProposalCode,
+            Tip3VoteWalletCode
+
         );
-        emit newBranchDepoyed(branchAddr, msg.sender);
+        emit newBranchDepoyed(_DaoBranchConfig.Name,_DaoBranchConfig.Logo,branchAddr, msg.sender);
         TotalDaoBranches++;
     }
 

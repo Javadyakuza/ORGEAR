@@ -21,6 +21,8 @@ async function DaoRootDeployer() {
     },
     constructorParams: {
       _DaoCode: locklift.factory.getContractArtifacts("DAO").code,
+      _ProposalCode: locklift.factory.getContractArtifacts("Proposal").code,
+      _Tip3VoteWalletCode: locklift.factory.getContractArtifacts("VoteTokenWallet").code,
     },
     value: locklift.utils.toNano(1),
   });

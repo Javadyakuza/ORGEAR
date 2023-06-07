@@ -5,11 +5,11 @@ var ProposalConfigurationStructure = {
   title: "this is good",
   description: "venom DAO test Proposal",
   votingDelay: 0, // 1 minute delay
-  votingPeriod: 20, // 30 minutes period
+  votingPeriod: 80, // 30 minutes period
   quorumVotes: 30, // 10 quorum votes required
   timeLock: 0, // 2 minutes timelock
   threshold: locklift.utils.toNano(10), // 5 threshold votes required
-  gracePeriod: 50, // 10 minutes grace period
+  gracePeriod: 50 // 10 minutes grace period
 };
 
 export { ProposalConfigurationStructure };

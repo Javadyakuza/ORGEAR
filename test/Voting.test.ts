@@ -195,9 +195,7 @@ describe("shuold perform vote casting", async function () {
     // setting the state varibale
     DAOAddr = Dao.address;
     // testing the dao
-    expect((await Dao.methods.getAdmin({}).call({})).admin_.toString()).to.eq(
-      WalletV3.account.address.toString(),
-    );
+    expect((await Dao.methods.getAdmin({}).call({})).admin_.toString()).to.eq(WalletV3.account.address.toString());
     // deploying it
     const { contract: ActionTestPersonalData } = await locklift.factory.deployContract({
       contract: "ActionTestPersonalData",
@@ -294,8 +292,7 @@ describe("shuold perform vote casting", async function () {
     );
 
     expect(
-      (await proposal.methods.getPorosposalOverview({ nowTime: locklift.testing.getCurrentTime() }).call({})).initConf_
-        .forVotes,
+      (await proposal.methods.getPorosposalOverview({ nowTime: locklift.testing.getCurrentTime() }).call({})).forVotes_,
     ).to.eq("1000000000000");
   });
   it("shuold cast 500 against vote", async function () {
@@ -318,8 +315,8 @@ describe("shuold perform vote casting", async function () {
     );
 
     expect(
-      (await proposal.methods.getPorosposalOverview({ nowTime: locklift.testing.getCurrentTime() }).call({})).initConf_
-        .againstVotes,
+      (await proposal.methods.getPorosposalOverview({ nowTime: locklift.testing.getCurrentTime() }).call({}))
+        .againstVotes_,
     ).to.eq("500000000000");
   });
   //   it("shuold cast a against vote", async function () {});

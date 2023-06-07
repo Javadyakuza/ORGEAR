@@ -194,10 +194,8 @@ describe("shuold take the actions ", async function () {
     DAOCon = Dao;
     // setting the state varibale
     DAOAddr = Dao.address;
-    // testing the 
-    expect((await Dao.methods.getAdmin({}).call({})).admin_.toString()).to.eq(
-      WalletV3.account.address.toString(),
-    );
+    // testing the
+    expect((await Dao.methods.getAdmin({}).call({})).admin_.toString()).to.eq(WalletV3.account.address.toString());
     // deploying it getting a signer for action personal data
     let temp_signer = (await locklift.keystore.getSigner("3"))!;
     //
@@ -317,8 +315,8 @@ describe("shuold take the actions ", async function () {
     );
 
     expect(
-      (await Proposal.methods.getPorosposalOverview({ nowTime: locklift.testing.getCurrentTime() }).call({})).initConf_
-        .againstVotes,
+      (await Proposal.methods.getPorosposalOverview({ nowTime: locklift.testing.getCurrentTime() }).call({}))
+        .againstVotes_,
     ).to.eq("500000000000");
   });
   it("shuold the take the actioin on proposal succeded", async function () {

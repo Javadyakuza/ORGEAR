@@ -3,14 +3,13 @@ import { Address, Contract, Signer, zeroAddress } from "locklift";
 import { FactorySource } from "../build/factorySource";
 import { CreateAccountOutput, WalletTypes } from "locklift/types/index";
 import { DaoConfig } from "./structures_template/DAOConfig.example";
-import { ProposalAction } from "./structures_template/ProposalActionStruct.example";
-import { FactoryType } from "locklift/internal/factory";
+
 let DAORootAddr: Address;
 let DAOAddr: Address;
 let Tip3voteRootAddr: Address;
 let Tip3voteWalletAddr: Address;
 let ActionTestPersonalDataAddr: Address;
-
+var DAOCon: Contract<FactorySource["DAORoot"]>;
 let WalletV3: CreateAccountOutput;
 let signer: Signer;
 
@@ -120,6 +119,7 @@ describe("shuold deploy Dao  ", async function () {
     DAORootAddr = DAORoot.address;
     // testing the dao root
     expect((await DAORoot.methods.getAdmin({}).call({})).admin_.toString()).to.eq(WalletV3.account.address.toString());
+    DAOCon = DAORoot;
   });
 
   it("shuold deploy dao  and return revelant data", async function () {
@@ -134,7 +134,7 @@ describe("shuold deploy Dao  ", async function () {
     DaoConfig.TIP3_VOTE_ROOT_ADDRESS = Tip3voteRootAddr;
     // changing the actions
     // calling the propose function
-    let DaodeployRes = await locklift.tracing.trace(
+    const { traceTree: data } = await locklift.tracing.trace(
       DAORoot.methods
         .DeployDao({
           _DaoConfig: DaoConfig,
@@ -144,7 +144,10 @@ describe("shuold deploy Dao  ", async function () {
           amount: locklift.utils.toNano(10),
         }),
     );
-    expect((await DaodeployRes).aborted).to.eq(false);
+    const DaoRootEvents = data?.findEventsForContract({
+      contract: DAOCon,
+      name: "newDAODeployed" as const, // 'as const' is important thing for type saving
+    });
     // fetching the deployed contract
     const Dao = await locklift.factory.getDeployedContract(
       "DAO",
@@ -152,7 +155,7 @@ describe("shuold deploy Dao  ", async function () {
         await DAORoot.methods
           .expectedDaoAddress({
             _admin_: WalletV3.account.address,
-            _daoId: 0,
+            _daoId: DaoRootEvents![0]._daoId,
           })
           .call({})
       ).value0,
@@ -160,8 +163,6 @@ describe("shuold deploy Dao  ", async function () {
     // setting the state varibale
     DAOAddr = Dao.address;
     // testing the dao
-    expect((await Dao.methods.getAdmin({}).call({})).admin_.toString()).to.eq(
-      WalletV3.account.address.toString(),
-    );
+    expect((await Dao.methods.getAdmin({}).call({})).admin_.toString()).to.eq(WalletV3.account.address.toString());
   });
 });

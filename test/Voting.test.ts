@@ -283,7 +283,6 @@ describe("shuold perform vote casting", async function () {
         .vote({
           _reason: "a good reason",
           _support: true,
-          nowTime: 5,
         })
         .send({
           from: WalletV3_2.account.address,
@@ -291,9 +290,7 @@ describe("shuold perform vote casting", async function () {
         }),
     );
 
-    expect(
-      (await proposal.methods.getPorosposalOverview({ nowTime: locklift.testing.getCurrentTime() }).call({})).forVotes_,
-    ).to.eq("1000000000000");
+    expect((await proposal.methods.getPorosposalOverview({}).call({})).forVotes_).to.eq("1000000000000");
   });
   it("shuold cast 500 against vote", async function () {
     // minting for the second sigenr from the token root
@@ -306,7 +303,6 @@ describe("shuold perform vote casting", async function () {
         .vote({
           _reason: "a bad reason",
           _support: false,
-          nowTime: 5,
         })
         .send({
           from: WalletV3.account.address,
@@ -314,10 +310,7 @@ describe("shuold perform vote casting", async function () {
         }),
     );
 
-    expect(
-      (await proposal.methods.getPorosposalOverview({ nowTime: locklift.testing.getCurrentTime() }).call({}))
-        .againstVotes_,
-    ).to.eq("500000000000");
+    expect((await proposal.methods.getPorosposalOverview({}).call({})).againstVotes_).to.eq("500000000000");
   });
   //   it("shuold cast a against vote", async function () {});
 });

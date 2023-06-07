@@ -173,10 +173,8 @@ describe("shuold deploy proposal", async function () {
     DAOCon = Dao;
     // setting the state varibale
     DAOAddr = Dao.address;
-    // testing the 
-    expect((await Dao.methods.getAdmin({}).call({})).admin_.toString()).to.eq(
-      WalletV3.account.address.toString(),
-    );
+    // testing the
+    expect((await Dao.methods.getAdmin({}).call({})).admin_.toString()).to.eq(WalletV3.account.address.toString());
   });
   it("should deploy ActionTestPersonalData", async function () {
     // deploying it
@@ -220,17 +218,17 @@ describe("shuold deploy proposal", async function () {
         }),
     );
     // fetching the emmited event reffering to ther propoal deploying
-    // const ProposalEvents = data?.findEventsForContract({
-    //   contract: DAOCon,
-    //   name: "ProposalDeployed" as const, // 'as const' is important thing for type saving
-    // });
-    // // fetching the deployed proposal
-    // const Proposal = await locklift.factory.getDeployedContract(
-    //   "Proposal",
-    //   (
-    //     await Dao.methods.expectedProposalAddress({ _proposalId: ProposalEvents![0].proposalId }).call({})
-    //   ).expectedProposalAddress_,
-    // );
+    const ProposalEvents = data?.findEventsForContract({
+      contract: DAOCon,
+      name: "ProposalDeployed" as const, // 'as const' is important thing for type saving
+    });
+    // fetching the deployed proposal
+    const Proposal = await locklift.factory.getDeployedContract(
+      "Proposal",
+      (
+        await Dao.methods.expectedProposalAddress({ _proposalId: ProposalEvents![0].proposalId }).call({})
+      ).expectedProposalAddress_,
+    );
 
     // expect((await Proposal.methods.PROPOSAL_ID({}).call({})).PROPOSAL_ID).to.eq(ProposalEvents![0].proposalId);
   });

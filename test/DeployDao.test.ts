@@ -2,11 +2,11 @@ import { expect } from "chai";
 import { Address, Contract, Signer, zeroAddress } from "locklift";
 import { FactorySource } from "../build/factorySource";
 import { CreateAccountOutput, WalletTypes } from "locklift/types/index";
-import { DaoBranchConfig } from "./structures_template/DAOBranchConfig.example";
+import { DaoConfig } from "./structures_template/DAOConfig.example";
 import { ProposalAction } from "./structures_template/ProposalActionStruct.example";
 import { FactoryType } from "locklift/internal/factory";
 let DAORootAddr: Address;
-let DAOBranchAddr: Address;
+let DAOAddr: Address;
 let Tip3voteRootAddr: Address;
 let Tip3voteWalletAddr: Address;
 let ActionTestPersonalDataAddr: Address;
@@ -14,7 +14,7 @@ let ActionTestPersonalDataAddr: Address;
 let WalletV3: CreateAccountOutput;
 let signer: Signer;
 
-describe("shuold deploy Dao Branch ", async function () {
+describe("shuold deploy Dao  ", async function () {
   before(async () => {
     // checking the codes of contracts are availbale or no
     expect(locklift.factory.getContractArtifacts("VoteTokenRoot").code).not.to.equal(
@@ -110,7 +110,7 @@ describe("shuold deploy Dao Branch ", async function () {
         _nonce: locklift.utils.getRandomNonce(),
       },
       constructorParams: {
-        _DaoBranchCode: locklift.factory.getContractArtifacts("DAOBranch").code,
+        _DaoCode: locklift.factory.getContractArtifacts("DAO").code,
         _ProposalCode: locklift.factory.getContractArtifacts("Proposal").code,
         _Tip3VoteWalletCode: locklift.factory.getContractArtifacts("VoteTokenWallet").code,
       },
@@ -122,7 +122,7 @@ describe("shuold deploy Dao Branch ", async function () {
     expect((await DAORoot.methods.getAdmin({}).call({})).admin_.toString()).to.eq(WalletV3.account.address.toString());
   });
 
-  it("shuold deploy dao branch and return revelant data", async function () {
+  it("shuold deploy dao  and return revelant data", async function () {
     // fetching the contracts
     const DAORoot = await locklift.factory.getDeployedContract("DAORoot", DAORootAddr);
     const ActionTestPersonalData = await locklift.factory.getDeployedContract(
@@ -130,37 +130,37 @@ describe("shuold deploy Dao Branch ", async function () {
       ActionTestPersonalDataAddr,
     );
 
-    // changing the Dao Branch Configuration
-    DaoBranchConfig.TIP3_VOTE_ROOT_ADDRESS = Tip3voteRootAddr;
+    // changing the Dao  Configuration
+    DaoConfig.TIP3_VOTE_ROOT_ADDRESS = Tip3voteRootAddr;
     // changing the actions
     // calling the propose function
-    let DaoBranchdeployRes = await locklift.tracing.trace(
+    let DaodeployRes = await locklift.tracing.trace(
       DAORoot.methods
-        .DeployDaoBranch({
-          _DaoBranchConfig: DaoBranchConfig,
+        .DeployDao({
+          _DaoConfig: DaoConfig,
         })
         .send({
           from: WalletV3.account.address,
           amount: locklift.utils.toNano(10),
         }),
     );
-    expect((await DaoBranchdeployRes).aborted).to.eq(false);
+    expect((await DaodeployRes).aborted).to.eq(false);
     // fetching the deployed contract
-    const DaoBranch = await locklift.factory.getDeployedContract(
-      "DAOBranch",
+    const Dao = await locklift.factory.getDeployedContract(
+      "DAO",
       (
         await DAORoot.methods
-          .expectedDaoBranchAddress({
+          .expectedDaoAddress({
             _admin_: WalletV3.account.address,
-            _daoBranchId: 0,
+            _daoId: 0,
           })
           .call({})
       ).value0,
     );
     // setting the state varibale
-    DAOBranchAddr = DaoBranch.address;
-    // testing the branch
-    expect((await DaoBranch.methods.getAdmin({}).call({})).admin_.toString()).to.eq(
+    DAOAddr = Dao.address;
+    // testing the dao
+    expect((await Dao.methods.getAdmin({}).call({})).admin_.toString()).to.eq(
       WalletV3.account.address.toString(),
     );
   });

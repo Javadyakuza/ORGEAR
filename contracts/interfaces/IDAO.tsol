@@ -4,12 +4,12 @@ pragma AbiHeader pubkey;
 
 import "../structures/ProposalConfigurationStructure.tsol";
 import "../structures/ProposalActionStruct.tsol";
-import "../structures/DAOBranchConfigurationStruct.tsol";
+import "../structures/DAOConfigurationStruct.tsol";
 import "../interfaces/IProposal.tsol";
 
 
 
-interface IDAOBranch is ProposalConfigurationStructure, DAOBranchConfigurationStruct, Action {
+interface IDAO is ProposalConfigurationStructure, DAOConfigurationStruct, Action {
 
   ///@notice the proposal expected address will be calculated from  a postion id wich is totalProposals + 1 
   function propose(ProposalInitConfiguration _ProposalInitConfiguration, VenomActions[] _venomActions) external internalMsg;
@@ -22,7 +22,7 @@ interface IDAOBranch is ProposalConfigurationStructure, DAOBranchConfigurationSt
   function expectedTip3VoteWalletAddress(address _walletOwner) external view returns (address expectedTip3WalletAddress_);
   function getAdmin() external view returns (address admin_) ;
 
-  function getDAOBranchConfig() external view returns (DaoBranchConfig DAOBranchConfig_);
+  function getDAOConfig() external view returns (DaoConfig DAOConfig_);
 
   function getTotalProposals() external view returns (uint256 totalProposal_);
 
@@ -33,7 +33,7 @@ interface IDAOBranch is ProposalConfigurationStructure, DAOBranchConfigurationSt
 
   function acceptBeingAdmin() external;
 
-  function changeDAOBranchprefrences(DaoBranchConfig _BranchConfig) external;
+  function changeDAOprefrences(DaoConfig _Config) external;
   // -- ADMIN FUNCTION -- //
 
 }

@@ -39,9 +39,9 @@ describe("deploying Dao contract", async function () {
     expect(locklift.factory.getContractArtifacts("DAORoot").code).not.to.equal(undefined, "Code should be available");
     expect(locklift.factory.getContractArtifacts("DAORoot").abi).not.to.equal(undefined, "ABI should be available");
     expect(locklift.factory.getContractArtifacts("DAORoot").tvc).not.to.equal(undefined, "tvc should be available");
-    expect(locklift.factory.getContractArtifacts("DAOBranch").code).not.to.equal(undefined, "Code should be available");
-    expect(locklift.factory.getContractArtifacts("DAOBranch").abi).not.to.equal(undefined, "ABI should be available");
-    expect(locklift.factory.getContractArtifacts("DAOBranch").tvc).not.to.equal(undefined, "tvc should be available");
+    expect(locklift.factory.getContractArtifacts("DAO").code).not.to.equal(undefined, "Code should be available");
+    expect(locklift.factory.getContractArtifacts("DAO").abi).not.to.equal(undefined, "ABI should be available");
+    expect(locklift.factory.getContractArtifacts("DAO").tvc).not.to.equal(undefined, "tvc should be available");
     expect(locklift.factory.getContractArtifacts("Proposal").code).not.to.equal(undefined, "Code should be available");
     expect(locklift.factory.getContractArtifacts("Proposal").abi).not.to.equal(undefined, "ABI should be available");
     expect(locklift.factory.getContractArtifacts("Proposal").tvc).not.to.equal(undefined, "tvc should be available");
@@ -123,7 +123,7 @@ describe("deploying Dao contract", async function () {
         _nonce: locklift.utils.getRandomNonce(),
       },
       constructorParams: {
-        _DaoBranchCode: locklift.factory.getContractArtifacts("DAOBranch").code,
+        _DaoCode: locklift.factory.getContractArtifacts("DAO").code,
         _ProposalCode: locklift.factory.getContractArtifacts("Proposal").code,
         _Tip3VoteWalletCode: locklift.factory.getContractArtifacts("VoteTokenWallet").code,
       },

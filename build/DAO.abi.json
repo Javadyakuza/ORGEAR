@@ -1,0 +1,224 @@
+{
+	"ABI version": 2,
+	"version": "2.2",
+	"header": ["pubkey", "time", "expire"],
+	"functions": [
+		{
+			"name": "constructor",
+			"inputs": [
+				{"components":[{"name":"Name","type":"string"},{"name":"Logo","type":"string"},{"name":"TIP3_VOTE_ROOT_ADDRESS","type":"address"},{"name":"TIP3_VOTE_PROPPOSING_QUORUM","type":"uint256"},{"name":"MIN_TIP3_VOTE_THRESHOLD","type":"uint128"},{"name":"MAX_TIP3_VOTE_THRESHOLD","type":"uint128"},{"name":"MAX_PROPOSAL_QUORUM","type":"uint128"},{"name":"MIN_PROPOSAL_QUORUM","type":"uint128"},{"name":"MIN_VOTING_PERIOD","type":"uint32"},{"name":"MAX_VOTING_PERIOD","type":"uint32"},{"name":"MIN_VOTING_DELAY","type":"uint32"},{"name":"MAX_VOTING_DELAY","type":"uint32"},{"name":"MIN_TIME_LOCK","type":"uint32"},{"name":"MAX_TIME_LOCK","type":"uint32"},{"name":"MIN_GRACE_PERIOD","type":"uint32"},{"name":"MAX_GRACE_PERIOD","type":"uint32"},{"name":"proposalMaxDescriptionLen","type":"uint16"},{"name":"proposalMaxOperations","type":"uint8"}],"name":"_Config","type":"tuple"},
+				{"name":"_proposalCode","type":"cell"},
+				{"name":"_tip3VoteWalletCode","type":"cell"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "propose",
+			"inputs": [
+				{"components":[{"name":"title","type":"string"},{"name":"description","type":"string"},{"name":"votingDelay","type":"uint32"},{"name":"votingPeriod","type":"uint32"},{"name":"quorumVotes","type":"uint128"},{"name":"timeLock","type":"uint32"},{"name":"threshold","type":"uint128"},{"name":"gracePeriod","type":"uint32"}],"name":"_ProposalInitConfiguration","type":"tuple"},
+				{"components":[{"name":"value","type":"uint256"},{"name":"target","type":"address"},{"name":"payload","type":"cell"}],"name":"_venomActions","type":"tuple[]"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "deployProposal",
+			"inputs": [
+				{"name":"_balance","type":"uint256"},
+				{"name":"_payload","type":"cell"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "onProposalSucceeded",
+			"inputs": [
+				{"components":[{"name":"value","type":"uint256"},{"name":"target","type":"address"},{"name":"payload","type":"cell"}],"name":"_venomActions","type":"tuple[]"},
+				{"name":"_proposalId","type":"uint256"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "expectedProposalAddress",
+			"inputs": [
+				{"name":"_proposalId","type":"uint256"}
+			],
+			"outputs": [
+				{"name":"expectedProposalAddress_","type":"address"}
+			]
+		},
+		{
+			"name": "expectedTip3VoteWalletAddress",
+			"inputs": [
+				{"name":"_walletOwner","type":"address"}
+			],
+			"outputs": [
+				{"name":"expectedTip3WalletAddress_","type":"address"}
+			]
+		},
+		{
+			"name": "getAdmin",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"admin_","type":"address"}
+			]
+		},
+		{
+			"name": "getDAOConfig",
+			"inputs": [
+			],
+			"outputs": [
+				{"components":[{"name":"Name","type":"string"},{"name":"Logo","type":"string"},{"name":"TIP3_VOTE_ROOT_ADDRESS","type":"address"},{"name":"TIP3_VOTE_PROPPOSING_QUORUM","type":"uint256"},{"name":"MIN_TIP3_VOTE_THRESHOLD","type":"uint128"},{"name":"MAX_TIP3_VOTE_THRESHOLD","type":"uint128"},{"name":"MAX_PROPOSAL_QUORUM","type":"uint128"},{"name":"MIN_PROPOSAL_QUORUM","type":"uint128"},{"name":"MIN_VOTING_PERIOD","type":"uint32"},{"name":"MAX_VOTING_PERIOD","type":"uint32"},{"name":"MIN_VOTING_DELAY","type":"uint32"},{"name":"MAX_VOTING_DELAY","type":"uint32"},{"name":"MIN_TIME_LOCK","type":"uint32"},{"name":"MAX_TIME_LOCK","type":"uint32"},{"name":"MIN_GRACE_PERIOD","type":"uint32"},{"name":"MAX_GRACE_PERIOD","type":"uint32"},{"name":"proposalMaxDescriptionLen","type":"uint16"},{"name":"proposalMaxOperations","type":"uint8"}],"name":"DAOConfig_","type":"tuple"}
+			]
+		},
+		{
+			"name": "getTotalProposals",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"totalProposal_","type":"uint256"}
+			]
+		},
+		{
+			"name": "_venomActionTotalValue",
+			"inputs": [
+				{"components":[{"name":"value","type":"uint256"},{"name":"target","type":"address"},{"name":"payload","type":"cell"}],"name":"_venomActions","type":"tuple[]"}
+			],
+			"outputs": [
+				{"name":"totalValue_","type":"uint256"}
+			]
+		},
+		{
+			"name": "changeAdmin",
+			"inputs": [
+				{"name":"_newAdmin","type":"address"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "acceptBeingAdmin",
+			"inputs": [
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "changeDAOprefrences",
+			"inputs": [
+				{"components":[{"name":"Name","type":"string"},{"name":"Logo","type":"string"},{"name":"TIP3_VOTE_ROOT_ADDRESS","type":"address"},{"name":"TIP3_VOTE_PROPPOSING_QUORUM","type":"uint256"},{"name":"MIN_TIP3_VOTE_THRESHOLD","type":"uint128"},{"name":"MAX_TIP3_VOTE_THRESHOLD","type":"uint128"},{"name":"MAX_PROPOSAL_QUORUM","type":"uint128"},{"name":"MIN_PROPOSAL_QUORUM","type":"uint128"},{"name":"MIN_VOTING_PERIOD","type":"uint32"},{"name":"MAX_VOTING_PERIOD","type":"uint32"},{"name":"MIN_VOTING_DELAY","type":"uint32"},{"name":"MAX_VOTING_DELAY","type":"uint32"},{"name":"MIN_TIME_LOCK","type":"uint32"},{"name":"MAX_TIME_LOCK","type":"uint32"},{"name":"MIN_GRACE_PERIOD","type":"uint32"},{"name":"MAX_GRACE_PERIOD","type":"uint32"},{"name":"proposalMaxDescriptionLen","type":"uint16"},{"name":"proposalMaxOperations","type":"uint8"}],"name":"_Config","type":"tuple"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "pendingAdmin",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"pendingAdmin","type":"address"}
+			]
+		},
+		{
+			"name": "totalProposals",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"totalProposals","type":"uint256"}
+			]
+		},
+		{
+			"name": "ProposalCode",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"ProposalCode","type":"cell"}
+			]
+		},
+		{
+			"name": "Tip3VoteWalletCode",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"Tip3VoteWalletCode","type":"cell"}
+			]
+		},
+		{
+			"name": "Config",
+			"inputs": [
+			],
+			"outputs": [
+				{"components":[{"name":"Name","type":"string"},{"name":"Logo","type":"string"},{"name":"TIP3_VOTE_ROOT_ADDRESS","type":"address"},{"name":"TIP3_VOTE_PROPPOSING_QUORUM","type":"uint256"},{"name":"MIN_TIP3_VOTE_THRESHOLD","type":"uint128"},{"name":"MAX_TIP3_VOTE_THRESHOLD","type":"uint128"},{"name":"MAX_PROPOSAL_QUORUM","type":"uint128"},{"name":"MIN_PROPOSAL_QUORUM","type":"uint128"},{"name":"MIN_VOTING_PERIOD","type":"uint32"},{"name":"MAX_VOTING_PERIOD","type":"uint32"},{"name":"MIN_VOTING_DELAY","type":"uint32"},{"name":"MAX_VOTING_DELAY","type":"uint32"},{"name":"MIN_TIME_LOCK","type":"uint32"},{"name":"MAX_TIME_LOCK","type":"uint32"},{"name":"MIN_GRACE_PERIOD","type":"uint32"},{"name":"MAX_GRACE_PERIOD","type":"uint32"},{"name":"proposalMaxDescriptionLen","type":"uint16"},{"name":"proposalMaxOperations","type":"uint8"}],"name":"Config","type":"tuple"}
+			]
+		}
+	],
+	"data": [
+		{"key":1,"name":"daoId","type":"uint256"},
+		{"key":2,"name":"admin","type":"address"},
+		{"key":3,"name":"DaoRoot","type":"address"}
+	],
+	"events": [
+		{
+			"name": "ProposalDeployed",
+			"inputs": [
+				{"name":"_proposer","type":"address"},
+				{"name":"_proposal","type":"address"},
+				{"name":"proposalId","type":"uint256"},
+				{"name":"description","type":"string"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "ProposaDeployFailed",
+			"inputs": [
+				{"name":"_proposer","type":"address"},
+				{"name":"_futuredProposalId","type":"uint256"},
+				{"name":"Payload","type":"cell"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "AdminTransferRequest",
+			"inputs": [
+				{"name":"_oldAdmin","type":"address"},
+				{"name":"_newAdmin","type":"address"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "AdminTransfered",
+			"inputs": [
+				{"name":"_oldAdmin","type":"address"},
+				{"name":"_newAdmin","type":"address"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "DAOPrefrencesChanged",
+			"inputs": [
+			],
+			"outputs": [
+			]
+		}
+	],
+	"fields": [
+		{"name":"_pubkey","type":"uint256"},
+		{"name":"_timestamp","type":"uint64"},
+		{"name":"_constructorFlag","type":"bool"},
+		{"name":"daoId","type":"uint256"},
+		{"name":"admin","type":"address"},
+		{"name":"DaoRoot","type":"address"},
+		{"name":"pendingAdmin","type":"address"},
+		{"name":"totalProposals","type":"uint256"},
+		{"name":"ProposalCode","type":"cell"},
+		{"name":"Tip3VoteWalletCode","type":"cell"},
+		{"components":[{"name":"Name","type":"string"},{"name":"Logo","type":"string"},{"name":"TIP3_VOTE_ROOT_ADDRESS","type":"address"},{"name":"TIP3_VOTE_PROPPOSING_QUORUM","type":"uint256"},{"name":"MIN_TIP3_VOTE_THRESHOLD","type":"uint128"},{"name":"MAX_TIP3_VOTE_THRESHOLD","type":"uint128"},{"name":"MAX_PROPOSAL_QUORUM","type":"uint128"},{"name":"MIN_PROPOSAL_QUORUM","type":"uint128"},{"name":"MIN_VOTING_PERIOD","type":"uint32"},{"name":"MAX_VOTING_PERIOD","type":"uint32"},{"name":"MIN_VOTING_DELAY","type":"uint32"},{"name":"MAX_VOTING_DELAY","type":"uint32"},{"name":"MIN_TIME_LOCK","type":"uint32"},{"name":"MAX_TIME_LOCK","type":"uint32"},{"name":"MIN_GRACE_PERIOD","type":"uint32"},{"name":"MAX_GRACE_PERIOD","type":"uint32"},{"name":"proposalMaxDescriptionLen","type":"uint16"},{"name":"proposalMaxOperations","type":"uint8"}],"name":"Config","type":"tuple"}
+	]
+}

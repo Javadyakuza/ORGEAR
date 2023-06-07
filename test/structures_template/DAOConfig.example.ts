@@ -1,5 +1,5 @@
 import { Address } from "locklift";
-var DaoBranchConfig = {
+var DaoConfig = {
   Name: "",
   Logo: "",
   TIP3_VOTE_ROOT_ADDRESS: new Address("0x1234567890123456789012345678901234567890"),
@@ -19,4 +19,4 @@ var DaoBranchConfig = {
   proposalMaxDescriptionLen: 255,
   proposalMaxOperations: 10,
 };
-export { DaoBranchConfig };
+export { DaoConfig };

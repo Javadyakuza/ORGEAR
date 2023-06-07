@@ -4,7 +4,7 @@ import "./structures/ProposalActionStruct.tsol";
 import "./structures/ProposalConfigurationStructure.tsol";
 import "./structures/ProposalStates.tsol";
 import "./interfaces/IProposal.tsol";
-import "./interfaces/IDAOBranch.tsol";
+import "./interfaces/IDAO.tsol";
 import "tip3vote/contracts/interfaces/IVoteTokenWallet.tsol";
 import "tip3vote/contracts/interfaces/IVoteTokenRoot.tsol";
 import "tip3vote/contracts/VoteTokenWallet.tsol";
@@ -15,7 +15,7 @@ import "@broxus/contracts/contracts/libraries/MsgFlag.tsol";
 contract Proposal is  ProposalConfigurationStructure, Action, ProposalStates, IProposal{
   // static //
   uint256 public static PROPOSAL_ID;
-  address public static DaoBranchAddress;
+  address public static DaoAddress;
 
   // static //
 
@@ -119,7 +119,7 @@ contract Proposal is  ProposalConfigurationStructure, Action, ProposalStates, IP
      // emiting the event 
      emit Executed();
      // excuting the contract from the dao root channel 
-     IDAOBranch(DaoBranchAddress).onProposalSucceeded{
+     IDAO(DaoAddress).onProposalSucceeded{
       value : 0, 
       flag : MsgFlag.ALL_NOT_RESERVED
      }(venomActions, PROPOSAL_ID);
@@ -147,7 +147,7 @@ contract Proposal is  ProposalConfigurationStructure, Action, ProposalStates, IP
 
   function onActionsExecuted() public override view {
         // only dao can call his function 
-        require(msg.sender == DaoBranchAddress, DaoErrors.NOT_DAO);
+        require(msg.sender == DaoAddress, DaoErrors.NOT_DAO);
         // saving the inital balance of the contract Gas.MAIN_VALUE, : inital balance 
         tvm.rawReserve(Gas.MAIN_VALUE, 2);
         // emiting a event 

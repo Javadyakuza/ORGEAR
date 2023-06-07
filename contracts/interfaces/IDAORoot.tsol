@@ -3,23 +3,23 @@ pragma ever-solidity >= 0.61.2;
 pragma AbiHeader expire;
 pragma AbiHeader pubkey;
 
-import "../DAOBranch.tsol";
+import "../DAO.tsol";
 import "../libraries/DAOErrors.tsol";
-import "../interfaces/IDAOBranch.tsol";
+import "../interfaces/IDAO.tsol";
 import "@broxus/contracts/contracts/libraries/MsgFlag.tsol";
 import "../libraries/Gas.tsol";
-import "../structures/DAOBranchConfigurationStruct.tsol";
+import "../structures/DAOConfigurationStruct.tsol";
 
-interface IDAORoot is DAOBranchConfigurationStruct{
+interface IDAORoot is DAOConfigurationStruct{
 
 
 
-    // this function deploys A dao Branch
-    function DeployDaoBranch( DaoBranchConfig _DaoBranchConfig) external internalMsg;
+    // this function deploys A dao 
+    function DeployDao( DaoConfig _DaoConfig) external internalMsg;
 
     // -- admin functions -- //
-    // this function chages the DaoBranch code 
-    function updateDaoBranchCode(TvmCell _DaoBranchCode) external ;
+    // this function chages the Dao code 
+    function updateDaoCode(TvmCell _DaoCode) external ;
 
     function transferAdmin(address _newAdmin) external;
     function acceptBeingAdmin() external;
@@ -27,7 +27,7 @@ interface IDAORoot is DAOBranchConfigurationStruct{
     // -- get function -- //
     function getAdmin() external view returns(address admin_);
         // this function calculates the daoranch address 
-    function expectedDaoBranchAddress (uint32 _nonce_, address _admin_) external view returns(address);
+    function expectedDaoAddress (uint32 _nonce_, address _admin_) external view returns(address);
     // -- get function -- //
 
  }

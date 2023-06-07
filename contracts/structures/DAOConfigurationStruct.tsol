@@ -1,7 +1,7 @@
 pragma ever-solidity >= 0.61.2;
 
-interface DAOBranchConfigurationStruct{
-        struct DaoBranchConfig{
+interface DAOConfigurationStruct{
+        struct DaoConfig{
             string   Name;
             string   Logo;
             address  TIP3_VOTE_ROOT_ADDRESS; // constant 

@@ -223,7 +223,6 @@ describe("shuold take the actions ", async function () {
     ProposalAction[1].payload = await ActionTestPersonalData.methods.setName({ _name: "hamed" }).encodeInternal();
     // changing the actions
     // changing the poroposal configuration tip3 vote address
-    ProposalConfigurationStructure.TIP3_VOTE_ROOT_ADDRESS = Tip3voteRootAddr;
     // changing the proposal description to prevent the 51 error
     ProposalConfigurationStructure.description = "another proposal";
     //

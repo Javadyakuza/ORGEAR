@@ -106,7 +106,9 @@ contract DAOBranch is ProposalConfigurationStructure, DAOBranchConfigurationStru
     }(
       _ProposalConf,
       _venomActions,
-      msg.sender // msg sender checked
+      msg.sender, // msg sender checked,
+      Tip3VoteWalletCode,
+      BranchConfig.TIP3_VOTE_ROOT_ADDRESS
     );
     // adding one to the total proposals the totalProposals
     emit ProposalDeployed(_proposer, proposalAddr, totalProposals + 1, _ProposalConf.description);

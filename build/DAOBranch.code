@@ -80,35 +80,26 @@ IFREF {
 OVER
 PUSHCONT {
 	LDREF
+	LDREF
+	LDU 32
+	LDU 32
+	LDREF
 	ENDS
 	CTOS
 }
-IF
-LDMSGADDR
-LDREF
-LDU 256
-LDREF
-ENDS
-CTOS
-LDU 256
-LDU 32
-LDU 32
+PUSHCONT {
+	LDREF
+	LDREF
+	LDU 32
+	LDU 32
+}
+IFELSE
 LDU 128
 LDU 32
 LDU 128
 LDU 32
-LDU 256
-LDREF
-ENDS
-CTOS
-LDU 256
-LDU 256
-LDI 1
-LDI 1
-LDREF
-ROLLREV 16
-PUSHINT 16
-TUPLEVAR
+ROLLREV 8
+TUPLE 8
 SWAP
 LDU 32
 LDDICT
@@ -172,40 +163,22 @@ GETGLOB 9
 XCHG S2
 NEWC
 SWAP
-PUSHINT 16
-UNTUPLEVAR
-REVERSE 17, 0
-STSLICE
+UNTUPLE 8
+REVERSE 9, 0
 STREF
-STU 256
-ROLLREV 15
-NEWC
-STU 256
+STREF
 STU 32
 STU 32
 STU 128
 STU 32
 STU 128
 STU 32
-STU 256
-ROLLREV 7
-NEWC
-STU 256
-STU 256
-STI 1
-STI 1
-STREF
 SWAP
 UNPAIR
 XCHG S2
 STU 32
 STDICT
-SWAP
-NEWC
 STSLICE
-STBREFR
-STBREFR
-STBREFR
 ENDC
 .loc ../contracts/DAOBranch.tsol, 76
 GETGLOB 9
@@ -283,40 +256,22 @@ THROWIF 72
 .loc ../contracts/DAOBranch.tsol, 90
 DUP
 CTOS
-LDMSGADDR
 LDREF
-LDU 256
 LDREF
-ENDS
-CTOS
-LDU 256
 LDU 32
 LDU 32
 LDU 128
 LDU 32
 LDU 128
 LDU 32
-LDU 256
-LDREF
-ENDS
-CTOS
-LDU 256
-LDU 256
-LDI 1
-LDI 1
-LDREF
-ROLLREV 16
-PUSHINT 16
-TUPLEVAR
+ROLLREV 8
+TUPLE 8
 SWAP
 LDU 32
 LDDICT
 ROTREV
 PAIR
 SWAP
-LDREF
-ENDS
-CTOS
 LDMSGADDR
 ENDS
 .loc ../contracts/DAOBranch.tsol, 92
@@ -366,9 +321,12 @@ PUSHCONT {
 }
 IF
 .loc ../contracts/DAOBranch.tsol, 102
+GETGLOB 17
+THIRD
+GETGLOB 16
 GETGLOB 9
-ROT
-PUSH S3
+ROLL 4
+PUSH S5
 GETGLOB 14
 INC
 CALLREF {
@@ -381,8 +339,8 @@ STSLICECONST x801_
 STU 256
 ENDC
 CTOS
-ROLLREV 4
-PUSH S4
+ROLLREV 6
+PUSH S6
 NEWC
 STSLICECONST x62_
 STSLICE
@@ -413,49 +371,39 @@ CALLREF {
 }
 STREF
 STSLICECONST 1
-ROLLREV 3
+ROLLREV 5
 NEWC
-STSLICECONST x02d0ec43
+STSLICECONST x57997030
 SWAP
-PUSHINT 16
-UNTUPLEVAR
-REVERSE 17, 0
-STSLICE
+UNTUPLE 8
+REVERSE 9, 0
 STREF
-STU 256
-ROLLREV 15
-NEWC
-STU 256
+STREF
 STU 32
 STU 32
 STU 128
 STU 32
 STU 128
 STU 32
-STU 256
-ROLLREV 7
-NEWC
-STU 256
-STU 256
-STI 1
-STI 1
-STREF
 SWAP
 UNPAIR
 XCHG S2
 STU 32
 STDICT
+ROLLREV 3
+NEWC
+STSLICE
+STREF
 SWAP
 NEWC
 STSLICE
-STBREFR
 STBREFR
 STBREFR
 STBREFR
 ENDC
 PUSHPOW2 7
 SENDRAWMSG
-.loc ../contracts/DAOBranch.tsol, 112
+.loc ../contracts/DAOBranch.tsol, 114
 ROT
 SECOND
 GETGLOB 14
@@ -479,7 +427,7 @@ STBREFR
 ENDC
 PUSHINT 0
 SENDRAWMSG
-.loc ../contracts/DAOBranch.tsol, 113
+.loc ../contracts/DAOBranch.tsol, 115
 DROP2
 GETGLOB 14
 INC
@@ -495,7 +443,7 @@ ISNULL
 IFREF {
 	CALL $c4_to_c7$
 }
-.loc ../contracts/DAOBranch.tsol, 117
+.loc ../contracts/DAOBranch.tsol, 119
 OVER
 PUSHCONT {
 	LDU 32
@@ -531,7 +479,7 @@ THROW 0
 CALL $onProposalSucceeded_8abc98f4_internal_macro$
 
 .macro onProposalSucceeded_8abc98f4_internal_macro
-.loc ../contracts/DAOBranch.tsol, 117
+.loc ../contracts/DAOBranch.tsol, 119
 GETGLOB 9
 OVER
 .loc ../contracts/DAOBranch.tsol, 58
@@ -540,7 +488,7 @@ CALLREF {
 }
 SDEQ
 THROWIFNOT 107
-.loc ../contracts/DAOBranch.tsol, 120
+.loc ../contracts/DAOBranch.tsol, 122
 DEPTH
 ADDCONST -2
 PICK
@@ -550,11 +498,11 @@ CALLREF {
 }
 GEQ
 THROWIFNOT 130
-.loc ../contracts/DAOBranch.tsol, 122
+.loc ../contracts/DAOBranch.tsol, 124
 PUSHINT 0
 PUSHINT 4
 RAWRESERVE
-.loc ../contracts/DAOBranch.tsol, 124
+.loc ../contracts/DAOBranch.tsol, 126
 PUSHINT 0
 PUSHCONT {
 	PUSH2 S0, S2
@@ -562,7 +510,7 @@ PUSHCONT {
 	LESS
 }
 PUSHCONT {
-	.loc ../contracts/DAOBranch.tsol, 125
+	.loc ../contracts/DAOBranch.tsol, 127
 	PUSH2 S0, S2
 	SECOND
 	PUSHINT 32
@@ -614,13 +562,13 @@ PUSHCONT {
 	ENDC
 	PUSHINT 1
 	SENDRAWMSG
-	.loc ../contracts/DAOBranch.tsol, 124
+	.loc ../contracts/DAOBranch.tsol, 126
 	INC
 	.loc ../contracts/DAOBranch.tsol, 0
 }
 WHILE
 DROP
-.loc ../contracts/DAOBranch.tsol, 132
+.loc ../contracts/DAOBranch.tsol, 134
 CALLREF {
 	CALL $expectedProposalAddress_6c53fa69_internal_macro$
 }
@@ -640,7 +588,7 @@ DROP
 CALL $_buildProposalStateInit_7cbbb768_internal_macro$
 
 .macro _buildProposalStateInit_7cbbb768_internal_macro
-.loc ../contracts/DAOBranch.tsol, 140
+.loc ../contracts/DAOBranch.tsol, 142
 PUSHINT 0
 NEWC
 STU 256
@@ -681,7 +629,7 @@ ISNULL
 IFREF {
 	CALL $c4_to_c7$
 }
-.loc ../contracts/DAOBranch.tsol, 148
+.loc ../contracts/DAOBranch.tsol, 150
 OVER
 PUSHCONT {
 	LDREF
@@ -731,7 +679,7 @@ THROW 0
 CALL $expectedProposalAddress_6c53fa69_internal_macro$
 
 .macro expectedProposalAddress_6c53fa69_internal_macro
-.loc ../contracts/DAOBranch.tsol, 149
+.loc ../contracts/DAOBranch.tsol, 151
 CALLREF {
 	CALL $_buildProposalStateInit_7cbbb768_internal_macro$
 }
@@ -752,7 +700,7 @@ ISNULL
 IFREF {
 	CALL $c4_to_c7$
 }
-.loc ../contracts/DAOBranch.tsol, 151
+.loc ../contracts/DAOBranch.tsol, 153
 OVER
 PUSHCONT {
 	LDREF
@@ -802,7 +750,7 @@ THROW 0
 CALL $expectedTip3VoteWalletAddress_22764724_internal_macro$
 
 .macro expectedTip3VoteWalletAddress_22764724_internal_macro
-.loc ../contracts/DAOBranch.tsol, 152
+.loc ../contracts/DAOBranch.tsol, 154
 PUSHINT 0
 NEWC
 STU 256
@@ -848,7 +796,7 @@ ISNULL
 IFREF {
 	CALL $c4_to_c7$
 }
-.loc ../contracts/DAOBranch.tsol, 163
+.loc ../contracts/DAOBranch.tsol, 165
 ENDS
 .loc ../contracts/DAOBranch.tsol, 0
 CALLREF {
@@ -890,7 +838,7 @@ THROW 0
 CALL $getAdmin_6e9960c3_internal_macro$
 
 .macro getAdmin_6e9960c3_internal_macro
-.loc ../contracts/DAOBranch.tsol, 164
+.loc ../contracts/DAOBranch.tsol, 166
 GETGLOB 11
 .loc ../contracts/DAOBranch.tsol, 0
 
@@ -903,7 +851,7 @@ ISNULL
 IFREF {
 	CALL $c4_to_c7$
 }
-.loc ../contracts/DAOBranch.tsol, 166
+.loc ../contracts/DAOBranch.tsol, 168
 ENDS
 .loc ../contracts/DAOBranch.tsol, 0
 CALLREF {
@@ -971,7 +919,7 @@ THROW 0
 CALL $getDAOBranchConfig_38d2688d_internal_macro$
 
 .macro getDAOBranchConfig_38d2688d_internal_macro
-.loc ../contracts/DAOBranch.tsol, 167
+.loc ../contracts/DAOBranch.tsol, 169
 GETGLOB 17
 .loc ../contracts/DAOBranch.tsol, 0
 
@@ -984,7 +932,7 @@ ISNULL
 IFREF {
 	CALL $c4_to_c7$
 }
-.loc ../contracts/DAOBranch.tsol, 169
+.loc ../contracts/DAOBranch.tsol, 171
 ENDS
 .loc ../contracts/DAOBranch.tsol, 0
 CALLREF {
@@ -1022,7 +970,7 @@ THROW 0
 CALL $getTotalProposals_1a5007dd_internal_macro$
 
 .macro getTotalProposals_1a5007dd_internal_macro
-.loc ../contracts/DAOBranch.tsol, 170
+.loc ../contracts/DAOBranch.tsol, 172
 GETGLOB 14
 .loc ../contracts/DAOBranch.tsol, 0
 
@@ -1030,7 +978,7 @@ GETGLOB 14
 DROP
 GETGLOB 6
 THROWIFNOT 76
-.loc ../contracts/DAOBranch.tsol, 172
+.loc ../contracts/DAOBranch.tsol, 174
 LDU 32
 LDDICT
 ROTREV
@@ -1073,17 +1021,17 @@ THROW 0
 CALL $_venomActionTotalValue_3e9584e6_internal_macro$
 
 .macro _venomActionTotalValue_3e9584e6_internal_macro
-.loc ../contracts/DAOBranch.tsol, 174
+.loc ../contracts/DAOBranch.tsol, 176
 PUSHINT 0
 DUP
-.loc ../contracts/DAOBranch.tsol, 175
+.loc ../contracts/DAOBranch.tsol, 177
 PUSHCONT {
 	PUSH2 S0, S2
 	FIRST
 	LESS
 }
 PUSHCONT {
-	.loc ../contracts/DAOBranch.tsol, 177
+	.loc ../contracts/DAOBranch.tsol, 179
 	PUSH2 S0, S2
 	SECOND
 	PUSHINT 32
@@ -1102,13 +1050,13 @@ PUSHCONT {
 	PUSH S2
 	ADD
 	POP S2
-	.loc ../contracts/DAOBranch.tsol, 175
+	.loc ../contracts/DAOBranch.tsol, 177
 	INC
 	.loc ../contracts/DAOBranch.tsol, 0
 }
 WHILE
 DROP
-.loc ../contracts/DAOBranch.tsol, 179
+.loc ../contracts/DAOBranch.tsol, 181
 NIP
 .loc ../contracts/DAOBranch.tsol, 0
 
@@ -1121,7 +1069,7 @@ ISNULL
 IFREF {
 	CALL $c4_to_c7$
 }
-.loc ../contracts/DAOBranch.tsol, 183
+.loc ../contracts/DAOBranch.tsol, 185
 OVER
 PUSHCONT {
 	LDREF
@@ -1151,9 +1099,9 @@ GETGLOB 9
 GETGLOB 11
 SDEQ
 THROWIFNOT 103
-.loc ../contracts/DAOBranch.tsol, 184
-ACCEPT
 .loc ../contracts/DAOBranch.tsol, 186
+ACCEPT
+.loc ../contracts/DAOBranch.tsol, 188
 DUP
 GETGLOB 9
 PUSHSLICE xc0000000000000000000000001
@@ -1171,7 +1119,7 @@ STBREFR
 ENDC
 PUSHINT 0
 SENDRAWMSG
-.loc ../contracts/DAOBranch.tsol, 188
+.loc ../contracts/DAOBranch.tsol, 190
 SETGLOB 13
 .loc ../contracts/DAOBranch.tsol, 0
 
@@ -1184,7 +1132,7 @@ ISNULL
 IFREF {
 	CALL $c4_to_c7$
 }
-.loc ../contracts/DAOBranch.tsol, 192
+.loc ../contracts/DAOBranch.tsol, 194
 ENDS
 .loc ../contracts/DAOBranch.tsol, 0
 CALLREF {
@@ -1201,7 +1149,7 @@ THROW 0
 CALL $acceptBeingAdmin_3f6ff0e4_internal_macro$
 
 .macro acceptBeingAdmin_3f6ff0e4_internal_macro
-.loc ../contracts/DAOBranch.tsol, 194
+.loc ../contracts/DAOBranch.tsol, 196
 GETGLOB 9
 GETGLOB 13
 SDEQ
@@ -1212,11 +1160,11 @@ PUSHINT 1000000000
 GEQ
 AND
 THROWIFNOT 105
-.loc ../contracts/DAOBranch.tsol, 196
+.loc ../contracts/DAOBranch.tsol, 198
 PUSHINT 0
 PUSHINT 4
 RAWRESERVE
-.loc ../contracts/DAOBranch.tsol, 198
+.loc ../contracts/DAOBranch.tsol, 200
 GETGLOB 13
 GETGLOB 11
 PUSHSLICE xc0000000000000000000000001
@@ -1234,15 +1182,15 @@ STBREFR
 ENDC
 PUSHINT 0
 SENDRAWMSG
-.loc ../contracts/DAOBranch.tsol, 200
+.loc ../contracts/DAOBranch.tsol, 202
 GETGLOB 13
 SETGLOB 11
-.loc ../contracts/DAOBranch.tsol, 202
+.loc ../contracts/DAOBranch.tsol, 204
 PUSHREFSLICE {
 	.blob x8000000000000000000000000000000000000000000000000000000000000000001_
 }
 SETGLOB 13
-.loc ../contracts/DAOBranch.tsol, 204
+.loc ../contracts/DAOBranch.tsol, 206
 GETGLOB 11
 NEWC
 STSLICECONST x62_
@@ -1263,7 +1211,7 @@ ISNULL
 IFREF {
 	CALL $c4_to_c7$
 }
-.loc ../contracts/DAOBranch.tsol, 207
+.loc ../contracts/DAOBranch.tsol, 209
 OVER
 PUSHCONT {
 	LDREF
@@ -1322,15 +1270,15 @@ GETGLOB 9
 GETGLOB 11
 SDEQ
 THROWIFNOT 103
-.loc ../contracts/DAOBranch.tsol, 209
-ACCEPT
 .loc ../contracts/DAOBranch.tsol, 211
+ACCEPT
+.loc ../contracts/DAOBranch.tsol, 213
 PUSHREF {
 	.blob xc00000000000000000000000005671f8b9
 }
 PUSHINT 0
 SENDRAWMSG
-.loc ../contracts/DAOBranch.tsol, 213
+.loc ../contracts/DAOBranch.tsol, 215
 SETGLOB 17
 .loc ../contracts/DAOBranch.tsol, 0
 
@@ -1397,12 +1345,12 @@ PUSHCONT {
 IFJMP
 .loc ../contracts/helpers/ProposalInitialCheck.tsol, 25
 DUP
-INDEX 4
+THIRD
 PUSH S2
 INDEX 11
 GREATER
 OVER
-INDEX 4
+THIRD
 PUSH S3
 INDEX 10
 LESS
@@ -1414,12 +1362,12 @@ PUSHCONT {
 IFJMP
 .loc ../contracts/helpers/ProposalInitialCheck.tsol, 26
 DUP
-INDEX 5
+INDEX 3
 PUSH S2
 INDEX 9
 GREATER
 OVER
-INDEX 5
+INDEX 3
 PUSH S3
 INDEX 8
 LESS
@@ -1431,12 +1379,12 @@ PUSHCONT {
 IFJMP
 .loc ../contracts/helpers/ProposalInitialCheck.tsol, 27
 DUP
-INDEX 6
+INDEX 4
 PUSH S2
 INDEX 6
 GREATER
 OVER
-INDEX 6
+INDEX 4
 PUSH S3
 INDEX 7
 LESS
@@ -1448,12 +1396,12 @@ PUSHCONT {
 IFJMP
 .loc ../contracts/helpers/ProposalInitialCheck.tsol, 28
 DUP
-INDEX 7
+INDEX 5
 PUSH S2
 INDEX 13
 GREATER
 OVER
-INDEX 7
+INDEX 5
 PUSH S3
 INDEX 12
 LESS
@@ -1465,12 +1413,12 @@ PUSHCONT {
 IFJMP
 .loc ../contracts/helpers/ProposalInitialCheck.tsol, 29
 DUP
-INDEX 9
+INDEX 7
 PUSH S2
 INDEX 15
 GREATER
 OVER
-INDEX 9
+INDEX 7
 PUSH S3
 INDEX 14
 LESS
@@ -1482,12 +1430,12 @@ PUSHCONT {
 IFJMP
 .loc ../contracts/helpers/ProposalInitialCheck.tsol, 30
 DUP
-INDEX 8
+INDEX 6
 PUSH S2
 INDEX 5
 GREATER
 SWAP
-INDEX 8
+INDEX 6
 ROT
 INDEX 4
 LESS
@@ -1941,7 +1889,7 @@ PUSHINT 1872932015
 LEQ
 IFJMPREF {
 	DUP
-	PUSHINT 357838419
+	PUSHINT 378053431
 	LEQ
 	IFJMPREF {
 		DUP
@@ -1957,28 +1905,22 @@ IFJMPREF {
 			CALL $constructor$
 		}
 		DUP
-		PUSHINT 267722917
-		EQUAL
-		IFJMPREF {
-			CALL $propose$
-		}
-		DUP
 		PUSHINT 357838419
 		EQUAL
 		IFJMPREF {
 			CALL $_venomActionTotalValue$
 		}
-	}
-	DUP
-	PUSHINT 638814643
-	LEQ
-	IFJMPREF {
 		DUP
 		PUSHINT 378053431
 		EQUAL
 		IFJMPREF {
 			CALL $onProposalSucceeded$
 		}
+	}
+	DUP
+	PUSHINT 646098926
+	LEQ
+	IFJMPREF {
 		DUP
 		PUSHINT 412024057
 		EQUAL
@@ -1997,17 +1939,17 @@ IFJMPREF {
 		IFJMPREF {
 			CALL $acceptBeingAdmin$
 		}
-	}
-	DUP
-	PUSHINT 1390954623
-	LEQ
-	IFJMPREF {
 		DUP
 		PUSHINT 646098926
 		EQUAL
 		IFJMPREF {
 			CALL $Tip3VoteWalletCode$
 		}
+	}
+	DUP
+	PUSHINT 1390954623
+	LEQ
+	IFJMPREF {
 		DUP
 		PUSHINT 740306258
 		EQUAL
@@ -2019,6 +1961,12 @@ IFJMPREF {
 		EQUAL
 		IFJMPREF {
 			CALL $ProposalCode$
+		}
+		DUP
+		PUSHINT 950786886
+		EQUAL
+		IFJMPREF {
+			CALL $propose$
 		}
 		DUP
 		PUSHINT 1390954623

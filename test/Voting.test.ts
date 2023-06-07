@@ -221,7 +221,6 @@ describe("shuold perform vote casting", async function () {
     ProposalAction[1].payload = await ActionTestPersonalData.methods.setName({ _name: "hamed" }).encodeInternal();
     // changing the actions
     // changing the poroposal configuration tip3 vote address
-    ProposalConfigurationStructure.TIP3_VOTE_ROOT_ADDRESS = Tip3voteRootAddr;
     const { traceTree: data } = await locklift.tracing.trace(
       DaoBranch.methods
         .propose({
@@ -249,7 +248,6 @@ describe("shuold perform vote casting", async function () {
     // fetching tha DaoBranch contract and the action tester
     // changing the actions
     // changing the poroposal configuration tip3 vote address
-    ProposalConfigurationStructure.TIP3_VOTE_ROOT_ADDRESS = Tip3voteRootAddr;
     const { traceTree: data_2 } = await locklift.tracing.trace(
       DaoBranch.methods
         .propose({

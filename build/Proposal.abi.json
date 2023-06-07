@@ -19,7 +19,8 @@
 			"name": "vote",
 			"inputs": [
 				{"name":"_support","type":"bool"},
-				{"name":"_reason","type":"string"}
+				{"name":"_reason","type":"string"},
+				{"name":"nowTime","type":"uint128"}
 			],
 			"outputs": [
 			]
@@ -36,6 +37,7 @@
 		{
 			"name": "Queue",
 			"inputs": [
+				{"name":"nowTime","type":"uint128"}
 			],
 			"outputs": [
 			]
@@ -43,6 +45,7 @@
 		{
 			"name": "execute",
 			"inputs": [
+				{"name":"nowTime","type":"uint128"}
 			],
 			"outputs": [
 			]
@@ -64,22 +67,11 @@
 		{
 			"name": "getPorosposalOverview",
 			"inputs": [
+				{"name":"nowTime","type":"uint128"}
 			],
 			"outputs": [
 				{"components":[{"name":"title","type":"string"},{"name":"description","type":"string"},{"name":"votingDelay","type":"uint32"},{"name":"votingPeriod","type":"uint32"},{"name":"quorumVotes","type":"uint128"},{"name":"timeLock","type":"uint32"},{"name":"threshold","type":"uint128"},{"name":"gracePeriod","type":"uint32"}],"name":"initConf_","type":"tuple"},
-				{"name":"states_","type":"uint8"},
-				{"components":[{"name":"value","type":"uint256"},{"name":"target","type":"address"},{"name":"payload","type":"cell"}],"name":"venomActions_","type":"tuple[]"},
-				{"name":"creationBlockTS_","type":"uint256"},
-				{"name":"proposer_","type":"address"},
-				{"name":"forVotes_","type":"uint256"},
-				{"name":"againstVotes_","type":"uint256"},
-				{"name":"canceled_","type":"bool"},
-				{"name":"executed_","type":"bool"},
-				{"name":"startTime_","type":"uint256"},
-				{"name":"endTime_","type":"uint256"},
-				{"name":"executionTime_","type":"uint256"},
-				{"name":"Tip3VoteWalletCode_","type":"cell"},
-				{"name":"tip3VoteRootAddress_","type":"address"}
+				{"name":"states_","type":"uint8"}
 			]
 		},
 		{
@@ -93,6 +85,7 @@
 		{
 			"name": "getProposalState",
 			"inputs": [
+				{"name":"nowTime","type":"uint128"}
 			],
 			"outputs": [
 				{"name":"state_","type":"uint8"}
@@ -200,14 +193,6 @@
 			],
 			"outputs": [
 				{"name":"endTime","type":"uint256"}
-			]
-		},
-		{
-			"name": "executionTime",
-			"inputs": [
-			],
-			"outputs": [
-				{"name":"executionTime","type":"uint256"}
 			]
 		},
 		{

@@ -15,7 +15,7 @@ interface IDAORoot is DAOBranchConfigurationStruct{
 
 
     // this function deploys A dao Branch
-    function DeployDaoBranch(uint32 _branchNonce, DaoBranchConfig _DaoBranchConfig) external internalMsg;
+    function DeployDaoBranch( DaoBranchConfig _DaoBranchConfig) external internalMsg;
 
     // -- admin functions -- //
     // this function chages the DaoBranch code 

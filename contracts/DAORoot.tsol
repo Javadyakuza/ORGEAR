@@ -22,7 +22,7 @@ contract DAORoot is DAOBranchConfigurationStruct, IDAORoot{
     uint32 static _nonce;
 
     TvmCell public DaoBranchCode;
-    uint256 public TotalDaoBranches;
+    uint32 public TotalDaoBranches;
     address public pendingAdmin;
 
     constructor(TvmCell _DaoBranchCode) public {
@@ -37,14 +37,14 @@ contract DAORoot is DAOBranchConfigurationStruct, IDAORoot{
     } 
 
     // this function deploys A dao Branch
-    function DeployDaoBranch(uint32 _branchNonce, DaoBranchConfig _DaoBranchConfig) public override internalMsg{
+    function DeployDaoBranch(DaoBranchConfig _DaoBranchConfig) public override internalMsg{
         // chaking the msg.value 
         require(msg.value >= Gas.MAIN_VALUE, DaoErrors.VALUE_TOO_LOW);
         // reserving the contract value 
         tvm.rawReserve(0, 4);
         // deploying the branch 
         address branchAddr = new DAOBranch {
-            stateInit : _buildDaoBranchStatInit(_branchNonce, msg.sender),
+            stateInit : _buildDaoBranchStatInit(TotalDaoBranches, msg.sender),
             value : 0,
             flag : MsgFlag.ALL_NOT_RESERVED
         }(
@@ -92,8 +92,8 @@ contract DAORoot is DAOBranchConfigurationStruct, IDAORoot{
         return admin;
     }
         // this function calculates the daoranch address 
-    function expectedDaoBranchAddress (uint32 _nonce_, address _admin_) public override view returns(address){
-        return address(tvm.hash(_buildDaoBranchStatInit(_nonce_, _admin_)));
+    function expectedDaoBranchAddress (uint32 _daoBranchId, address _admin_) public override view returns(address){
+        return address(tvm.hash(_buildDaoBranchStatInit(_daoBranchId, _admin_)));
     }
 
     function _buildDaoBranchStatInit(uint32 _nonce_, address _admin_) private view returns(TvmCell){

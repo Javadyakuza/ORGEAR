@@ -45,27 +45,17 @@ IFREF {
 .loc ../contracts/DAORoot.tsol, 40
 OVER
 PUSHCONT {
-	LDU 32
-	LDREF
-	ENDS
-	CTOS
-	LDMSGADDR
-	LDU 256
-	LDU 128
 	LDREF
 	ENDS
 	CTOS
 }
-PUSHCONT {
-	LDU 32
-	LDMSGADDR
-	LDU 256
-	LDREF
-	ENDS
-	CTOS
-	LDU 128
-}
-IFELSE
+IF
+LDMSGADDR
+LDU 256
+LDU 128
+LDREF
+ENDS
+CTOS
 LDU 128
 LDU 128
 LDU 128
@@ -89,7 +79,7 @@ SWAP
 ENDS
 .loc ../contracts/DAORoot.tsol, 0
 CALLREF {
-	CALL $DeployDaoBranch_38f0bf2f_internal_macro$
+	CALL $DeployDaoBranch_f6bf38b8_internal_macro$
 }
 DROP
 CALLREF {
@@ -97,11 +87,11 @@ CALLREF {
 }
 THROW 0
 
-.globl	DeployDaoBranch_38f0bf2f_internal
-.type	DeployDaoBranch_38f0bf2f_internal, @function
-CALL $DeployDaoBranch_38f0bf2f_internal_macro$
+.globl	DeployDaoBranch_f6bf38b8_internal
+.type	DeployDaoBranch_f6bf38b8_internal, @function
+CALL $DeployDaoBranch_f6bf38b8_internal_macro$
 
-.macro DeployDaoBranch_38f0bf2f_internal_macro
+.macro DeployDaoBranch_f6bf38b8_internal_macro
 .loc ../contracts/DAORoot.tsol, 40
 DEPTH
 ADDCONST -5
@@ -119,7 +109,7 @@ PUSHINT 0
 PUSHINT 4
 RAWRESERVE
 .loc ../contracts/DAORoot.tsol, 46
-SWAP
+GETGLOB 13
 GETGLOB 9
 CALLREF {
 	CALL $_buildDaoBranchStatInit_3243fd58_internal_macro$
@@ -218,6 +208,7 @@ SENDRAWMSG
 .loc ../contracts/DAORoot.tsol, 54
 GETGLOB 13
 INC
+UFITS 32
 SETGLOB 13
 .loc ../contracts/DAORoot.tsol, 0
 
@@ -583,10 +574,10 @@ NIP
 LDMSGADDR
 LDU 32
 LDREF
+LDU 32
 LDREF
 ENDS
 CTOS
-LDU 256
 LDMSGADDR
 ENDS
 SETGLOB 14
@@ -650,7 +641,6 @@ IFREFELSE {
 }
 
 .macro c7_to_c4
-GETGLOB 14
 GETGLOB 13
 GETGLOB 12
 GETGLOB 11
@@ -664,9 +654,9 @@ STONE
 STSLICE
 STU 32
 STREF
-ROTREV
+STU 32
+GETGLOB 14
 NEWC
-STU 256
 STSLICE
 STBREFR
 ENDC
@@ -812,10 +802,10 @@ CALLREF {
 GETGLOB 13
 OVER
 PUSHCONT {
-	PUSHSLICE xc00000000000000000000000009b53e5b0
+	PUSHSLICE xc0000000000000000000000000bd082881
 	NEWC
 	STSLICE
-	STU 256
+	STU 32
 	ENDC
 	PUSHINT 0
 	SENDRAWMSG
@@ -845,7 +835,7 @@ THROW 0
 
 .macro public_function_selector
 DUP
-PUSHINT 478865691
+PUSHINT 538298873
 LEQ
 IFJMPREF {
 	DUP
@@ -855,16 +845,10 @@ IFJMPREF {
 		CALL $updateDaoBranchCode$
 	}
 	DUP
-	PUSHINT 293556400
+	PUSHINT 145697667
 	EQUAL
 	IFJMPREF {
 		CALL $DeployDaoBranch$
-	}
-	DUP
-	PUSHINT 458483120
-	EQUAL
-	IFJMPREF {
-		CALL $TotalDaoBranches$
 	}
 	DUP
 	PUSHINT 478865691
@@ -872,17 +856,17 @@ IFJMPREF {
 	IFJMPREF {
 		CALL $constructor$
 	}
-}
-DUP
-PUSHINT 1390954623
-LEQ
-IFJMPREF {
 	DUP
 	PUSHINT 538298873
 	EQUAL
 	IFJMPREF {
 		CALL $DaoBranchCode$
 	}
+}
+DUP
+PUSHINT 1390954623
+LEQ
+IFJMPREF {
 	DUP
 	PUSHINT 638814643
 	EQUAL
@@ -894,6 +878,12 @@ IFJMPREF {
 	EQUAL
 	IFJMPREF {
 		CALL $expectedDaoBranchAddress$
+	}
+	DUP
+	PUSHINT 1023944833
+	EQUAL
+	IFJMPREF {
+		CALL $TotalDaoBranches$
 	}
 	DUP
 	PUSHINT 1390954623

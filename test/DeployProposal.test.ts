@@ -149,7 +149,6 @@ describe("shuold deploy proposal", async function () {
       DAORoot.methods
         .DeployDaoBranch({
           _DaoBranchConfig: DaoBranchConfig,
-          _branchNonce: 69,
         })
         .send({
           from: WalletV3.account.address,
@@ -164,7 +163,7 @@ describe("shuold deploy proposal", async function () {
         await DAORoot.methods
           .expectedDaoBranchAddress({
             _admin_: WalletV3.account.address,
-            _nonce_: 69,
+            _daoBranchId: 0,
           })
           .call({})
       ).value0,

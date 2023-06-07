@@ -294,8 +294,7 @@ describe("shuold take the actions ", async function () {
     );
 
     expect(
-      (await Proposal.methods.getPorosposalOverview({ nowTime: locklift.testing.getCurrentTime() }).call({})).initConf_
-        .forVotes,
+      (await Proposal.methods.getPorosposalOverview({ nowTime: locklift.testing.getCurrentTime() }).call({})).forVotes_,
     ).to.eq("1000000000000");
     // minting for the second sigenr from the token root
     // fetching the firsst poroposal contract

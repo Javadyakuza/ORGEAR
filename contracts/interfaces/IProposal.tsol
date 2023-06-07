@@ -3,24 +3,50 @@ pragma ever-solidity >=0.61.2;
 import "../structures/ProposalActionStruct.tsol";
 import "../structures/ProposalConfigurationStructure.tsol";
 import "../structures/ProposalStates.tsol";
-interface IProposal is  ProposalConfigurationStructure, Action, ProposalStates{
 
+interface IProposal is ProposalConfigurationStructure, Action, ProposalStates {
   // set function //
-  function vote(bool _support, string _reason, /*will be removed in productioin */ uint128 nowTime) external internalMsg view ;
+  function vote(bool _support, string _reason) external view internalMsg;
+
   function castVote(uint256 _balance, TvmCell _votePayload) external internalMsg;
+
   // queue the proposal means that propoposal is ready to be excuited and was successfull
-  function Queue(/*will be removed in productioin */ uint128 nowTime) external internalMsg;
-  // this func call the "onProposalSuccess" fiunction on the dao root 
-  /// @notice payer : this   
-  function execute(/*will be removed in productioin */ uint128 nowTime) external internalMsg;
+  function Queue() external internalMsg;
+
+  // this func call the "onProposalSuccess" fiunction on the dao root
+  /// @notice payer : this
+  function execute() external internalMsg;
+
   // this function cancells the proposal
-  /// @notice payer : sender   
+  /// @notice payer : sender
   function cancell() external internalMsg;
-  function onActionsExecuted() external view ;
-  // get funcs 
-  function getPorosposalOverview(/*will be removed in productioin */ uint128 nowTime) external view returns (ProposalInitConfiguration initConf_, ProposalState states_);
-  function getActions() external view returns (VenomActions[]  venomActions_);
-  function getProposalState(/*will be removed in productioin */ uint128 nowTime) external view returns (ProposalState state_);
-    
- // get funcs 
+
+  function onActionsExecuted() external view;
+
+  // get funcs
+  function getPorosposalOverview()
+    external
+    view
+    returns (
+      ProposalInitConfiguration initConf_,
+      ProposalState states_,
+      VenomActions[] venomActions_,
+      uint256 creationBlockTS_,
+      address proposer_,
+      uint256 forVotes_,
+      uint256 againstVotes_,
+      bool canceled_,
+      bool executed_,
+      uint256 startTime_,
+      uint256 endTime_,
+      uint256 executionTime_,
+      TvmCell Tip3VoteWalletCode_,
+      address tip3VoteRootAddress_
+    );
+
+  function getActions() external view returns (VenomActions[] venomActions_);
+
+  function getProposalState() external view returns (ProposalState state_);
+
+  // get funcs
 }

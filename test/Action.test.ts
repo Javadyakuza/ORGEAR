@@ -19,6 +19,7 @@ let WalletV3: CreateAccountOutput;
 let signer: Signer;
 let WalletV3_2: CreateAccountOutput;
 let signer2: Signer;
+var TS;
 describe("shuold take the actions ", async function () {
   before(async () => {
     // checking the codes of contracts are availbale or no
@@ -194,10 +195,8 @@ describe("shuold take the actions ", async function () {
     DAOCon = Dao;
     // setting the state varibale
     DAOAddr = Dao.address;
-    // testing the 
-    expect((await Dao.methods.getAdmin({}).call({})).admin_.toString()).to.eq(
-      WalletV3.account.address.toString(),
-    );
+    // testing the
+    expect((await Dao.methods.getAdmin({}).call({})).admin_.toString()).to.eq(WalletV3.account.address.toString());
     // deploying it getting a signer for action personal data
     let temp_signer = (await locklift.keystore.getSigner("3"))!;
     //
@@ -226,6 +225,13 @@ describe("shuold take the actions ", async function () {
     // changing the proposal description to prevent the 51 error
     ProposalConfigurationStructure.description = "another proposal";
     //
+    const { contract: getTS } = await locklift.factory.deployContract({
+      contract: "timestamp",
+      publicKey: signer.publicKey,
+      initParams: {},
+      constructorParams: {},
+      value: locklift.utils.toNano(0.1),
+    });
     const { traceTree: data } = await locklift.tracing.trace(
       Dao.methods
         .propose({
@@ -237,6 +243,10 @@ describe("shuold take the actions ", async function () {
           amount: locklift.utils.toNano(20),
         }),
     );
+    /// must be deleted in the dev net
+
+    TS = (await getTS.methods.getTimestamp({}).call({})).value0;
+    /// must be deleted in the dev net
     // fetching the emmited event reffering to ther propoal deploying
     const ProposalEvents = data?.findEventsForContract({
       contract: DAOCon,
@@ -287,7 +297,7 @@ describe("shuold take the actions ", async function () {
         .vote({
           _reason: "a good reason",
           _support: true,
-          nowTime: 5,
+          nowTime: Number(TS) + 5,
         })
         .send({
           from: WalletV3_2.account.address,
@@ -296,8 +306,7 @@ describe("shuold take the actions ", async function () {
     );
 
     expect(
-      (await Proposal.methods.getPorosposalOverview({ nowTime: locklift.testing.getCurrentTime() }).call({})).initConf_
-        .forVotes,
+      (await Proposal.methods.getPorosposalOverview({ nowTime: locklift.testing.getCurrentTime() }).call({})).forVotes_,
     ).to.eq("1000000000000");
     // minting for the second sigenr from the token root
     // fetching the firsst poroposal contract
@@ -308,7 +317,7 @@ describe("shuold take the actions ", async function () {
         .vote({
           _reason: "a bad reason",
           _support: false,
-          nowTime: 5,
+          nowTime: Number(TS) + 5,
         })
         .send({
           from: WalletV3.account.address,
@@ -317,8 +326,8 @@ describe("shuold take the actions ", async function () {
     );
 
     expect(
-      (await Proposal.methods.getPorosposalOverview({ nowTime: locklift.testing.getCurrentTime() }).call({})).initConf_
-        .againstVotes,
+      (await Proposal.methods.getPorosposalOverview({ nowTime: locklift.testing.getCurrentTime() }).call({}))
+        .againstVotes_,
     ).to.eq("500000000000");
   });
   it("shuold the take the actioin on proposal succeded", async function () {
@@ -332,7 +341,7 @@ describe("shuold take the actions ", async function () {
     // // queueingng
     await locklift.tracing.trace(
       Proposalcon.methods
-        .Queue({ nowTime: 21 })
+        .Queue({ nowTime: Number(TS) + 21 })
         .send({ from: WalletV3.account.address, amount: locklift.utils.toNano(0.1) }),
     );
     // // confirming that its qeueud
@@ -340,7 +349,7 @@ describe("shuold take the actions ", async function () {
     // excutiong
     await locklift.tracing.trace(
       Proposalcon.methods
-        .execute({ nowTime: 22 })
+        .execute({ nowTime: Number(TS) + 22 })
         .send({ from: WalletV3.account.address, amount: locklift.utils.toNano(20) }),
     );
     // fetcing the action contract

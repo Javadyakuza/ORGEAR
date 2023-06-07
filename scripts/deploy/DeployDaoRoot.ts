@@ -20,7 +20,7 @@ async function DaoRootDeployer() {
       _nonce: locklift.utils.getRandomNonce(),
     },
     constructorParams: {
-      _DaoBranchCode: locklift.factory.getContractArtifacts("DAOBranch").code,
+      _DaoCode: locklift.factory.getContractArtifacts("DAO").code,
     },
     value: locklift.utils.toNano(1),
   });

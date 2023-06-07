@@ -6,9 +6,11 @@
 		{
 			"name": "constructor",
 			"inputs": [
-				{"components":[{"name":"TIP3_VOTE_ROOT_ADDRESS","type":"address"},{"name":"description","type":"string"},{"name":"startTime","type":"uint256"},{"name":"endTime","type":"uint256"},{"name":"votingDelay","type":"uint32"},{"name":"votingPeriod","type":"uint32"},{"name":"quorumVotes","type":"uint128"},{"name":"timeLock","type":"uint32"},{"name":"threshold","type":"uint128"},{"name":"gracePeriod","type":"uint32"},{"name":"executionTime","type":"uint256"},{"name":"forVotes","type":"uint256"},{"name":"againstVotes","type":"uint256"},{"name":"canceled","type":"bool"},{"name":"executed","type":"bool"},{"name":"Tip3VoteWalletCode","type":"cell"}],"name":"_initConfig","type":"tuple"},
+				{"components":[{"name":"title","type":"string"},{"name":"description","type":"string"},{"name":"votingDelay","type":"uint32"},{"name":"votingPeriod","type":"uint32"},{"name":"quorumVotes","type":"uint128"},{"name":"timeLock","type":"uint32"},{"name":"threshold","type":"uint128"},{"name":"gracePeriod","type":"uint32"}],"name":"_initConfig","type":"tuple"},
 				{"components":[{"name":"value","type":"uint256"},{"name":"target","type":"address"},{"name":"payload","type":"cell"}],"name":"_venomActions","type":"tuple[]"},
-				{"name":"_proposer","type":"address"}
+				{"name":"_proposer","type":"address"},
+				{"name":"_Tip3VoteWalletCode","type":"cell"},
+				{"name":"_tip3VoteRootAddress","type":"address"}
 			],
 			"outputs": [
 			]
@@ -68,7 +70,7 @@
 				{"name":"nowTime","type":"uint128"}
 			],
 			"outputs": [
-				{"components":[{"name":"TIP3_VOTE_ROOT_ADDRESS","type":"address"},{"name":"description","type":"string"},{"name":"startTime","type":"uint256"},{"name":"endTime","type":"uint256"},{"name":"votingDelay","type":"uint32"},{"name":"votingPeriod","type":"uint32"},{"name":"quorumVotes","type":"uint128"},{"name":"timeLock","type":"uint32"},{"name":"threshold","type":"uint128"},{"name":"gracePeriod","type":"uint32"},{"name":"executionTime","type":"uint256"},{"name":"forVotes","type":"uint256"},{"name":"againstVotes","type":"uint256"},{"name":"canceled","type":"bool"},{"name":"executed","type":"bool"},{"name":"Tip3VoteWalletCode","type":"cell"}],"name":"initConf_","type":"tuple"},
+				{"components":[{"name":"title","type":"string"},{"name":"description","type":"string"},{"name":"votingDelay","type":"uint32"},{"name":"votingPeriod","type":"uint32"},{"name":"quorumVotes","type":"uint128"},{"name":"timeLock","type":"uint32"},{"name":"threshold","type":"uint128"},{"name":"gracePeriod","type":"uint32"}],"name":"initConf_","type":"tuple"},
 				{"name":"states_","type":"uint8"}
 			]
 		},
@@ -98,11 +100,11 @@
 			]
 		},
 		{
-			"name": "DaoBranchAddress",
+			"name": "DaoAddress",
 			"inputs": [
 			],
 			"outputs": [
-				{"name":"DaoBranchAddress","type":"address"}
+				{"name":"DaoAddress","type":"address"}
 			]
 		},
 		{
@@ -118,7 +120,7 @@
 			"inputs": [
 			],
 			"outputs": [
-				{"components":[{"name":"TIP3_VOTE_ROOT_ADDRESS","type":"address"},{"name":"description","type":"string"},{"name":"startTime","type":"uint256"},{"name":"endTime","type":"uint256"},{"name":"votingDelay","type":"uint32"},{"name":"votingPeriod","type":"uint32"},{"name":"quorumVotes","type":"uint128"},{"name":"timeLock","type":"uint32"},{"name":"threshold","type":"uint128"},{"name":"gracePeriod","type":"uint32"},{"name":"executionTime","type":"uint256"},{"name":"forVotes","type":"uint256"},{"name":"againstVotes","type":"uint256"},{"name":"canceled","type":"bool"},{"name":"executed","type":"bool"},{"name":"Tip3VoteWalletCode","type":"cell"}],"name":"initConfig","type":"tuple"}
+				{"components":[{"name":"title","type":"string"},{"name":"description","type":"string"},{"name":"votingDelay","type":"uint32"},{"name":"votingPeriod","type":"uint32"},{"name":"quorumVotes","type":"uint128"},{"name":"timeLock","type":"uint32"},{"name":"threshold","type":"uint128"},{"name":"gracePeriod","type":"uint32"}],"name":"initConfig","type":"tuple"}
 			]
 		},
 		{
@@ -144,11 +146,75 @@
 			"outputs": [
 				{"name":"proposer","type":"address"}
 			]
+		},
+		{
+			"name": "forVotes",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"forVotes","type":"uint256"}
+			]
+		},
+		{
+			"name": "againstVotes",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"againstVotes","type":"uint256"}
+			]
+		},
+		{
+			"name": "canceled",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"canceled","type":"bool"}
+			]
+		},
+		{
+			"name": "executed",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"executed","type":"bool"}
+			]
+		},
+		{
+			"name": "startTime",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"startTime","type":"uint256"}
+			]
+		},
+		{
+			"name": "endTime",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"endTime","type":"uint256"}
+			]
+		},
+		{
+			"name": "Tip3VoteWalletCode",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"Tip3VoteWalletCode","type":"cell"}
+			]
+		},
+		{
+			"name": "tip3VoteRootAddress",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"tip3VoteRootAddress","type":"address"}
+			]
 		}
 	],
 	"data": [
 		{"key":1,"name":"PROPOSAL_ID","type":"uint256"},
-		{"key":2,"name":"DaoBranchAddress","type":"address"}
+		{"key":2,"name":"DaoAddress","type":"address"}
 	],
 	"events": [
 		{
@@ -199,11 +265,20 @@
 		{"name":"_timestamp","type":"uint64"},
 		{"name":"_constructorFlag","type":"bool"},
 		{"name":"PROPOSAL_ID","type":"uint256"},
-		{"name":"DaoBranchAddress","type":"address"},
+		{"name":"DaoAddress","type":"address"},
 		{"components":[{"name":"value","type":"uint256"},{"name":"target","type":"address"},{"name":"payload","type":"cell"}],"name":"venomActions","type":"tuple[]"},
-		{"components":[{"name":"TIP3_VOTE_ROOT_ADDRESS","type":"address"},{"name":"description","type":"string"},{"name":"startTime","type":"uint256"},{"name":"endTime","type":"uint256"},{"name":"votingDelay","type":"uint32"},{"name":"votingPeriod","type":"uint32"},{"name":"quorumVotes","type":"uint128"},{"name":"timeLock","type":"uint32"},{"name":"threshold","type":"uint128"},{"name":"gracePeriod","type":"uint32"},{"name":"executionTime","type":"uint256"},{"name":"forVotes","type":"uint256"},{"name":"againstVotes","type":"uint256"},{"name":"canceled","type":"bool"},{"name":"executed","type":"bool"},{"name":"Tip3VoteWalletCode","type":"cell"}],"name":"initConfig","type":"tuple"},
+		{"components":[{"name":"title","type":"string"},{"name":"description","type":"string"},{"name":"votingDelay","type":"uint32"},{"name":"votingPeriod","type":"uint32"},{"name":"quorumVotes","type":"uint128"},{"name":"timeLock","type":"uint32"},{"name":"threshold","type":"uint128"},{"name":"gracePeriod","type":"uint32"}],"name":"initConfig","type":"tuple"},
 		{"name":"state","type":"uint8"},
 		{"name":"creationBlockTS","type":"uint256"},
-		{"name":"proposer","type":"address"}
+		{"name":"proposer","type":"address"},
+		{"name":"forVotes","type":"uint256"},
+		{"name":"againstVotes","type":"uint256"},
+		{"name":"canceled","type":"bool"},
+		{"name":"executed","type":"bool"},
+		{"name":"startTime","type":"uint256"},
+		{"name":"endTime","type":"uint256"},
+		{"name":"executionTime","type":"uint256"},
+		{"name":"Tip3VoteWalletCode","type":"cell"},
+		{"name":"tip3VoteRootAddress","type":"address"}
 	]
 }

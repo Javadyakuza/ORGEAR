@@ -2,13 +2,13 @@ import { expect } from "chai";
 import { Address, Contract, Signer, zeroAddress } from "locklift";
 import { FactorySource } from "../build/factorySource";
 import { CreateAccountOutput, WalletTypes } from "locklift/types/index";
-import { DaoBranchConfig } from "./structures_template/DAOBranchConfig.example";
+import { DaoConfig } from "./structures_template/DAOConfig.example";
 import { ProposalConfigurationStructure } from "./structures_template/ProposalConfigurationStructure.example";
 import { ProposalAction } from "./structures_template/ProposalActionStruct.example";
 
-var DAOBranchCon: Contract<FactorySource["DAOBranch"]>;
+var DAOCon: Contract<FactorySource["DAO"]>;
 let DAORootAddr: Address;
-let DAOBranchAddr: Address;
+let DAOAddr: Address;
 let Tip3voteRootAddr: Address;
 let Tip3voteWalletAddr: Address;
 let Tip3voteWalletAddr_2: Address; // this is actually for the first signer
@@ -151,7 +151,9 @@ describe("shuold take the actions ", async function () {
         _nonce: locklift.utils.getRandomNonce(),
       },
       constructorParams: {
-        _DaoBranchCode: locklift.factory.getContractArtifacts("DAOBranch").code,
+        _DaoCode: locklift.factory.getContractArtifacts("DAO").code,
+        _ProposalCode: locklift.factory.getContractArtifacts("Proposal").code,
+        _Tip3VoteWalletCode: locklift.factory.getContractArtifacts("VoteTokenWallet").code,
       },
       value: locklift.utils.toNano(50),
     });
@@ -162,39 +164,38 @@ describe("shuold take the actions ", async function () {
     //
     // fetching the contracts
     //
-    // changing the Dao Branch Configuration
-    DaoBranchConfig.TIP3_VOTE_ROOT_ADDRESS = Tip3voteRootAddr;
+    // changing the Dao  Configuration
+    DaoConfig.TIP3_VOTE_ROOT_ADDRESS = Tip3voteRootAddr;
     // changing the actions
     // calling the propose function
-    let DaoBranchdeployRes = await locklift.tracing.trace(
+    let DaodeployRes = await locklift.tracing.trace(
       DAORoot.methods
-        .DeployDaoBranch({
-          _DaoBranchConfig: DaoBranchConfig,
-          _branchNonce: 69,
+        .DeployDao({
+          _DaoConfig: DaoConfig,
         })
         .send({
           from: WalletV3.account.address,
           amount: locklift.utils.toNano(10),
         }),
     );
-    expect((await DaoBranchdeployRes).aborted).to.eq(false);
+    expect((await DaodeployRes).aborted).to.eq(false);
     // fetching the deployed contract
-    const DaoBranch = await locklift.factory.getDeployedContract(
-      "DAOBranch",
+    const Dao = await locklift.factory.getDeployedContract(
+      "DAO",
       (
         await DAORoot.methods
-          .expectedDaoBranchAddress({
+          .expectedDaoAddress({
             _admin_: WalletV3.account.address,
-            _nonce_: 69,
+            _daoId: 0,
           })
           .call({})
       ).value0,
     );
-    DAOBranchCon = DaoBranch;
+    DAOCon = Dao;
     // setting the state varibale
-    DAOBranchAddr = DaoBranch.address;
-    // testing the branch
-    expect((await DaoBranch.methods.getAdmin({}).call({})).admin_.toString()).to.eq(
+    DAOAddr = Dao.address;
+    // testing the 
+    expect((await Dao.methods.getAdmin({}).call({})).admin_.toString()).to.eq(
       WalletV3.account.address.toString(),
     );
     // deploying it getting a signer for action personal data
@@ -214,7 +215,7 @@ describe("shuold take the actions ", async function () {
     ActionTestPersonalDataAddr = ActionTestPersonalData.address;
     // testing the date
     expect((await ActionTestPersonalData.methods.age({}).call({})).age.toString()).to.eq("43");
-    // fetching tha DaoBranch contract and the action tester
+    // fetching tha Dao contract and the action tester
     //
     ProposalAction[0].target = ActionTestPersonalDataAddr;
     ProposalAction[1].target = ActionTestPersonalDataAddr;
@@ -222,12 +223,11 @@ describe("shuold take the actions ", async function () {
     ProposalAction[1].payload = await ActionTestPersonalData.methods.setName({ _name: "hamed" }).encodeInternal();
     // changing the actions
     // changing the poroposal configuration tip3 vote address
-    ProposalConfigurationStructure.TIP3_VOTE_ROOT_ADDRESS = Tip3voteRootAddr;
     // changing the proposal description to prevent the 51 error
     ProposalConfigurationStructure.description = "another proposal";
     //
     const { traceTree: data } = await locklift.tracing.trace(
-      DaoBranch.methods
+      Dao.methods
         .propose({
           _ProposalInitConfiguration: ProposalConfigurationStructure,
           _venomActions: ProposalAction,
@@ -239,22 +239,22 @@ describe("shuold take the actions ", async function () {
     );
     // fetching the emmited event reffering to ther propoal deploying
     const ProposalEvents = data?.findEventsForContract({
-      contract: DAOBranchCon,
+      contract: DAOCon,
       name: "ProposalDeployed" as const, // 'as const' is important thing for type saving
     });
     // fetching the deployed proposal
     const Proposal = await locklift.factory.getDeployedContract(
       "Proposal",
       (
-        await DaoBranch.methods.expectedProposalAddress({ _proposalId: ProposalEvents![0].proposalId }).call({})
+        await Dao.methods.expectedProposalAddress({ _proposalId: ProposalEvents![0].proposalId }).call({})
       ).expectedProposalAddress_,
     );
     expect((await Proposal.methods.PROPOSAL_ID({}).call({})).PROPOSAL_ID).to.eq(ProposalEvents![0].proposalId);
-    // fetching tha DaoBranch contract and the action tester
+    // fetching tha Dao contract and the action tester
     // changing the actions
     // changing the poroposal configuration tip3 vote address
     const { traceTree: data_2 } = await locklift.tracing.trace(
-      DaoBranch.methods
+      Dao.methods
         .propose({
           _ProposalInitConfiguration: ProposalConfigurationStructure,
           _venomActions: ProposalAction,
@@ -266,14 +266,14 @@ describe("shuold take the actions ", async function () {
     );
     // fetching the emmited event reffering to ther propoal deploying
     const ProposalEvents_2 = data_2?.findEventsForContract({
-      contract: DAOBranchCon,
+      contract: DAOCon,
       name: "ProposalDeployed" as const, // 'as const' is important thing for type saving
     });
     // fetching the deployed proposal
     const Proposal_2 = await locklift.factory.getDeployedContract(
       "Proposal",
       (
-        await DaoBranch.methods.expectedProposalAddress({ _proposalId: ProposalEvents_2![0].proposalId }).call({})
+        await Dao.methods.expectedProposalAddress({ _proposalId: ProposalEvents_2![0].proposalId }).call({})
       ).expectedProposalAddress_,
     );
     expect((await Proposal_2.methods.PROPOSAL_ID({}).call({})).PROPOSAL_ID).to.eq(ProposalEvents_2![0].proposalId);

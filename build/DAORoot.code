@@ -10,8 +10,10 @@ IFREF {
 GETGLOB 6
 THROWIF 51
 LDREF
+LDREF
+LDREF
 ENDS
-.loc ../contracts/DAORoot.tsol, 29
+.loc ../contracts/DAORoot.tsol, 31
 GETGLOB 2
 GETGLOB 5
 DUP
@@ -23,17 +25,23 @@ PUSHCONT {
 IF
 EQUAL
 THROWIFNOT 101
-.loc ../contracts/DAORoot.tsol, 30
+.loc ../contracts/DAORoot.tsol, 32
 ACCEPT
-.loc ../contracts/DAORoot.tsol, 31
+.loc ../contracts/DAORoot.tsol, 33
+ROT
 SETGLOB 12
+.loc ../contracts/DAORoot.tsol, 34
+SWAP
+SETGLOB 13
+.loc ../contracts/DAORoot.tsol, 35
+SETGLOB 14
 .loc ../contracts/DAORoot.tsol, 0
 CALLREF {
 	CALL $c7_to_c4$
 }
 THROW 0
 
-.macro DeployDaoBranch
+.macro DeployDao
 DROP
 GETGLOB 6
 THROWIFNOT 76
@@ -42,30 +50,26 @@ ISNULL
 IFREF {
 	CALL $c4_to_c7$
 }
-.loc ../contracts/DAORoot.tsol, 40
+.loc ../contracts/DAORoot.tsol, 44
 OVER
 PUSHCONT {
-	LDU 32
 	LDREF
-	ENDS
-	CTOS
-	LDMSGADDR
-	LDU 256
-	LDU 128
+	LDREF
 	LDREF
 	ENDS
 	CTOS
 }
 PUSHCONT {
-	LDU 32
-	LDMSGADDR
-	LDU 256
 	LDREF
-	ENDS
-	CTOS
-	LDU 128
+	LDREF
 }
 IFELSE
+LDMSGADDR
+LDU 256
+LDU 128
+LDREF
+ENDS
+CTOS
 LDU 128
 LDU 128
 LDU 128
@@ -79,8 +83,6 @@ LDU 32
 LDU 32
 LDU 16
 LDU 8
-LDREF
-LDREF
 PUSHINT 18
 ROLLREVX
 PUSHINT 18
@@ -89,7 +91,7 @@ SWAP
 ENDS
 .loc ../contracts/DAORoot.tsol, 0
 CALLREF {
-	CALL $DeployDaoBranch_38f0bf2f_internal_macro$
+	CALL $DeployDao_5b0fdc75_internal_macro$
 }
 DROP
 CALLREF {
@@ -97,32 +99,35 @@ CALLREF {
 }
 THROW 0
 
-.globl	DeployDaoBranch_38f0bf2f_internal
-.type	DeployDaoBranch_38f0bf2f_internal, @function
-CALL $DeployDaoBranch_38f0bf2f_internal_macro$
+.globl	DeployDao_5b0fdc75_internal
+.type	DeployDao_5b0fdc75_internal, @function
+CALL $DeployDao_5b0fdc75_internal_macro$
 
-.macro DeployDaoBranch_38f0bf2f_internal_macro
-.loc ../contracts/DAORoot.tsol, 40
+.macro DeployDao_5b0fdc75_internal_macro
+.loc ../contracts/DAORoot.tsol, 44
 DEPTH
 ADDCONST -5
 PICK
 THROWIF 72
-.loc ../contracts/DAORoot.tsol, 42
+.loc ../contracts/DAORoot.tsol, 46
 DEPTH
 ADDCONST -2
 PICK
 PUSHINT 1000000000
 GEQ
 THROWIFNOT 130
-.loc ../contracts/DAORoot.tsol, 44
+.loc ../contracts/DAORoot.tsol, 48
 PUSHINT 0
 PUSHINT 4
 RAWRESERVE
-.loc ../contracts/DAORoot.tsol, 46
-SWAP
+.loc ../contracts/DAORoot.tsol, 50
+GETGLOB 14
+GETGLOB 13
+PUSH S2
+GETGLOB 15
 GETGLOB 9
 CALLREF {
-	CALL $_buildDaoBranchStatInit_3243fd58_internal_macro$
+	CALL $_buildDaoStatInit_579a841b_internal_macro$
 }
 DUP
 HASHCU
@@ -131,8 +136,8 @@ STSLICECONST x801_
 STU 256
 ENDC
 CTOS
-ROTREV
-PUSH S2
+ROLLREV 4
+PUSH S4
 NEWC
 STSLICECONST x62_
 STSLICE
@@ -163,15 +168,17 @@ CALLREF {
 }
 STREF
 STSLICECONST 1
-SWAP
+ROLLREV 3
 NEWC
-STSLICECONST x285f382f
+STSLICECONST x0651ab96
 SWAP
 PUSHINT 18
 UNTUPLEVAR
 PUSHINT 19
 PUSHINT 0
 REVX
+STREF
+STREF
 STSLICE
 STU 256
 STU 128
@@ -197,31 +204,39 @@ STBREFR
 ENDC
 PUSHPOW2 7
 SENDRAWMSG
-.loc ../contracts/DAORoot.tsol, 53
+.loc ../contracts/DAORoot.tsol, 60
+GETGLOB 15
 GETGLOB 9
-SWAP
+ROT
+PUSH S3
+SECOND
+ROLL 4
+FIRST
 PUSHSLICE xc0000000000000000000000001
 NEWC
 STSLICE
+ROLLREV 5
+NEWC
+STSLICECONST x783f8d6e
+STREF
+STREF
+STSLICE
 ROTREV
 NEWC
-STSLICECONST x1d1ef936
 STSLICE
-SWAP
-NEWC
-STSLICE
+STU 256
 STBREFR
 STBREFR
 ENDC
 PUSHINT 0
 SENDRAWMSG
-.loc ../contracts/DAORoot.tsol, 54
-GETGLOB 13
+.loc ../contracts/DAORoot.tsol, 61
+GETGLOB 15
 INC
-SETGLOB 13
+SETGLOB 15
 .loc ../contracts/DAORoot.tsol, 0
 
-.macro updateDaoBranchCode
+.macro updateDaoCode
 DROP
 GETGLOB 6
 THROWIFNOT 76
@@ -230,12 +245,12 @@ ISNULL
 IFREF {
 	CALL $c4_to_c7$
 }
-.loc ../contracts/DAORoot.tsol, 59
+.loc ../contracts/DAORoot.tsol, 66
 LDREF
 ENDS
 .loc ../contracts/DAORoot.tsol, 0
 CALLREF {
-	CALL $updateDaoBranchCode_3eb5764a_internal_macro$
+	CALL $updateDaoCode_792f7f52_internal_macro$
 }
 DROP
 CALLREF {
@@ -243,25 +258,25 @@ CALLREF {
 }
 THROW 0
 
-.globl	updateDaoBranchCode_3eb5764a_internal
-.type	updateDaoBranchCode_3eb5764a_internal, @function
-CALL $updateDaoBranchCode_3eb5764a_internal_macro$
+.globl	updateDaoCode_792f7f52_internal
+.type	updateDaoCode_792f7f52_internal, @function
+CALL $updateDaoCode_792f7f52_internal_macro$
 
-.macro updateDaoBranchCode_3eb5764a_internal_macro
-.loc ../contracts/DAORoot.tsol, 35
+.macro updateDaoCode_792f7f52_internal_macro
+.loc ../contracts/DAORoot.tsol, 39
 GETGLOB 9
 GETGLOB 10
 SDEQ
 THROWIFNOT 101
-.loc ../contracts/DAORoot.tsol, 61
+.loc ../contracts/DAORoot.tsol, 68
 ACCEPT
-.loc ../contracts/DAORoot.tsol, 63
+.loc ../contracts/DAORoot.tsol, 70
 PUSHREF {
-	.blob xc00000000000000000000000006da2b40f
+	.blob xc0000000000000000000000000799db824
 }
 PUSHINT 0
 SENDRAWMSG
-.loc ../contracts/DAORoot.tsol, 65
+.loc ../contracts/DAORoot.tsol, 72
 SETGLOB 12
 .loc ../contracts/DAORoot.tsol, 0
 
@@ -274,7 +289,7 @@ ISNULL
 IFREF {
 	CALL $c4_to_c7$
 }
-.loc ../contracts/DAORoot.tsol, 68
+.loc ../contracts/DAORoot.tsol, 75
 OVER
 PUSHCONT {
 	LDREF
@@ -299,14 +314,14 @@ THROW 0
 CALL $transferAdmin_75829def_internal_macro$
 
 .macro transferAdmin_75829def_internal_macro
-.loc ../contracts/DAORoot.tsol, 35
+.loc ../contracts/DAORoot.tsol, 39
 GETGLOB 9
 GETGLOB 10
 SDEQ
 THROWIFNOT 101
-.loc ../contracts/DAORoot.tsol, 70
+.loc ../contracts/DAORoot.tsol, 77
 ACCEPT
-.loc ../contracts/DAORoot.tsol, 72
+.loc ../contracts/DAORoot.tsol, 79
 DUP
 GETGLOB 10
 PUSHSLICE xc0000000000000000000000001
@@ -324,8 +339,8 @@ STBREFR
 ENDC
 PUSHINT 0
 SENDRAWMSG
-.loc ../contracts/DAORoot.tsol, 74
-SETGLOB 14
+.loc ../contracts/DAORoot.tsol, 81
+SETGLOB 16
 .loc ../contracts/DAORoot.tsol, 0
 
 .macro acceptBeingAdmin
@@ -337,7 +352,7 @@ ISNULL
 IFREF {
 	CALL $c4_to_c7$
 }
-.loc ../contracts/DAORoot.tsol, 76
+.loc ../contracts/DAORoot.tsol, 83
 ENDS
 .loc ../contracts/DAORoot.tsol, 0
 CALLREF {
@@ -354,16 +369,16 @@ THROW 0
 CALL $acceptBeingAdmin_3f6ff0e4_internal_macro$
 
 .macro acceptBeingAdmin_3f6ff0e4_internal_macro
-.loc ../contracts/DAORoot.tsol, 78
+.loc ../contracts/DAORoot.tsol, 85
 GETGLOB 9
-GETGLOB 14
+GETGLOB 16
 SDEQ
 THROWIFNOT 105
-.loc ../contracts/DAORoot.tsol, 80
+.loc ../contracts/DAORoot.tsol, 87
 PUSHINT 0
 PUSHINT 4
 RAWRESERVE
-.loc ../contracts/DAORoot.tsol, 82
+.loc ../contracts/DAORoot.tsol, 89
 GETGLOB 9
 GETGLOB 10
 PUSHSLICE xc0000000000000000000000001
@@ -381,16 +396,16 @@ STBREFR
 ENDC
 PUSHINT 0
 SENDRAWMSG
-.loc ../contracts/DAORoot.tsol, 84
+.loc ../contracts/DAORoot.tsol, 91
 PUSHREFSLICE {
 	.blob x8000000000000000000000000000000000000000000000000000000000000000001_
 }
-SETGLOB 14
-.loc ../contracts/DAORoot.tsol, 85
+SETGLOB 16
+.loc ../contracts/DAORoot.tsol, 92
 GETGLOB 9
 DUP
 SETGLOB 10
-.loc ../contracts/DAORoot.tsol, 86
+.loc ../contracts/DAORoot.tsol, 93
 NEWC
 STSLICECONST x62_
 STSLICE
@@ -410,7 +425,7 @@ ISNULL
 IFREF {
 	CALL $c4_to_c7$
 }
-.loc ../contracts/DAORoot.tsol, 91
+.loc ../contracts/DAORoot.tsol, 98
 ENDS
 .loc ../contracts/DAORoot.tsol, 0
 CALLREF {
@@ -452,11 +467,11 @@ THROW 0
 CALL $getAdmin_6e9960c3_internal_macro$
 
 .macro getAdmin_6e9960c3_internal_macro
-.loc ../contracts/DAORoot.tsol, 92
+.loc ../contracts/DAORoot.tsol, 99
 GETGLOB 10
 .loc ../contracts/DAORoot.tsol, 0
 
-.macro expectedDaoBranchAddress
+.macro expectedDaoAddress
 DROP
 GETGLOB 6
 THROWIFNOT 76
@@ -465,7 +480,7 @@ ISNULL
 IFREF {
 	CALL $c4_to_c7$
 }
-.loc ../contracts/DAORoot.tsol, 95
+.loc ../contracts/DAORoot.tsol, 102
 OVER
 PUSHCONT {
 	LDU 32
@@ -481,7 +496,7 @@ LDMSGADDR
 ENDS
 .loc ../contracts/DAORoot.tsol, 0
 CALLREF {
-	CALL $expectedDaoBranchAddress_d3bffa12_internal_macro$
+	CALL $expectedDaoAddress_7b49fe98_internal_macro$
 }
 OVER
 PUSHCONT {
@@ -498,7 +513,7 @@ PUSHCONT {
 	STUR 98
 	SWAP
 	NEWC
-	STSLICECONST xb4538dcd
+	STSLICECONST xdf4c13b1
 	STSLICE
 	STBREFR
 	ENDC
@@ -514,14 +529,14 @@ IFREF {
 }
 THROW 0
 
-.globl	expectedDaoBranchAddress_d3bffa12_internal
-.type	expectedDaoBranchAddress_d3bffa12_internal, @function
-CALL $expectedDaoBranchAddress_d3bffa12_internal_macro$
+.globl	expectedDaoAddress_7b49fe98_internal
+.type	expectedDaoAddress_7b49fe98_internal, @function
+CALL $expectedDaoAddress_7b49fe98_internal_macro$
 
-.macro expectedDaoBranchAddress_d3bffa12_internal_macro
-.loc ../contracts/DAORoot.tsol, 96
+.macro expectedDaoAddress_7b49fe98_internal_macro
+.loc ../contracts/DAORoot.tsol, 103
 CALLREF {
-	CALL $_buildDaoBranchStatInit_3243fd58_internal_macro$
+	CALL $_buildDaoStatInit_579a841b_internal_macro$
 }
 HASHCU
 NEWC
@@ -531,12 +546,12 @@ ENDC
 CTOS
 .loc ../contracts/DAORoot.tsol, 0
 
-.globl	_buildDaoBranchStatInit_3243fd58_internal
-.type	_buildDaoBranchStatInit_3243fd58_internal, @function
-CALL $_buildDaoBranchStatInit_3243fd58_internal_macro$
+.globl	_buildDaoStatInit_579a841b_internal
+.type	_buildDaoStatInit_579a841b_internal, @function
+CALL $_buildDaoStatInit_579a841b_internal_macro$
 
-.macro _buildDaoBranchStatInit_3243fd58_internal_macro
-.loc ../contracts/DAORoot.tsol, 100
+.macro _buildDaoStatInit_579a841b_internal_macro
+.loc ../contracts/DAORoot.tsol, 107
 PUSHINT 0
 NEWC
 STU 256
@@ -546,7 +561,7 @@ PUSHINT 64
 DICTUSETB
 ROT
 NEWC
-STU 32
+STU 256
 PUSHINT 1
 ROT
 PUSHINT 64
@@ -584,11 +599,15 @@ LDMSGADDR
 LDU 32
 LDREF
 LDREF
+LDREF
+LDREF
 ENDS
 CTOS
 LDU 256
 LDMSGADDR
 ENDS
+SETGLOB 16
+SETGLOB 15
 SETGLOB 14
 SETGLOB 13
 SETGLOB 12
@@ -628,10 +647,13 @@ PUSHCONT {
 	IF
 	PUSHREF {
 	}
+	BLKPUSH 2, 0
 	PUSHINT 0
 	PUSHREFSLICE {
 		.blob x8000000000000000000000000000000000000000000000000000000000000000001_
 	}
+	SETGLOB 16
+	SETGLOB 15
 	SETGLOB 14
 	SETGLOB 13
 	SETGLOB 12
@@ -650,6 +672,8 @@ IFREFELSE {
 }
 
 .macro c7_to_c4
+GETGLOB 16
+GETGLOB 15
 GETGLOB 14
 GETGLOB 13
 GETGLOB 12
@@ -663,6 +687,8 @@ STU 64
 STONE
 STSLICE
 STU 32
+STREF
+STREF
 STREF
 ROTREV
 NEWC
@@ -783,7 +809,7 @@ CALLREF {
 }
 THROW 60
 
-.macro DaoBranchCode
+.macro DaoCode
 DROP
 ENDS
 CALLREF {
@@ -792,7 +818,7 @@ CALLREF {
 GETGLOB 12
 OVER
 PUSHCONT {
-	PUSHSLICE xc0000000000000000000000000a015c9f9
+	PUSHSLICE xc00000000000000000000000008a9cfa89
 	NEWC
 	STSLICE
 	STREF
@@ -803,7 +829,7 @@ PUSHCONT {
 IF
 THROW 0
 
-.macro TotalDaoBranches
+.macro ProposalCode
 DROP
 ENDS
 CALLREF {
@@ -812,7 +838,47 @@ CALLREF {
 GETGLOB 13
 OVER
 PUSHCONT {
-	PUSHSLICE xc00000000000000000000000009b53e5b0
+	PUSHSLICE xc0000000000000000000000000b899a9a7
+	NEWC
+	STSLICE
+	STREF
+	ENDC
+	PUSHINT 0
+	SENDRAWMSG
+}
+IF
+THROW 0
+
+.macro Tip3VoteWalletCode
+DROP
+ENDS
+CALLREF {
+	CALL $c4_to_c7$
+}
+GETGLOB 14
+OVER
+PUSHCONT {
+	PUSHSLICE xc0000000000000000000000000a682afee
+	NEWC
+	STSLICE
+	STREF
+	ENDC
+	PUSHINT 0
+	SENDRAWMSG
+}
+IF
+THROW 0
+
+.macro TotalDaos
+DROP
+ENDS
+CALLREF {
+	CALL $c4_to_c7$
+}
+GETGLOB 15
+OVER
+PUSHCONT {
+	PUSHSLICE xc00000000000000000000000009af04245
 	NEWC
 	STSLICE
 	STU 256
@@ -829,7 +895,7 @@ ENDS
 CALLREF {
 	CALL $c4_to_c7$
 }
-GETGLOB 14
+GETGLOB 16
 OVER
 PUSHCONT {
 	PUSHSLICE xc0000000000000000000000000dfd854de
@@ -845,32 +911,32 @@ THROW 0
 
 .macro public_function_selector
 DUP
-PUSHINT 478865691
+PUSHINT 451953221
 LEQ
 IFJMPREF {
 	DUP
-	PUSHINT 130936867
+	PUSHINT 66905809
 	EQUAL
 	IFJMPREF {
-		CALL $updateDaoBranchCode$
+		CALL $updateDaoCode$
 	}
 	DUP
-	PUSHINT 293556400
-	EQUAL
-	IFJMPREF {
-		CALL $DeployDaoBranch$
-	}
-	DUP
-	PUSHINT 458483120
-	EQUAL
-	IFJMPREF {
-		CALL $TotalDaoBranches$
-	}
-	DUP
-	PUSHINT 478865691
+	PUSHINT 69831779
 	EQUAL
 	IFJMPREF {
 		CALL $constructor$
+	}
+	DUP
+	PUSHINT 178059913
+	EQUAL
+	IFJMPREF {
+		CALL $DaoCode$
+	}
+	DUP
+	PUSHINT 451953221
+	EQUAL
+	IFJMPREF {
+		CALL $TotalDaos$
 	}
 }
 DUP
@@ -878,22 +944,22 @@ PUSHINT 1390954623
 LEQ
 IFJMPREF {
 	DUP
-	PUSHINT 538298873
-	EQUAL
-	IFJMPREF {
-		CALL $DaoBranchCode$
-	}
-	DUP
 	PUSHINT 638814643
 	EQUAL
 	IFJMPREF {
 		CALL $acceptBeingAdmin$
 	}
 	DUP
-	PUSHINT 877891021
+	PUSHINT 646098926
 	EQUAL
 	IFJMPREF {
-		CALL $expectedDaoBranchAddress$
+		CALL $Tip3VoteWalletCode$
+	}
+	DUP
+	PUSHINT 949594535
+	EQUAL
+	IFJMPREF {
+		CALL $ProposalCode$
 	}
 	DUP
 	PUSHINT 1390954623
@@ -907,10 +973,22 @@ PUSHINT 2141673462
 LEQ
 IFJMPREF {
 	DUP
+	PUSHINT 1598821297
+	EQUAL
+	IFJMPREF {
+		CALL $expectedDaoAddress$
+	}
+	DUP
 	PUSHINT 1608013022
 	EQUAL
 	IFJMPREF {
 		CALL $pendingAdmin$
+	}
+	DUP
+	PUSHINT 1785445875
+	EQUAL
+	IFJMPREF {
+		CALL $DeployDao$
 	}
 	DUP
 	PUSHINT 2141673462

@@ -4,10 +4,10 @@ pragma AbiHeader pubkey;
 
 import "./structures/ProposalConfigurationStructure.tsol";
 import "./structures/ProposalActionStruct.tsol";
-import "./structures/DAOBranchConfigurationStruct.tsol";
+import "./structures/DAOConfigurationStruct.tsol";
 import "./helpers/ProposalInitialCheck.tsol";
 import "./interfaces/IProposal.tsol";
-import "./interfaces/IDAOBranch.tsol";
+import "./interfaces/IDAO.tsol";
 import "tip3vote/contracts/interfaces/IVoteTokenWallet.tsol";
 import "tip3vote/contracts/interfaces/IVoteTokenRoot.tsol";
 import "tip3vote/contracts/VoteTokenWallet.tsol";
@@ -16,34 +16,38 @@ import "./libraries/Gas.tsol";
 import "@broxus/contracts/contracts/libraries/MsgFlag.tsol";
 
 
-contract DAOBranch is ProposalConfigurationStructure, DAOBranchConfigurationStruct, Action, ProposalInitialCheck, IDAOBranch {
+contract DAO is ProposalConfigurationStructure, DAOConfigurationStruct, Action, ProposalInitialCheck, IDAO {
 
-  event ProposalDeployed(address _proposer, address _proposal, uint256 proposalId, string description);
+  event ProposalDeployed(address _proposer, address _proposal, uint256 proposalId, string title, string description);
   event ProposaDeployFailed(address _proposer, uint256 _futuredProposalId, TvmCell Payload);
   event AdminTransferRequest(address _oldAdmin, address _newAdmin);
   event AdminTransfered(address _oldAdmin, address _newAdmin);
-  event DAOBranchPrefrencesChanged();
+  event DAOPrefrencesChanged();
 
   // static //
-  uint32 static _nonce;
+  uint256 static daoId;
   address static admin;
   address static DaoRoot;
   // static //
 
-  // the constant variables are wrapped into a struct see {"DAOBranchConfiguarationStruct.tsol"}.
+  // the constant variables are wrapped into a struct see {"DAOConfiguarationStruct.tsol"}.
 
   // normal //
 
   address public pendingAdmin;
   uint256 public totalProposals;
-  DaoBranchConfig public BranchConfig;
+  TvmCell public ProposalCode;
+  TvmCell public Tip3VoteWalletCode;
+  DaoConfig public Config;
 
   // normal //
 
-  constructor(DaoBranchConfig _BranchConfig) public {
+  constructor(DaoConfig _Config,TvmCell _proposalCode, TvmCell _tip3VoteWalletCode) public {
     require(msg.sender == DaoRoot, DaoErrors.NOT_ROOT);
     // initializing the state variabls
-    BranchConfig = _BranchConfig;
+    ProposalCode = _proposalCode;
+    Tip3VoteWalletCode = _tip3VoteWalletCode;
+    Config = _Config;
   }
 
   modifier onlyAdmin() {
@@ -64,7 +68,7 @@ contract DAOBranch is ProposalConfigurationStructure, DAOBranchConfigurationStru
     // reserving the contract balance to not be spent on this trnasaction
     tvm.rawReserve(0,4); 
     // cheking the deploying params
-    uint8 paramsRes = checkParams(BranchConfig, _ProposalInitConfiguration, _venomActions, msg.sender);
+    uint8 paramsRes = checkParams(Config, _ProposalInitConfiguration, _venomActions, msg.sender);
     require(paramsRes == uint8(200), paramsRes);
 
     TvmCell payload = abi.encode(_ProposalInitConfiguration,_venomActions,msg.sender);
@@ -88,7 +92,7 @@ contract DAOBranch is ProposalConfigurationStructure, DAOBranchConfigurationStru
     require(msg.sender == admin || msg.sender == expectedTip3VoteWalletAddress(_proposer), DaoErrors.NOT_ADMIN_OR_VOTE_WALLET);
 
     // checking if the sender has the enough value to deploy the porposal 
-      if (_balance < BranchConfig.TIP3_VOTE_PROPPOSING_QUORUM && msg.sender != admin){
+      if (_balance < Config.TIP3_VOTE_PROPPOSING_QUORUM && msg.sender != admin){
         // user is not admin and doesnt have the quorum token neither
         emit ProposaDeployFailed(_proposer, totalProposals + 1, _payload);
         revert(DaoErrors.TIP3_VOTE_TOO_LOW_TO_CREATE_PROPOSAL);
@@ -96,16 +100,18 @@ contract DAOBranch is ProposalConfigurationStructure, DAOBranchConfigurationStru
     
     // deploying the contract
     address proposalAddr = new Proposal{
-      stateInit: _buildProposalStateInit(totalProposals + 1),
+      stateInit: _buildProposalStateInit(totalProposals ),
       value: 0, // it must be somhow the sender in the prropose function  
       flag: TokenMsgFlag.ALL_NOT_RESERVED
     }(
       _ProposalConf,
       _venomActions,
-      msg.sender // msg sender checked
+      msg.sender, // msg sender checked,
+      Tip3VoteWalletCode,
+      Config.TIP3_VOTE_ROOT_ADDRESS
     );
     // adding one to the total proposals the totalProposals
-    emit ProposalDeployed(_proposer, proposalAddr, totalProposals + 1, _ProposalConf.description);
+    emit ProposalDeployed(_proposer, proposalAddr, totalProposals, _ProposalConf.title, _ProposalConf.description);
     totalProposals++;
   }
 
@@ -134,9 +140,9 @@ contract DAOBranch is ProposalConfigurationStructure, DAOBranchConfigurationStru
   function _buildProposalStateInit(uint256 _proopsalId) private view returns (TvmCell initData_) {
     return
       tvm.buildStateInit({
-        code: BranchConfig.proposalCode,
+        code: ProposalCode,
         contr: Proposal,
-        varInit: { PROPOSAL_ID: _proopsalId, DaoBranchAddress: address(this) }
+        varInit: { PROPOSAL_ID: _proopsalId, DaoAddress: address(this) }
       });
   }
 
@@ -149,18 +155,18 @@ contract DAOBranch is ProposalConfigurationStructure, DAOBranchConfigurationStru
          tvm.buildStateInit({
             contr: VoteTokenWallet,
             varInit: {
-                root_: BranchConfig.TIP3_VOTE_ROOT_ADDRESS,
+                root_: Config.TIP3_VOTE_ROOT_ADDRESS,
                 owner_: _walletOwner
             },
             pubkey: 0,
-            code: BranchConfig.Tip3VoteWalletCode
+            code: Tip3VoteWalletCode
         }))); 
   }
   function getAdmin() public override view returns (address admin_) {
     return admin;
   }
-  function getDAOBranchConfig() public override view returns (DaoBranchConfig DAOBranchConfig_) {
-    return BranchConfig;
+  function getDAOConfig() public override view returns (DaoConfig DAOConfig_) {
+    return Config;
   }
   function getTotalProposals() public override view returns (uint256 totalProposal_) {
     return totalProposals;
@@ -200,13 +206,13 @@ contract DAOBranch is ProposalConfigurationStructure, DAOBranchConfigurationStru
     admin.transfer({ value: 0, flag: MsgFlag.REMAINING_GAS });
   }
 
-  function changeDAOBranchprefrences(DaoBranchConfig _BranchConfig) public override onlyAdmin {
+  function changeDAOprefrences(DaoConfig _Config) public override onlyAdmin {
     // this contract is patying for the state changing since the admin is calling 
     tvm.accept();
     // emiting the event
-    emit DAOBranchPrefrencesChanged();
+    emit DAOPrefrencesChanged();
     // setting the new ones
-    BranchConfig = _BranchConfig;
+    Config = _Config;
   }
   // -- ADMIN FUNCTION -- //
 

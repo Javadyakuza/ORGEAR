@@ -3,32 +3,36 @@ pragma ever-solidity >= 0.61.2;
 pragma AbiHeader expire;
 pragma AbiHeader pubkey;
 
-import "./DAOBranch.tsol";
+import "./DAO.tsol";
 import "./libraries/DAOErrors.tsol";
-import "./interfaces/IDAOBranch.tsol";
+import "./interfaces/IDAO.tsol";
 import "./interfaces/IDAORoot.tsol";
 import "@broxus/contracts/contracts/libraries/MsgFlag.tsol";
 import "./libraries/Gas.tsol";
-import "./structures/DAOBranchConfigurationStruct.tsol";
+import "./structures/DAOConfigurationStruct.tsol";
 
-contract DAORoot is DAOBranchConfigurationStruct, IDAORoot{
+contract DAORoot is DAOConfigurationStruct, IDAORoot{
 
-    event newBranchDepoyed(address _branchAddress, address _admin);
+    event newDAODepoyed(string _name, string _logo, address _address, address _admin, uint256 _daoId);
     event DAORootAdminTransferreq(address _oldAdmin, address _newAdmin);
     event DAORootAdminTransfered(address _oldAdmin, address _newAdmin);
-    event DAOBranchCodeUpdated();
+    event DAOCodeUpdated();
 
     address static admin;
     uint32 static _nonce;
 
-    TvmCell public DaoBranchCode;
-    uint256 public TotalDaoBranches;
+    TvmCell public DaoCode;
+    TvmCell public ProposalCode;
+    TvmCell public Tip3VoteWalletCode;
+    uint256 public TotalDaos;
     address public pendingAdmin;
 
-    constructor(TvmCell _DaoBranchCode) public {
+    constructor(TvmCell _DaoCode,TvmCell _ProposalCode,TvmCell _Tip3VoteWalletCode) public {
         require(tvm.pubkey() == msg.pubkey(), DaoErrors.NOT_ADMIN);
         tvm.accept();
-        DaoBranchCode = _DaoBranchCode;
+        DaoCode = _DaoCode;
+        ProposalCode = _ProposalCode;
+        Tip3VoteWalletCode = _Tip3VoteWalletCode;
     }
 
     modifier onlyAdmin () {
@@ -36,33 +40,36 @@ contract DAORoot is DAOBranchConfigurationStruct, IDAORoot{
         _;
     } 
 
-    // this function deploys A dao Branch
-    function DeployDaoBranch(uint32 _branchNonce, DaoBranchConfig _DaoBranchConfig) public override internalMsg{
+    // this function deploys A dao 
+    function DeployDao(DaoConfig _DaoConfig) public override internalMsg{
         // chaking the msg.value 
         require(msg.value >= Gas.MAIN_VALUE, DaoErrors.VALUE_TOO_LOW);
         // reserving the contract value 
         tvm.rawReserve(0, 4);
-        // deploying the branch 
-        address branchAddr = new DAOBranch {
-            stateInit : _buildDaoBranchStatInit(_branchNonce, msg.sender),
+        // deploying the dao 
+        address daoAddr = new DAO {
+            stateInit : _buildDaoStatInit(TotalDaos, msg.sender),
             value : 0,
             flag : MsgFlag.ALL_NOT_RESERVED
         }(
-            _DaoBranchConfig
+            _DaoConfig,
+            ProposalCode,
+            Tip3VoteWalletCode
+
         );
-        emit newBranchDepoyed(branchAddr, msg.sender);
-        TotalDaoBranches++;
+        emit newDAODepoyed(_DaoConfig.Name,_DaoConfig.Logo,daoAddr, msg.sender,TotalDaos);
+        TotalDaos++;
     }
 
     // -- admin functions -- //
-    // this function chages the DaoBranch code 
-    function updateDaoBranchCode(TvmCell _DaoBranchCode) public onlyAdmin override {
+    // this function chages the Dao code 
+    function updateDaoCode(TvmCell _DaoCode) public onlyAdmin override {
         // in the octus we hade the onCodeChage handler but i don't see any resson to apply this here
         tvm.accept();
         // emotitng the event 
-        emit DAOBranchCodeUpdated();
+        emit DAOCodeUpdated();
         // setting the stae variable
-        DaoBranchCode = _DaoBranchCode;
+        DaoCode = _DaoCode;
     }
 
     function transferAdmin(address _newAdmin) public onlyAdmin override {
@@ -92,20 +99,20 @@ contract DAORoot is DAOBranchConfigurationStruct, IDAORoot{
         return admin;
     }
         // this function calculates the daoranch address 
-    function expectedDaoBranchAddress (uint32 _nonce_, address _admin_) public override view returns(address){
-        return address(tvm.hash(_buildDaoBranchStatInit(_nonce_, _admin_)));
+    function expectedDaoAddress (uint32 _daoId, address _admin_) public override view returns(address){
+        return address(tvm.hash(_buildDaoStatInit(_daoId, _admin_)));
     }
 
-    function _buildDaoBranchStatInit(uint32 _nonce_, address _admin_) private view returns(TvmCell){
+    function _buildDaoStatInit(uint256 _daoId, address _admin_) private view returns(TvmCell){
         return tvm.buildStateInit({
-            contr: DAOBranch,
+            contr: DAO,
             varInit: {
-                _nonce: _nonce_,
+                daoId: _daoId,
                 admin: _admin_,
                 DaoRoot : address(this)
             },
             pubkey: 0,
-            code: DaoBranchCode
+            code: DaoCode
         });
     }
     // -- get function -- //

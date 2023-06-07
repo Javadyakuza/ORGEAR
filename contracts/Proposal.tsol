@@ -4,7 +4,7 @@ import "./structures/ProposalActionStruct.tsol";
 import "./structures/ProposalConfigurationStructure.tsol";
 import "./structures/ProposalStates.tsol";
 import "./interfaces/IProposal.tsol";
-import "./interfaces/IDAOBranch.tsol";
+import "./interfaces/IDAO.tsol";
 import "tip3vote/contracts/interfaces/IVoteTokenWallet.tsol";
 import "tip3vote/contracts/interfaces/IVoteTokenRoot.tsol";
 import "tip3vote/contracts/VoteTokenWallet.tsol";
@@ -15,7 +15,8 @@ import "@broxus/contracts/contracts/libraries/MsgFlag.tsol";
 contract Proposal is  ProposalConfigurationStructure, Action, ProposalStates, IProposal{
   // static //
   uint256 public static PROPOSAL_ID;
-  address public static DaoBranchAddress;
+  address public static DaoAddress;
+
   // static //
 
   event VoteCasted(address voter, bool support, uint votes, string reason);
@@ -29,15 +30,30 @@ contract Proposal is  ProposalConfigurationStructure, Action, ProposalStates, IP
   ProposalState public state;
   uint256 public creationBlockTS;
   address public proposer;
+  uint256 public forVotes;//-
+  uint256 public againstVotes;//-
+  bool    public canceled;//-
+  bool    public executed; //-
+  uint256 public startTime;//+
+  uint256 public endTime;//+
+  uint256  executionTime;//-
+  TvmCell public Tip3VoteWalletCode;
+  address public tip3VoteRootAddress;
 
   constructor(
     ProposalInitConfiguration _initConfig, 
     VenomActions[] _venomActions,
-    address _proposer
+    address _proposer,
+    TvmCell _Tip3VoteWalletCode,
+    address _tip3VoteRootAddress
   ) public {
+    Tip3VoteWalletCode = _Tip3VoteWalletCode;
+    tip3VoteRootAddress = _tip3VoteRootAddress;
     initConfig = _initConfig;
     venomActions = _venomActions;
     creationBlockTS = block.timestamp;
+    startTime = creationBlockTS + _initConfig.votingDelay;
+    endTime = startTime + _initConfig.votingPeriod;
     proposer = _proposer;
   }
 
@@ -67,9 +83,9 @@ contract Proposal is  ProposalConfigurationStructure, Action, ProposalStates, IP
     require(_balance != 0 , DaoErrors.VALUE_ZERO);
     // casting the vote 
     if (_support) {
-        initConfig.forVotes += _balance;
+        forVotes += _balance;
         } else {
-        initConfig.againstVotes += _balance;
+        againstVotes += _balance;
         }
         emit VoteCasted(_voter, _support, _balance, _reason);
 
@@ -81,11 +97,11 @@ contract Proposal is  ProposalConfigurationStructure, Action, ProposalStates, IP
     // accepting puuting the proposal state in queue fees
     tvm.accept();
     // putting the end time plus the time lock as the excution time 
-    initConfig.executionTime = initConfig.endTime + initConfig.timeLock;
+    executionTime = endTime + initConfig.timeLock;
     // changing the proposal state
     state = ProposalState.Queued; 
     // emiting the event 
-    emit Queueed(initConfig.executionTime);
+    emit Queueed(executionTime);
   }
   // this func call the "onProposalSuccess" fiunction on the dao root 
   /// @notice payer : this   
@@ -93,17 +109,17 @@ contract Proposal is  ProposalConfigurationStructure, Action, ProposalStates, IP
     // checking the state of the proopsal is queued 
     require(getProposalState(nowTime) == ProposalState.Queued, DaoErrors.PROPOSAL_IS_NOT_QUEUED);
     // cheking that the its the time to execute the contrac, the execution time must be greater that now time  PROPOSAL_IS_NOT_SUCCEEDED
-    require(block.timestamp >= initConfig.executionTime, DaoErrors.EXECUTION_TIME_NOT_COME_YET);
+    require(block.timestamp >= executionTime, DaoErrors.EXECUTION_TIME_NOT_COME_YET);
     // accepting the fees 
     tvm.accept();
     // toggling the initCinfig excuted to true 
-     initConfig.executed = true ;
+     executed = true ;
      // changing the contract state 
      state = ProposalState.Executed;
      // emiting the event 
      emit Executed();
      // excuting the contract from the dao root channel 
-     IDAOBranch(DaoBranchAddress).onProposalSucceeded{
+     IDAO(DaoAddress).onProposalSucceeded{
       value : 0, 
       flag : MsgFlag.ALL_NOT_RESERVED
      }(venomActions, PROPOSAL_ID);
@@ -121,9 +137,9 @@ contract Proposal is  ProposalConfigurationStructure, Action, ProposalStates, IP
     // chaking that the proposer is calling this function 
     require(msg.sender == proposer, DaoErrors.NOT_OWNER);
     // checking that the contract is not excuted yet 
-    require(!initConfig.executed, DaoErrors.PROPOSAL_IS_EXECUTED);
+    require(!executed, DaoErrors.PROPOSAL_IS_EXECUTED);
     // toggling the cancell to true 
-    initConfig.canceled = true ;
+    canceled = true ;
     // emitng the event reffering to that 
     emit Canceled();
 
@@ -131,7 +147,7 @@ contract Proposal is  ProposalConfigurationStructure, Action, ProposalStates, IP
 
   function onActionsExecuted() public override view {
         // only dao can call his function 
-        require(msg.sender == DaoBranchAddress, DaoErrors.NOT_DAO);
+        require(msg.sender == DaoAddress, DaoErrors.NOT_DAO);
         // saving the inital balance of the contract Gas.MAIN_VALUE, : inital balance 
         tvm.rawReserve(Gas.MAIN_VALUE, 2);
         // emiting a event 
@@ -144,11 +160,11 @@ contract Proposal is  ProposalConfigurationStructure, Action, ProposalStates, IP
          tvm.buildStateInit({
             contr: VoteTokenWallet,
             varInit: {
-                root_: initConfig.TIP3_VOTE_ROOT_ADDRESS,
+                root_: tip3VoteRootAddress,
                 owner_: _walletOwner
             },
             pubkey: 0,
-            code: initConfig.Tip3VoteWalletCode
+            code: Tip3VoteWalletCode
         }))); 
   }  // set function //
 
@@ -160,25 +176,25 @@ contract Proposal is  ProposalConfigurationStructure, Action, ProposalStates, IP
       return venomActions;
   }
   function getProposalState(/*will be removed in productioin */ uint128 nowTime) public override view returns (ProposalState state_){
-        if (initConfig.canceled) {
+        if (canceled) {
           // returns the cencelled if the inti config struct cancelled was true 
             return ProposalState.Canceled;
-        } else if (initConfig.executed) {
+        } else if (executed) {
           // returnexcuted if the init config file excuted was true
             return ProposalState.Executed;
-        } else if (nowTime <= initConfig.startTime) {
+        } else if (nowTime <= startTime) {
           // return pending if the init config file start time was freater than block.timestamp time
             return ProposalState.Pending;
-        } else if (nowTime <= initConfig.endTime) {
+        } else if (nowTime <= endTime) {
             // return the active if the block.timestamp time was less than the end time from the iitconfig struct 
             return ProposalState.Active;
-        } else if (initConfig.forVotes <= initConfig.againstVotes || initConfig.forVotes < initConfig.quorumVotes) {
+        } else if (forVotes <= againstVotes || forVotes < initConfig.quorumVotes) {
           // return failed if for votes were lees than or eq to against votes OR for votes were less than qourom votes
             return ProposalState.Failed;
-        } else if (initConfig.executionTime == 0) {
+        } else if (executionTime == 0) {
           // return succesdded if the execution time was zero , why ?
             return ProposalState.Succeeded;
-        } else if (nowTime > initConfig.executionTime + initConfig.gracePeriod) {
+        } else if (nowTime > executionTime + initConfig.gracePeriod) {
             // return expired if the excution time plus grace periosd time were less thatn now time 
             return ProposalState.Expired;
         } else {

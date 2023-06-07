@@ -109,7 +109,7 @@
 	],
 	"events": [
 		{
-			"name": "newDAODepoyed",
+			"name": "newDAODeployed",
 			"inputs": [
 				{"name":"_name","type":"string"},
 				{"name":"_logo","type":"string"},

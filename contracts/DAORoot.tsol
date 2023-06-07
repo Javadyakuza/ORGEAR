@@ -13,7 +13,7 @@ import "./structures/DAOConfigurationStruct.tsol";
 
 contract DAORoot is DAOConfigurationStruct, IDAORoot{
 
-    event newDAODepoyed(string _name, string _logo, address _address, address _admin);
+    event newDAODepoyed(string _name, string _logo, address _address, address _admin, uint256 _daoId);
     event DAORootAdminTransferreq(address _oldAdmin, address _newAdmin);
     event DAORootAdminTransfered(address _oldAdmin, address _newAdmin);
     event DAOCodeUpdated();
@@ -57,7 +57,7 @@ contract DAORoot is DAOConfigurationStruct, IDAORoot{
             Tip3VoteWalletCode
 
         );
-        emit newDAODepoyed(_DaoConfig.Name,_DaoConfig.Logo,daoAddr, msg.sender);
+        emit newDAODepoyed(_DaoConfig.Name,_DaoConfig.Logo,daoAddr, msg.sender,TotalDaos);
         TotalDaos++;
     }
 

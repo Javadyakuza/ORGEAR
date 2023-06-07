@@ -114,7 +114,8 @@
 				{"name":"_name","type":"string"},
 				{"name":"_logo","type":"string"},
 				{"name":"_address","type":"address"},
-				{"name":"_admin","type":"address"}
+				{"name":"_admin","type":"address"},
+				{"name":"_daoId","type":"uint256"}
 			],
 			"outputs": [
 			]

@@ -167,6 +167,7 @@
 				{"name":"_proposer","type":"address"},
 				{"name":"_proposal","type":"address"},
 				{"name":"proposalId","type":"uint256"},
+				{"name":"title","type":"string"},
 				{"name":"description","type":"string"}
 			],
 			"outputs": [

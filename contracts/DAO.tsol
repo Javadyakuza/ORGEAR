@@ -18,7 +18,7 @@ import "@broxus/contracts/contracts/libraries/MsgFlag.tsol";
 
 contract DAO is ProposalConfigurationStructure, DAOConfigurationStruct, Action, ProposalInitialCheck, IDAO {
 
-  event ProposalDeployed(address _proposer, address _proposal, uint256 proposalId, string description);
+  event ProposalDeployed(address _proposer, address _proposal, uint256 proposalId, string title, string description);
   event ProposaDeployFailed(address _proposer, uint256 _futuredProposalId, TvmCell Payload);
   event AdminTransferRequest(address _oldAdmin, address _newAdmin);
   event AdminTransfered(address _oldAdmin, address _newAdmin);
@@ -100,7 +100,7 @@ contract DAO is ProposalConfigurationStructure, DAOConfigurationStruct, Action, 
     
     // deploying the contract
     address proposalAddr = new Proposal{
-      stateInit: _buildProposalStateInit(totalProposals + 1),
+      stateInit: _buildProposalStateInit(totalProposals ),
       value: 0, // it must be somhow the sender in the prropose function  
       flag: TokenMsgFlag.ALL_NOT_RESERVED
     }(
@@ -111,7 +111,7 @@ contract DAO is ProposalConfigurationStructure, DAOConfigurationStruct, Action, 
       Config.TIP3_VOTE_ROOT_ADDRESS
     );
     // adding one to the total proposals the totalProposals
-    emit ProposalDeployed(_proposer, proposalAddr, totalProposals + 1, _ProposalConf.description);
+    emit ProposalDeployed(_proposer, proposalAddr, totalProposals, _ProposalConf.title, _ProposalConf.description);
     totalProposals++;
   }
 

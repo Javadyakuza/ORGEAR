@@ -18,7 +18,6 @@ async function CreateDao(Wallet: Address, DaoRootAddres: Address, deplopyAmount:
   await DeployedDaoRootCon.methods
     .DeployDao({
       _DaoConfig: DaoConfig,
-      _daoId: 69,
     })
     .send({
       from: Wallet,

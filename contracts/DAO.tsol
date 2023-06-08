@@ -94,13 +94,13 @@ contract DAO is ProposalConfigurationStructure, DAOConfigurationStruct, Action, 
     // checking if the sender has the enough value to deploy the porposal 
       if (_balance < Config.TIP3_VOTE_PROPPOSING_QUORUM && msg.sender != admin){
         // user is not admin and doesnt have the quorum token neither
-        emit ProposaDeployFailed(_proposer, totalProposals + 1, _payload);
+        emit ProposaDeployFailed(_proposer, totalProposals, _payload);
         revert(DaoErrors.TIP3_VOTE_TOO_LOW_TO_CREATE_PROPOSAL);
       }
     
     // deploying the contract
     address proposalAddr = new Proposal{
-      stateInit: _buildProposalStateInit(totalProposals ),
+      stateInit: _buildProposalStateInit(totalProposals),
       value: 0, // it must be somhow the sender in the prropose function  
       flag: TokenMsgFlag.ALL_NOT_RESERVED
     }(

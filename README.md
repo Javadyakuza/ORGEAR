@@ -37,6 +37,12 @@ Before you begin, please ensure that you have the following prerequisites instal
 3. To run the scripts on DevNet/TestNet first configure your `.env` file.
 4. To deploy DAORoot, run this command: `npx locklift run -s scripts/deploy/DeployDaoRoot.ts -n venom_devnet/venom_testnet`.
 
+## LINKED REPOSITORIES
+
+- UI: https://github.com/meisamtaher/venomDAOBuilder-front
+- prototype: https://www.figma.com/proto/1XObkSDcn9nLanVBJNbVV0/VENOM?page-id=0%3A1&type=design&node-id=1300-29927&viewport=7%2C-514%2C0.15&scaling=min-zoom&starting-point-node-id=1300%3A29927
+- docs: https://www.OrGear.docs.com
+
 ## Contributors
 
 Thanks to all the contributors who have helped make OrGear possible!

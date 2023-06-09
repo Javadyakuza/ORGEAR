@@ -16,8 +16,8 @@
 		{
 			"name": "propose",
 			"inputs": [
-				{"components":[{"name":"title","type":"string"},{"name":"description","type":"string"},{"name":"votingDelay","type":"uint32"},{"name":"votingPeriod","type":"uint32"},{"name":"quorumVotes","type":"uint128"},{"name":"timeLock","type":"uint32"},{"name":"threshold","type":"uint128"},{"name":"gracePeriod","type":"uint32"}],"name":"_ProposalInitConfiguration","type":"tuple"},
-				{"components":[{"name":"value","type":"uint256"},{"name":"target","type":"address"},{"name":"payload","type":"cell"}],"name":"_venomActions","type":"tuple[]"}
+				{"components":[{"name":"title","type":"string"},{"name":"description","type":"string"},{"name":"votingDelay","type":"uint32"},{"name":"votingPeriod","type":"uint32"},{"name":"quorumVotes","type":"uint128"},{"name":"timeLock","type":"uint32"},{"name":"threshold","type":"uint128"},{"name":"gracePeriod","type":"uint32"},{"name":"sponser","type":"bool"}],"name":"_ProposalInitConfiguration","type":"tuple"},
+				{"components":[{"name":"value","type":"uint128"},{"name":"target","type":"address"},{"name":"payload","type":"cell"}],"name":"_venomActions","type":"tuple[]"}
 			],
 			"outputs": [
 			]
@@ -34,7 +34,7 @@
 		{
 			"name": "onProposalSucceeded",
 			"inputs": [
-				{"components":[{"name":"value","type":"uint256"},{"name":"target","type":"address"},{"name":"payload","type":"cell"}],"name":"_venomActions","type":"tuple[]"},
+				{"components":[{"name":"value","type":"uint128"},{"name":"target","type":"address"},{"name":"payload","type":"cell"}],"name":"_venomActions","type":"tuple[]"},
 				{"name":"_proposalId","type":"uint256"}
 			],
 			"outputs": [
@@ -85,10 +85,10 @@
 		{
 			"name": "_venomActionTotalValue",
 			"inputs": [
-				{"components":[{"name":"value","type":"uint256"},{"name":"target","type":"address"},{"name":"payload","type":"cell"}],"name":"_venomActions","type":"tuple[]"}
+				{"components":[{"name":"value","type":"uint128"},{"name":"target","type":"address"},{"name":"payload","type":"cell"}],"name":"_venomActions","type":"tuple[]"}
 			],
 			"outputs": [
-				{"name":"totalValue_","type":"uint256"}
+				{"name":"totalValue_","type":"uint128"}
 			]
 		},
 		{

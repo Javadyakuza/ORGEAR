@@ -12,5 +12,6 @@ interface ProposalConfigurationStructure {
     uint32   timeLock; // the time between when the poroposal gets queue and the time of excution ^
     uint128  threshold; // this threshold of votes says that x amount of votes is enough for a proposal to be successfull  hale [✅]
     uint32   gracePeriod; // this is liken timelock 
+    bool     sponser; // proposal deployer aggrees to pay the ffes for voting 
   }
 }

@@ -30,22 +30,22 @@ async function setSigenrs() {
   console.log(`account 1 : ${everWallet_1.address.toString()} \n account 2 : ${everWallet_2.address.toString()}`);
 }
 async function DeployDao() {
-  DAORoot = await locklift.factory.getDeployedContract("DAORoot", new Address(deployedContracts.DaoRootAddress));
-  console.log("dao root : ", DAORoot.address.toString());
-  //   let { traceTree: data } = await locklift.tracing.trace(
-  //     DAORoot.methods
-  //       .DeployDao({
-  //         _DaoConfig: DaoConfig,
-  //       })
-  //       .send({
-  //         from: everWallet_1.address,
-  //         amount: locklift.utils.toNano(2),
-  //       }),
-  //   );
-  //   let DeployDaoEvents = data!.findEventsForContract({
-  //     contract: DAORoot,
-  //     name: "newDAODeployed" as const,
-  //   });
+  // DAORoot = await locklift.factory.getDeployedContract("DAORoot", new Address(deployedContracts.DaoRootAddress));
+  // console.log("dao root : ", DAORoot.address.toString());
+  // let { traceTree: data } = await locklift.tracing.trace(
+  //   DAORoot.methods
+  //     .DeployDao({
+  //       _DaoConfig: DaoConfig,
+  //     })
+  //     .send({
+  //       from: everWallet_1.address,
+  //       amount: locklift.utils.toNano(2),
+  //     }),
+  // );
+  // let DeployDaoEvents = data!.findEventsForContract({
+  //   contract: DAORoot,
+  //   name: "newDAODeployed" as const,
+  // });
   DAOCon = await locklift.factory.getDeployedContract("DAO", new Address(deployedContracts.yakuzatestDao));
   console.log("Dao address : ", DAOCon.address.toString());
   console.log("dao information : \n", (await DAOCon.methods.getDAOConfig({}).call({})).DAOConfig_);

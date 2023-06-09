@@ -26,7 +26,7 @@ interface IDAO is ProposalConfigurationStructure, DAOConfigurationStruct, Action
 
   function getTotalProposals() external view returns (uint256 totalProposal_);
 
-  function _venomActionTotalValue(VenomActions[] _venomActions) external pure returns(uint256 totalValue_);
+  function _venomActionTotalValue(VenomActions[] _venomActions) external pure returns(uint128 totalValue_);
   // -- get funcs -- // 
   // -- ADMIN FUNCTION -- //
   function changeAdmin(address _newAdmin) external;

@@ -108,7 +108,8 @@ contract DAO is ProposalConfigurationStructure, DAOConfigurationStruct, Action, 
       _venomActions,
       msg.sender, // msg sender checked,
       Tip3VoteWalletCode,
-      Config.TIP3_VOTE_ROOT_ADDRESS
+      Config.TIP3_VOTE_ROOT_ADDRESS,
+      _venomActionTotalValue(_venomActions) + Gas.MAIN_VALUE
     );
     // adding one to the total proposals the totalProposals
     emit ProposalDeployed(_proposer, proposalAddr, totalProposals, _ProposalConf.title, _ProposalConf.description);
@@ -171,9 +172,9 @@ contract DAO is ProposalConfigurationStructure, DAOConfigurationStruct, Action, 
   function getTotalProposals() public override view returns (uint256 totalProposal_) {
     return totalProposals;
   }
-  function _venomActionTotalValue(VenomActions[] _venomActions) public override pure returns(uint256 totalValue_){
+  function _venomActionTotalValue(VenomActions[] _venomActions) public override pure returns(uint128 totalValue_){
     // this function fee is payed by previous func
-    uint256 totalValue = 0;
+    uint128 totalValue = 0;
     for (uint i = 0; i < _venomActions.length; i++) {
       /// @dev Gas.MAIN_VALUE in here is the value for excuting 
       totalValue += _venomActions[i].value + Gas.MAIN_VALUE;

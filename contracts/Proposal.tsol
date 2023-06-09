@@ -38,7 +38,7 @@ contract Proposal is  ProposalConfigurationStructure, Action, ProposalStates, IP
   uint256 public executionTime;
   TvmCell public Tip3VoteWalletCode;
   address public tip3VoteRootAddress;
-
+  uint128 public venomActionTotalValue;
 
   mapping (address => bool) public voteTrack;
 
@@ -47,7 +47,8 @@ contract Proposal is  ProposalConfigurationStructure, Action, ProposalStates, IP
     VenomActions[] _venomActions,
     address _proposer,
     TvmCell _Tip3VoteWalletCode,
-    address _tip3VoteRootAddress
+    address _tip3VoteRootAddress,
+    uint128 _venomActionTotalValue
   ) public {
     Tip3VoteWalletCode = _Tip3VoteWalletCode;
     tip3VoteRootAddress = _tip3VoteRootAddress;
@@ -57,6 +58,7 @@ contract Proposal is  ProposalConfigurationStructure, Action, ProposalStates, IP
     startTime = creationBlockTS + _initConfig.votingDelay;
     endTime = startTime + _initConfig.votingPeriod;
     proposer = _proposer;
+    venomActionTotalValue = _venomActionTotalValue;
   }
 
   // set function //
@@ -66,7 +68,12 @@ contract Proposal is  ProposalConfigurationStructure, Action, ProposalStates, IP
   function vote(bool _support, string _reason) public override internalMsg view{
     require(getProposalState() == ProposalState.Active, DaoErrors.PROPOSAL_IS_NOT_ACTIVVE);
     require(voteTrack[msg.sender] == false, DaoErrors.USER_VOTED_ALREADY);
-    tvm.rawReserve(0,4);
+    if (initConfig.sponser){
+      tvm.accept();
+    }else{
+      require(msg.value >= venomActionTotalValue ,DaoErrors.VALUE_TOO_LOW);
+      tvm.rawReserve(0,4);
+    }
     // packing the data 
     TvmCell votePayload = abi.encode(msg.sender, _support, _reason);
 

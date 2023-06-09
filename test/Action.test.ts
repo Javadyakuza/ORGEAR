@@ -7,6 +7,7 @@ import { ProposalConfigurationStructure } from "./structures_template/ProposalCo
 import { ProposalAction } from "./structures_template/ProposalActionStruct.example";
 
 var DAOCon: Contract<FactorySource["DAO"]>;
+var TIME: Contract<FactorySource["timestamp"]>;
 let DAORootAddr: Address;
 let DAOAddr: Address;
 let Tip3voteRootAddr: Address;
@@ -308,16 +309,28 @@ describe("shuold take the actions ", async function () {
           amount: locklift.utils.toNano(1),
         }),
     );
-
+    console.log(await Proposal.methods.getPorosposalOverview({}).call({}));
+    const { contract: time } = await locklift.factory.deployContract({
+      contract: "timestamp",
+      publicKey: signer.publicKey,
+      initParams: {},
+      constructorParams: {},
+      value: locklift.utils.toNano(2),
+    });
+    TIME = time;
+    console.log("fukcing balaaa", time.address.toString());
     expect((await Proposal.methods.getPorosposalOverview({}).call({})).againstVotes_).to.eq("500000000000");
   });
   it("shuold the take the actioin on proposal succeded", async function () {
     // test progress gonna stop in here till the voting period get ended then we can queue the proposal
-    await new Promise<any>((resolve, reject) => {
-      setTimeout(() => {
-        resolve(true);
-      }, 180000);
-    });
+    await locklift.testing.increaseTime(130);
+    console.log(
+      "this is the state ",
+      (await locklift.factory.getDeployedContract("Proposal", ProposalAddr_1).methods.getProposalState({}).call({}))
+        .state_,
+      "this is the timestamp : \n ",
+      (await TIME.methods.getTimestamp({}).call({})).value0,
+    );
     const Proposalcon = await locklift.factory.getDeployedContract("Proposal", ProposalAddr_1);
 
     await locklift.tracing.trace(

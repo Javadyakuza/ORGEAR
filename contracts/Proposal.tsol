@@ -16,7 +16,6 @@ contract Proposal is  ProposalConfigurationStructure, Action, ProposalStates, IP
   // static //
   uint256 public static PROPOSAL_ID;
   address public static DaoAddress;
-
   // static //
 
   event VoteCasted(address voter, bool support, uint votes, string reason);
@@ -39,6 +38,9 @@ contract Proposal is  ProposalConfigurationStructure, Action, ProposalStates, IP
   uint256 public executionTime;
   TvmCell public Tip3VoteWalletCode;
   address public tip3VoteRootAddress;
+
+
+  mapping (address => bool) public voteTrack;
 
   constructor(
     ProposalInitConfiguration _initConfig, 
@@ -63,6 +65,7 @@ contract Proposal is  ProposalConfigurationStructure, Action, ProposalStates, IP
    */
   function vote(bool _support, string _reason) public override internalMsg view{
     require(getProposalState() == ProposalState.Active, DaoErrors.PROPOSAL_IS_NOT_ACTIVVE);
+    require(voteTrack[msg.sender] == false, DaoErrors.USER_VOTED_ALREADY);
     tvm.rawReserve(0,4);
     // packing the data 
     TvmCell votePayload = abi.encode(msg.sender, _support, _reason);
@@ -87,6 +90,7 @@ contract Proposal is  ProposalConfigurationStructure, Action, ProposalStates, IP
         } else {
         againstVotes += _balance;
         }
+        voteTrack[msg.sender] = true ;
         emit VoteCasted(_voter, _support, _balance, _reason);
 
     } 

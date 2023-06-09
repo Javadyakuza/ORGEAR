@@ -109,6 +109,9 @@ const config: LockliftConfig = {
         phrase: process.env.PHRASE!,
         accountId: 0,
       },
+      tracing: {
+        endpoint: DEV_NET_TRACE_ENDPOINT,
+      },
       keys: {
         // Use everdev to generate your phrase
         // !!! Never commit it in your repos !!!

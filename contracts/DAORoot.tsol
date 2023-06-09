@@ -26,7 +26,6 @@ contract DAORoot is DAOConfigurationStruct, IDAORoot{
     TvmCell public Tip3VoteWalletCode;
     uint256 public TotalDaos;
     address public pendingAdmin;
-
     constructor(TvmCell _DaoCode,TvmCell _ProposalCode,TvmCell _Tip3VoteWalletCode) public {
         require(tvm.pubkey() == msg.pubkey(), DaoErrors.NOT_ADMIN);
         tvm.accept();
@@ -44,6 +43,8 @@ contract DAORoot is DAOConfigurationStruct, IDAORoot{
     function DeployDao(DaoConfig _DaoConfig) public override internalMsg{
         // chaking the msg.value 
         require(msg.value >= Gas.MAIN_VALUE, DaoErrors.VALUE_TOO_LOW);
+        // checking fo the dao name and logo 
+        require(bytes(_DaoConfig.Logo).length < 255 && bytes(_DaoConfig.Name).length < 32, DaoErrors.DAO_NAME_OR_LOGO_TOO_LONG);
         // reserving the contract value 
         tvm.rawReserve(0, 4);
         // deploying the dao 

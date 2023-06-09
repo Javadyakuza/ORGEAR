@@ -19,6 +19,7 @@ interface DAOConfigurationStruct{
             uint32   MIN_GRACE_PERIOD;
             uint32   MAX_GRACE_PERIOD;
             uint16   proposalMaxDescriptionLen; 
+            
             uint8    proposalMaxOperations; 
         }
 }

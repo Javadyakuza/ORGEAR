@@ -28,7 +28,7 @@ library DaoErrors {
     uint8 constant TOO_MANY_OR_ZERO_ACTIONS = 133;
     uint8 constant MSG_VALUE_TOO_LOW_TO_CREATE_PROPOSAL = 134;
     uint8 constant TIP3_VOTE_TOO_LOW_TO_CREATE_PROPOSAL = 135;
-    
+    uint8 constant USER_MUST_NOT_SEND_VALUE = 136;
     uint8 constant PROPOSAL_IS_NOT_SUCCEEDED = 140;
     uint8 constant PROPOSAL_IS_NOT_QUEUED = 141;
     uint8 constant PROPOSAL_IS_EXECUTED = 142;

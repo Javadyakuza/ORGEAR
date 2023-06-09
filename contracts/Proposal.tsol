@@ -12,7 +12,7 @@ import "./libraries/DAOErrors.tsol";
 import "./libraries/Gas.tsol";
 import "@broxus/contracts/contracts/libraries/MsgFlag.tsol";
 
-contract Proposal is  ProposalConfigurationStructure, Action, ProposalStates, IProposal{
+contract Proposal is ProposalConfigurationStructure, Action, ProposalStates, IProposal {
   // static //
   uint256 public static PROPOSAL_ID;
   address public static DaoAddress;
@@ -29,10 +29,10 @@ contract Proposal is  ProposalConfigurationStructure, Action, ProposalStates, IP
   ProposalState public state;
   uint256 public creationBlockTS;
   address public proposer;
-   uint256 public forVotes;
+  uint256 public forVotes;
   uint256 public againstVotes;
-  bool    public canceled;
-  bool    public executed; 
+  bool public canceled;
+  bool public executed;
   uint256 public startTime;
   uint256 public endTime;
   uint256 public executionTime;
@@ -40,10 +40,10 @@ contract Proposal is  ProposalConfigurationStructure, Action, ProposalStates, IP
   address public tip3VoteRootAddress;
   uint128 public venomActionTotalValue;
 
-  mapping (address => bool) public voteTrack;
+  mapping(address => bool) public voteTrack;
 
   constructor(
-    ProposalInitConfiguration _initConfig, 
+    ProposalInitConfiguration _initConfig,
     VenomActions[] _venomActions,
     address _proposer,
     TvmCell _Tip3VoteWalletCode,
@@ -65,184 +65,194 @@ contract Proposal is  ProposalConfigurationStructure, Action, ProposalStates, IP
   /**
   @notice this function support the delegate voting by getting the voter  
    */
-  function vote(bool _support, string _reason) public override internalMsg view{
+  function vote(bool _support, string _reason) public view override internalMsg {
     require(getProposalState() == ProposalState.Active, DaoErrors.PROPOSAL_IS_NOT_ACTIVVE);
     require(voteTrack[msg.sender] == false, DaoErrors.USER_VOTED_ALREADY);
-    if (initConfig.sponser){
+    if (initConfig.sponser) {
+      require(msg.value == 0, DaoErrors.USER_MUST_NOT_SEND_VALUE);
       tvm.accept();
-    }else{
-      require(msg.value >= venomActionTotalValue ,DaoErrors.VALUE_TOO_LOW);
-      tvm.rawReserve(0,4);
+    } else {
+      // the Gas Main Value for voting fees
+      require(msg.value >= Gas.MAIN_VALUE, DaoErrors.VALUE_TOO_LOW);
+      tvm.rawReserve(0, 4);
     }
-    // packing the data 
+    // packing the data
     TvmCell votePayload = abi.encode(msg.sender, _support, _reason);
 
-    // calling the expected tip3 vote wallet to return the past votes for us 
+    // calling the expected tip3 vote wallet to return the past votes for us
     IVoteTokenWallet(_expectedTip3VoteWalletAddress(msg.sender)).getPastVotes{
-      value : 0 ,
-      flag : MsgFlag.ALL_NOT_RESERVED,
-      callback : castVote
-    }(creationBlockTS, votePayload); 
+      value: 0,
+      flag: MsgFlag.ALL_NOT_RESERVED,
+      callback: castVote
+    }(creationBlockTS, votePayload);
   }
-  function castVote(uint256 _balance, TvmCell _votePayload) public override internalMsg { 
-    // unpacking the data 
-    (address _voter, bool _support, string _reason) 
-              = abi.decode(_votePayload,(address, bool, string));
-    require(_expectedTip3VoteWalletAddress(_voter) == msg.sender, DaoErrors.NOT_ADMIN_OR_VOTE_WALLET);
-    // checking the vpte weight is greater than 0 
-    require(_balance != 0 , DaoErrors.VALUE_ZERO);
-    // casting the vote 
-    if (_support) {
-        forVotes += _balance;
-        } else {
-        againstVotes += _balance;
-        }
-        voteTrack[msg.sender] = true ;
-        emit VoteCasted(_voter, _support, _balance, _reason);
 
-    } 
+  function castVote(uint256 _balance, TvmCell _votePayload) public override internalMsg {
+    // unpacking the data
+    (address _voter, bool _support, string _reason) = abi.decode(_votePayload, (address, bool, string));
+    require(_expectedTip3VoteWalletAddress(_voter) == msg.sender, DaoErrors.NOT_ADMIN_OR_VOTE_WALLET);
+    // checking the vpte weight is greater than 0
+    require(_balance != 0, DaoErrors.VALUE_ZERO);
+    // casting the vote
+    if (_support) {
+      forVotes += _balance;
+    } else {
+      againstVotes += _balance;
+    }
+    voteTrack[msg.sender] = true;
+    emit VoteCasted(_voter, _support, _balance, _reason);
+  }
+
   // queue the proposal means that propoposal is ready to be excuited and was successfull
-  function Queue() public override internalMsg{
-    // checking if the positioin was successfull or not 
+  function Queue() public override internalMsg {
+    // checking if the positioin was successfull or not
     require(getProposalState() == ProposalState.Succeeded, DaoErrors.PROPOSAL_IS_NOT_SUCCEEDED);
     // accepting puuting the proposal state in queue fees
     tvm.accept();
-    // putting the end time plus the time lock as the excution time 
+    // putting the end time plus the time lock as the excution time
     executionTime = endTime + initConfig.timeLock;
     // changing the proposal state
-    state = ProposalState.Queued; 
-    // emiting the event 
+    state = ProposalState.Queued;
+    // emiting the event
     emit Queueed(executionTime);
   }
-  // this func call the "onProposalSuccess" fiunction on the dao root 
-  /// @notice payer : this   
-  function execute() public override internalMsg{
-    // checking the state of the proopsal is queued 
+
+  // this func call the "onProposalSuccess" fiunction on the dao root
+  /// @notice payer : this
+  function execute() public override internalMsg {
+    // checking the state of the proopsal is queued
     require(getProposalState() == ProposalState.Queued, DaoErrors.PROPOSAL_IS_NOT_QUEUED);
     // cheking that the its the time to execute the contrac, the execution time must be greater that now time  PROPOSAL_IS_NOT_SUCCEEDED
     require(block.timestamp >= executionTime, DaoErrors.EXECUTION_TIME_NOT_COME_YET);
-    // accepting the fees 
+    // accepting the fees
     tvm.accept();
-    // toggling the initCinfig excuted to true 
-     executed = true ;
-     // changing the contract state 
-     state = ProposalState.Executed;
-     // emiting the event 
-     emit Executed();
-     // excuting the contract from the dao root channel 
-     IDAO(DaoAddress).onProposalSucceeded{
-      value : 0, 
-      flag : MsgFlag.ALL_NOT_RESERVED
-     }(venomActions, PROPOSAL_ID);
-
+    // toggling the initCinfig excuted to true
+    executed = true;
+    // changing the contract state
+    state = ProposalState.Executed;
+    // emiting the event
+    emit Executed();
+    // excuting the contract from the dao root channel
+    IDAO(DaoAddress).onProposalSucceeded{ value: 0, flag: MsgFlag.ALL_NOT_RESERVED }(venomActions, PROPOSAL_ID);
   }
 
   // this function cancells the proposal
-  /// @notice payer : sender   
-  function cancell() public override internalMsg{
-    // cheking that the sender hsa attached enogh venom to change the state 
-    /// @dev Gas.MAIN_VALUE is the state change basically 
+  /// @notice payer : sender
+  function cancell() public override internalMsg {
+    // cheking that the sender hsa attached enogh venom to change the state
+    /// @dev Gas.MAIN_VALUE is the state change basically
     require(msg.value >= Gas.MAIN_VALUE, DaoErrors.VALUE_TOO_LOW);
-    // saving the contract value 
+    // saving the contract value
     tvm.rawReserve(0, 4);
-    // chaking that the proposer is calling this function 
+    // chaking that the proposer is calling this function
     require(msg.sender == proposer, DaoErrors.NOT_OWNER);
-    // checking that the contract is not excuted yet 
+    // checking that the contract is not excuted yet
     require(!executed, DaoErrors.PROPOSAL_IS_EXECUTED);
-    // toggling the cancell to true 
-    canceled = true ;
-    // emitng the event reffering to that 
+    // toggling the cancell to true
+    canceled = true;
+    // emitng the event reffering to that
     emit Canceled();
-
   }
 
-  function onActionsExecuted() public override view {
-        // only dao can call his function 
-        require(msg.sender == DaoAddress, DaoErrors.NOT_DAO);
-        // saving the inital balance of the contract Gas.MAIN_VALUE, : inital balance 
-        tvm.rawReserve(Gas.MAIN_VALUE, 2);
-        // emiting a event 
-        emit ProposerFundedBack(proposer, address(this).balance - Gas.MAIN_VALUE);
-        // transfering all the remaining balance to the proposers
-        proposer.transfer({value: 0, flag: MsgFlag.ALL_NOT_RESERVED});
+  function onActionsExecuted() public view override {
+    // only dao can call his function
+    require(msg.sender == DaoAddress, DaoErrors.NOT_DAO);
+    // saving the inital balance of the contract Gas.MAIN_VALUE, : inital balance
+    tvm.rawReserve(Gas.MAIN_VALUE, 2);
+    // emiting a event
+    emit ProposerFundedBack(proposer, address(this).balance - Gas.MAIN_VALUE);
+    // transfering all the remaining balance to the proposers
+    proposer.transfer({ value: 0, flag: MsgFlag.ALL_NOT_RESERVED });
   }
+
   // set function //
-  // get funcs 
+  // get funcs
 
-  function _expectedTip3VoteWalletAddress(address _walletOwner) private view returns (address expectedTip3WalletAddress_) {
-    return address(tvm.hash(
-         tvm.buildStateInit({
+  function _expectedTip3VoteWalletAddress(
+    address _walletOwner
+  ) private view returns (address expectedTip3WalletAddress_) {
+    return
+      address(
+        tvm.hash(
+          tvm.buildStateInit({
             contr: VoteTokenWallet,
-            varInit: {
-                root_: tip3VoteRootAddress,
-                owner_: _walletOwner
-            },
+            varInit: { root_: tip3VoteRootAddress, owner_: _walletOwner },
             pubkey: 0,
             code: Tip3VoteWalletCode
-        }))); 
-  }  
-
-  function getPorosposalOverview( ) public override view returns (
-    ProposalInitConfiguration initConf_,
-    ProposalState states_,
-    VenomActions[]  venomActions_,
-    uint256  creationBlockTS_,
-    address  proposer_,
-    uint256  forVotes_,
-    uint256  againstVotes_,
-    bool     canceled_,
-    bool     executed_,
-    uint256  startTime_,
-    uint256  endTime_,
-    uint256  executionTime_,
-    TvmCell  Tip3VoteWalletCode_,
-    address  tip3VoteRootAddress_
-     ){
-        return (
-          initConfig,
-          getProposalState(), 
-          venomActions,
-          creationBlockTS,
-          proposer,
-          forVotes,
-          againstVotes,
-          canceled,
-          executed,
-          startTime,
-          endTime,
-          executionTime,
-          Tip3VoteWalletCode,
-          tip3VoteRootAddress);
-  } 
-  function getActions() public override view returns (VenomActions[]  venomActions_){
-      return venomActions;
+          })
+        )
+      );
   }
-  function getProposalState() public override view returns (ProposalState state_){
-        if (canceled) {
-          // returns the cencelled if the inti config struct cancelled was true 
-            return ProposalState.Canceled;
-        } else if (executed) {
-          // returnexcuted if the init config file excuted was true
-            return ProposalState.Executed;
-        } else if ( block.timestamp <= startTime) {
-          // return pending if the init config file start time was freater than block.timestamp time
-            return ProposalState.Pending;
-        } else if ( block.timestamp <= endTime) {
-            // return the active if the block.timestamp time was less than the end time from the iitconfig struct 
-            return ProposalState.Active;
-        } else if (forVotes <= againstVotes || forVotes < initConfig.quorumVotes) {
-          // return failed if for votes were lees than or eq to against votes OR for votes were less than qourom votes
-            return ProposalState.Failed;
-        } else if (executionTime == 0) {
-          // return succesdded if the execution time was zero , why ?
-            return ProposalState.Succeeded;
-        } else if ( block.timestamp > executionTime + initConfig.gracePeriod) {
-            // return expired if the excution time plus grace periosd time were less thatn now time 
-            return ProposalState.Expired;
-        } else {
-          // if none above condition met , rerturn queue which means that proposal is waiting t be excuted
-            return ProposalState.Queued;
-        }
+
+  function getPorosposalOverview()
+    public
+    view
+    override
+    returns (
+      ProposalInitConfiguration initConf_,
+      ProposalState states_,
+      VenomActions[] venomActions_,
+      uint256 creationBlockTS_,
+      address proposer_,
+      uint256 forVotes_,
+      uint256 againstVotes_,
+      bool canceled_,
+      bool executed_,
+      uint256 startTime_,
+      uint256 endTime_,
+      uint256 executionTime_,
+      TvmCell Tip3VoteWalletCode_,
+      address tip3VoteRootAddress_
+    )
+  {
+    return (
+      initConfig,
+      getProposalState(),
+      venomActions,
+      creationBlockTS,
+      proposer,
+      forVotes,
+      againstVotes,
+      canceled,
+      executed,
+      startTime,
+      endTime,
+      executionTime,
+      Tip3VoteWalletCode,
+      tip3VoteRootAddress
+    );
+  }
+
+  function getActions() public view override returns (VenomActions[] venomActions_) {
+    return venomActions;
+  }
+
+  function getProposalState() public view override returns (ProposalState state_) {
+    if (canceled) {
+      // returns the cencelled if the inti config struct cancelled was true
+      return ProposalState.Canceled;
+    } else if (executed) {
+      // returnexcuted if the init config file excuted was true
+      return ProposalState.Executed;
+    } else if (block.timestamp <= startTime) {
+      // return pending if the init config file start time was freater than block.timestamp time
+      return ProposalState.Pending;
+    } else if (block.timestamp <= endTime) {
+      // return the active if the block.timestamp time was less than the end time from the iitconfig struct
+      return ProposalState.Active;
+    } else if (forVotes <= againstVotes || forVotes < initConfig.quorumVotes) {
+      // return failed if for votes were lees than or eq to against votes OR for votes were less than qourom votes
+      return ProposalState.Failed;
+    } else if (executionTime == 0) {
+      // return succesdded if the execution time was zero , why ?
+      return ProposalState.Succeeded;
+    } else if (block.timestamp > executionTime + initConfig.gracePeriod) {
+      // return expired if the excution time plus grace periosd time were less thatn now time
+      return ProposalState.Expired;
+    } else {
+      // if none above condition met , rerturn queue which means that proposal is waiting t be excuted
+      return ProposalState.Queued;
     }
- // get funcs 
+  }
+  // get funcs
 }

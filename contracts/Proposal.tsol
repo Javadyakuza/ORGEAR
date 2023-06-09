@@ -78,10 +78,10 @@ contract Proposal is  ProposalConfigurationStructure, Action, ProposalStates, IP
     }(creationBlockTS, votePayload); 
   }
   function castVote(uint256 _balance, TvmCell _votePayload) public override internalMsg { 
-    // checking that state is active 
     // unpacking the data 
     (address _voter, bool _support, string _reason) 
               = abi.decode(_votePayload,(address, bool, string));
+    require(_expectedTip3VoteWalletAddress(_voter) == msg.sender, DaoErrors.NOT_ADMIN_OR_VOTE_WALLET);
     // checking the vpte weight is greater than 0 
     require(_balance != 0 , DaoErrors.VALUE_ZERO);
     // casting the vote 

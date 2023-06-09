@@ -11,11 +11,7 @@ library DaoErrors {
     uint8 constant NOT_ACCOUNT = 108;
     uint8 constant NOT_OWNER = 109;
     uint8 constant USER_VOTED_ALREADY = 110;
-    uint8 constant TOO_MANY_OR_ZERO_ACTIONS = 110;
-    uint8 constant MSG_VALUE_TOO_LOW_TO_CREATE_PROPOSAL = 112;
-    uint8 constant TIP3_VOTE_TOO_LOW_TO_CREATE_PROPOSAL = 113;
-    uint8 constant DESCRIPTION_TOO_LONG = 114;
-    uint8 constant DAO_NAME_OR_LOGO_TOO_LONG = 115;
+
 
     uint8 constant WRONG_VOTING_PERIOD = 120;
     uint8 constant WRONG_VOTING_DELAY = 121;
@@ -23,11 +19,16 @@ library DaoErrors {
     uint8 constant WRONG_THRESHOLD = 123;
     uint8 constant WRONG_QUORUM = 124;
     uint8 constant WRONG_GRACE_PERIOD = 125;
+    uint8 constant DAO_NAME_OR_LOGO_TOO_LONG = 126;
+    uint8 constant DESCRIPTION_TOO_LONG = 127;
 
     uint8 constant VALUE_TOO_LOW = 130;
     uint8 constant VALUE_ZERO = 131;
     uint8 constant ADDRESS_ZERO = 132;
-
+    uint8 constant TOO_MANY_OR_ZERO_ACTIONS = 133;
+    uint8 constant MSG_VALUE_TOO_LOW_TO_CREATE_PROPOSAL = 134;
+    uint8 constant TIP3_VOTE_TOO_LOW_TO_CREATE_PROPOSAL = 135;
+    
     uint8 constant PROPOSAL_IS_NOT_SUCCEEDED = 140;
     uint8 constant PROPOSAL_IS_NOT_QUEUED = 141;
     uint8 constant PROPOSAL_IS_EXECUTED = 142;

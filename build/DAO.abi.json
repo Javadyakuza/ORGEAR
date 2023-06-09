@@ -6,7 +6,7 @@
 		{
 			"name": "constructor",
 			"inputs": [
-				{"components":[{"name":"Name","type":"string"},{"name":"Logo","type":"string"},{"name":"TIP3_VOTE_ROOT_ADDRESS","type":"address"},{"name":"TIP3_VOTE_PROPPOSING_QUORUM","type":"uint256"},{"name":"MIN_TIP3_VOTE_THRESHOLD","type":"uint128"},{"name":"MAX_TIP3_VOTE_THRESHOLD","type":"uint128"},{"name":"MAX_PROPOSAL_QUORUM","type":"uint128"},{"name":"MIN_PROPOSAL_QUORUM","type":"uint128"},{"name":"MIN_VOTING_PERIOD","type":"uint32"},{"name":"MAX_VOTING_PERIOD","type":"uint32"},{"name":"MIN_VOTING_DELAY","type":"uint32"},{"name":"MAX_VOTING_DELAY","type":"uint32"},{"name":"MIN_TIME_LOCK","type":"uint32"},{"name":"MAX_TIME_LOCK","type":"uint32"},{"name":"MIN_GRACE_PERIOD","type":"uint32"},{"name":"MAX_GRACE_PERIOD","type":"uint32"},{"name":"proposalMaxDescriptionLen","type":"uint16"},{"name":"proposalMaxOperations","type":"uint8"}],"name":"_Config","type":"tuple"},
+				{"components":[{"name":"Name","type":"string"},{"name":"Logo","type":"string"},{"name":"TIP3_VOTE_ROOT_ADDRESS","type":"address"},{"name":"TIP3_VOTE_PROPPOSING_QUORUM","type":"uint256"},{"name":"MIN_TIP3_VOTE_THRESHOLD","type":"uint128"},{"name":"MAX_TIP3_VOTE_THRESHOLD","type":"uint128"},{"name":"MAX_PROPOSAL_QUORUM","type":"uint128"},{"name":"MIN_PROPOSAL_QUORUM","type":"uint128"},{"name":"MIN_VOTING_PERIOD","type":"uint32"},{"name":"MAX_VOTING_PERIOD","type":"uint32"},{"name":"MIN_VOTING_DELAY","type":"uint32"},{"name":"MAX_VOTING_DELAY","type":"uint32"},{"name":"MIN_TIME_LOCK","type":"uint32"},{"name":"MAX_TIME_LOCK","type":"uint32"},{"name":"MIN_GRACE_PERIOD","type":"uint32"},{"name":"MAX_GRACE_PERIOD","type":"uint32"},{"name":"proposalMaxDescriptionLen","type":"uint16"},{"name":"proposalMaxOperations","type":"uint8"}],"name":"_config","type":"tuple"},
 				{"name":"_proposalCode","type":"cell"},
 				{"name":"_tip3VoteWalletCode","type":"cell"}
 			],
@@ -16,7 +16,7 @@
 		{
 			"name": "propose",
 			"inputs": [
-				{"components":[{"name":"title","type":"string"},{"name":"description","type":"string"},{"name":"votingDelay","type":"uint32"},{"name":"votingPeriod","type":"uint32"},{"name":"quorumVotes","type":"uint128"},{"name":"timeLock","type":"uint32"},{"name":"threshold","type":"uint128"},{"name":"gracePeriod","type":"uint32"},{"name":"sponser","type":"bool"}],"name":"_ProposalInitConfiguration","type":"tuple"},
+				{"components":[{"name":"title","type":"string"},{"name":"description","type":"string"},{"name":"votingDelay","type":"uint32"},{"name":"votingPeriod","type":"uint32"},{"name":"quorumVotes","type":"uint128"},{"name":"timeLock","type":"uint32"},{"name":"threshold","type":"uint128"},{"name":"gracePeriod","type":"uint32"},{"name":"sponser","type":"bool"}],"name":"_proposalInitConfiguration","type":"tuple"},
 				{"components":[{"name":"value","type":"uint128"},{"name":"target","type":"address"},{"name":"payload","type":"cell"}],"name":"_venomActions","type":"tuple[]"}
 			],
 			"outputs": [
@@ -71,7 +71,7 @@
 			"inputs": [
 			],
 			"outputs": [
-				{"components":[{"name":"Name","type":"string"},{"name":"Logo","type":"string"},{"name":"TIP3_VOTE_ROOT_ADDRESS","type":"address"},{"name":"TIP3_VOTE_PROPPOSING_QUORUM","type":"uint256"},{"name":"MIN_TIP3_VOTE_THRESHOLD","type":"uint128"},{"name":"MAX_TIP3_VOTE_THRESHOLD","type":"uint128"},{"name":"MAX_PROPOSAL_QUORUM","type":"uint128"},{"name":"MIN_PROPOSAL_QUORUM","type":"uint128"},{"name":"MIN_VOTING_PERIOD","type":"uint32"},{"name":"MAX_VOTING_PERIOD","type":"uint32"},{"name":"MIN_VOTING_DELAY","type":"uint32"},{"name":"MAX_VOTING_DELAY","type":"uint32"},{"name":"MIN_TIME_LOCK","type":"uint32"},{"name":"MAX_TIME_LOCK","type":"uint32"},{"name":"MIN_GRACE_PERIOD","type":"uint32"},{"name":"MAX_GRACE_PERIOD","type":"uint32"},{"name":"proposalMaxDescriptionLen","type":"uint16"},{"name":"proposalMaxOperations","type":"uint8"}],"name":"DAOConfig_","type":"tuple"}
+				{"components":[{"name":"Name","type":"string"},{"name":"Logo","type":"string"},{"name":"TIP3_VOTE_ROOT_ADDRESS","type":"address"},{"name":"TIP3_VOTE_PROPPOSING_QUORUM","type":"uint256"},{"name":"MIN_TIP3_VOTE_THRESHOLD","type":"uint128"},{"name":"MAX_TIP3_VOTE_THRESHOLD","type":"uint128"},{"name":"MAX_PROPOSAL_QUORUM","type":"uint128"},{"name":"MIN_PROPOSAL_QUORUM","type":"uint128"},{"name":"MIN_VOTING_PERIOD","type":"uint32"},{"name":"MAX_VOTING_PERIOD","type":"uint32"},{"name":"MIN_VOTING_DELAY","type":"uint32"},{"name":"MAX_VOTING_DELAY","type":"uint32"},{"name":"MIN_TIME_LOCK","type":"uint32"},{"name":"MAX_TIME_LOCK","type":"uint32"},{"name":"MIN_GRACE_PERIOD","type":"uint32"},{"name":"MAX_GRACE_PERIOD","type":"uint32"},{"name":"proposalMaxDescriptionLen","type":"uint16"},{"name":"proposalMaxOperations","type":"uint8"}],"name":"config_","type":"tuple"}
 			]
 		},
 		{
@@ -109,7 +109,7 @@
 		{
 			"name": "changeDAOprefrences",
 			"inputs": [
-				{"components":[{"name":"Name","type":"string"},{"name":"Logo","type":"string"},{"name":"TIP3_VOTE_ROOT_ADDRESS","type":"address"},{"name":"TIP3_VOTE_PROPPOSING_QUORUM","type":"uint256"},{"name":"MIN_TIP3_VOTE_THRESHOLD","type":"uint128"},{"name":"MAX_TIP3_VOTE_THRESHOLD","type":"uint128"},{"name":"MAX_PROPOSAL_QUORUM","type":"uint128"},{"name":"MIN_PROPOSAL_QUORUM","type":"uint128"},{"name":"MIN_VOTING_PERIOD","type":"uint32"},{"name":"MAX_VOTING_PERIOD","type":"uint32"},{"name":"MIN_VOTING_DELAY","type":"uint32"},{"name":"MAX_VOTING_DELAY","type":"uint32"},{"name":"MIN_TIME_LOCK","type":"uint32"},{"name":"MAX_TIME_LOCK","type":"uint32"},{"name":"MIN_GRACE_PERIOD","type":"uint32"},{"name":"MAX_GRACE_PERIOD","type":"uint32"},{"name":"proposalMaxDescriptionLen","type":"uint16"},{"name":"proposalMaxOperations","type":"uint8"}],"name":"_Config","type":"tuple"}
+				{"components":[{"name":"Name","type":"string"},{"name":"Logo","type":"string"},{"name":"TIP3_VOTE_ROOT_ADDRESS","type":"address"},{"name":"TIP3_VOTE_PROPPOSING_QUORUM","type":"uint256"},{"name":"MIN_TIP3_VOTE_THRESHOLD","type":"uint128"},{"name":"MAX_TIP3_VOTE_THRESHOLD","type":"uint128"},{"name":"MAX_PROPOSAL_QUORUM","type":"uint128"},{"name":"MIN_PROPOSAL_QUORUM","type":"uint128"},{"name":"MIN_VOTING_PERIOD","type":"uint32"},{"name":"MAX_VOTING_PERIOD","type":"uint32"},{"name":"MIN_VOTING_DELAY","type":"uint32"},{"name":"MAX_VOTING_DELAY","type":"uint32"},{"name":"MIN_TIME_LOCK","type":"uint32"},{"name":"MAX_TIME_LOCK","type":"uint32"},{"name":"MIN_GRACE_PERIOD","type":"uint32"},{"name":"MAX_GRACE_PERIOD","type":"uint32"},{"name":"proposalMaxDescriptionLen","type":"uint16"},{"name":"proposalMaxOperations","type":"uint8"}],"name":"_config","type":"tuple"}
 			],
 			"outputs": [
 			]
@@ -131,34 +131,34 @@
 			]
 		},
 		{
-			"name": "ProposalCode",
+			"name": "proposalCode",
 			"inputs": [
 			],
 			"outputs": [
-				{"name":"ProposalCode","type":"cell"}
+				{"name":"proposalCode","type":"cell"}
 			]
 		},
 		{
-			"name": "Tip3VoteWalletCode",
+			"name": "tip3VoteWalletCode",
 			"inputs": [
 			],
 			"outputs": [
-				{"name":"Tip3VoteWalletCode","type":"cell"}
+				{"name":"tip3VoteWalletCode","type":"cell"}
 			]
 		},
 		{
-			"name": "Config",
+			"name": "config",
 			"inputs": [
 			],
 			"outputs": [
-				{"components":[{"name":"Name","type":"string"},{"name":"Logo","type":"string"},{"name":"TIP3_VOTE_ROOT_ADDRESS","type":"address"},{"name":"TIP3_VOTE_PROPPOSING_QUORUM","type":"uint256"},{"name":"MIN_TIP3_VOTE_THRESHOLD","type":"uint128"},{"name":"MAX_TIP3_VOTE_THRESHOLD","type":"uint128"},{"name":"MAX_PROPOSAL_QUORUM","type":"uint128"},{"name":"MIN_PROPOSAL_QUORUM","type":"uint128"},{"name":"MIN_VOTING_PERIOD","type":"uint32"},{"name":"MAX_VOTING_PERIOD","type":"uint32"},{"name":"MIN_VOTING_DELAY","type":"uint32"},{"name":"MAX_VOTING_DELAY","type":"uint32"},{"name":"MIN_TIME_LOCK","type":"uint32"},{"name":"MAX_TIME_LOCK","type":"uint32"},{"name":"MIN_GRACE_PERIOD","type":"uint32"},{"name":"MAX_GRACE_PERIOD","type":"uint32"},{"name":"proposalMaxDescriptionLen","type":"uint16"},{"name":"proposalMaxOperations","type":"uint8"}],"name":"Config","type":"tuple"}
+				{"components":[{"name":"Name","type":"string"},{"name":"Logo","type":"string"},{"name":"TIP3_VOTE_ROOT_ADDRESS","type":"address"},{"name":"TIP3_VOTE_PROPPOSING_QUORUM","type":"uint256"},{"name":"MIN_TIP3_VOTE_THRESHOLD","type":"uint128"},{"name":"MAX_TIP3_VOTE_THRESHOLD","type":"uint128"},{"name":"MAX_PROPOSAL_QUORUM","type":"uint128"},{"name":"MIN_PROPOSAL_QUORUM","type":"uint128"},{"name":"MIN_VOTING_PERIOD","type":"uint32"},{"name":"MAX_VOTING_PERIOD","type":"uint32"},{"name":"MIN_VOTING_DELAY","type":"uint32"},{"name":"MAX_VOTING_DELAY","type":"uint32"},{"name":"MIN_TIME_LOCK","type":"uint32"},{"name":"MAX_TIME_LOCK","type":"uint32"},{"name":"MIN_GRACE_PERIOD","type":"uint32"},{"name":"MAX_GRACE_PERIOD","type":"uint32"},{"name":"proposalMaxDescriptionLen","type":"uint16"},{"name":"proposalMaxOperations","type":"uint8"}],"name":"config","type":"tuple"}
 			]
 		}
 	],
 	"data": [
 		{"key":1,"name":"daoId","type":"uint256"},
 		{"key":2,"name":"admin","type":"address"},
-		{"key":3,"name":"DaoRoot","type":"address"}
+		{"key":3,"name":"daoRoot","type":"address"}
 	],
 	"events": [
 		{
@@ -215,11 +215,11 @@
 		{"name":"_constructorFlag","type":"bool"},
 		{"name":"daoId","type":"uint256"},
 		{"name":"admin","type":"address"},
-		{"name":"DaoRoot","type":"address"},
+		{"name":"daoRoot","type":"address"},
 		{"name":"pendingAdmin","type":"address"},
 		{"name":"totalProposals","type":"uint256"},
-		{"name":"ProposalCode","type":"cell"},
-		{"name":"Tip3VoteWalletCode","type":"cell"},
-		{"components":[{"name":"Name","type":"string"},{"name":"Logo","type":"string"},{"name":"TIP3_VOTE_ROOT_ADDRESS","type":"address"},{"name":"TIP3_VOTE_PROPPOSING_QUORUM","type":"uint256"},{"name":"MIN_TIP3_VOTE_THRESHOLD","type":"uint128"},{"name":"MAX_TIP3_VOTE_THRESHOLD","type":"uint128"},{"name":"MAX_PROPOSAL_QUORUM","type":"uint128"},{"name":"MIN_PROPOSAL_QUORUM","type":"uint128"},{"name":"MIN_VOTING_PERIOD","type":"uint32"},{"name":"MAX_VOTING_PERIOD","type":"uint32"},{"name":"MIN_VOTING_DELAY","type":"uint32"},{"name":"MAX_VOTING_DELAY","type":"uint32"},{"name":"MIN_TIME_LOCK","type":"uint32"},{"name":"MAX_TIME_LOCK","type":"uint32"},{"name":"MIN_GRACE_PERIOD","type":"uint32"},{"name":"MAX_GRACE_PERIOD","type":"uint32"},{"name":"proposalMaxDescriptionLen","type":"uint16"},{"name":"proposalMaxOperations","type":"uint8"}],"name":"Config","type":"tuple"}
+		{"name":"proposalCode","type":"cell"},
+		{"name":"tip3VoteWalletCode","type":"cell"},
+		{"components":[{"name":"Name","type":"string"},{"name":"Logo","type":"string"},{"name":"TIP3_VOTE_ROOT_ADDRESS","type":"address"},{"name":"TIP3_VOTE_PROPPOSING_QUORUM","type":"uint256"},{"name":"MIN_TIP3_VOTE_THRESHOLD","type":"uint128"},{"name":"MAX_TIP3_VOTE_THRESHOLD","type":"uint128"},{"name":"MAX_PROPOSAL_QUORUM","type":"uint128"},{"name":"MIN_PROPOSAL_QUORUM","type":"uint128"},{"name":"MIN_VOTING_PERIOD","type":"uint32"},{"name":"MAX_VOTING_PERIOD","type":"uint32"},{"name":"MIN_VOTING_DELAY","type":"uint32"},{"name":"MAX_VOTING_DELAY","type":"uint32"},{"name":"MIN_TIME_LOCK","type":"uint32"},{"name":"MAX_TIME_LOCK","type":"uint32"},{"name":"MIN_GRACE_PERIOD","type":"uint32"},{"name":"MAX_GRACE_PERIOD","type":"uint32"},{"name":"proposalMaxDescriptionLen","type":"uint16"},{"name":"proposalMaxOperations","type":"uint8"}],"name":"config","type":"tuple"}
 	]
 }

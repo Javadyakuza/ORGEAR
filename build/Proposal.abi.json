@@ -9,7 +9,7 @@
 				{"components":[{"name":"title","type":"string"},{"name":"description","type":"string"},{"name":"votingDelay","type":"uint32"},{"name":"votingPeriod","type":"uint32"},{"name":"quorumVotes","type":"uint128"},{"name":"timeLock","type":"uint32"},{"name":"threshold","type":"uint128"},{"name":"gracePeriod","type":"uint32"},{"name":"sponser","type":"bool"}],"name":"_initConfig","type":"tuple"},
 				{"components":[{"name":"value","type":"uint128"},{"name":"target","type":"address"},{"name":"payload","type":"cell"}],"name":"_venomActions","type":"tuple[]"},
 				{"name":"_proposer","type":"address"},
-				{"name":"_Tip3VoteWalletCode","type":"cell"},
+				{"name":"_tip3VoteWalletCode","type":"cell"},
 				{"name":"_tip3VoteRootAddress","type":"address"},
 				{"name":"_venomActionTotalValue","type":"uint128"}
 			],
@@ -35,7 +35,7 @@
 			]
 		},
 		{
-			"name": "Queue",
+			"name": "queue",
 			"inputs": [
 			],
 			"outputs": [
@@ -68,7 +68,7 @@
 			],
 			"outputs": [
 				{"components":[{"name":"title","type":"string"},{"name":"description","type":"string"},{"name":"votingDelay","type":"uint32"},{"name":"votingPeriod","type":"uint32"},{"name":"quorumVotes","type":"uint128"},{"name":"timeLock","type":"uint32"},{"name":"threshold","type":"uint128"},{"name":"gracePeriod","type":"uint32"},{"name":"sponser","type":"bool"}],"name":"initConf_","type":"tuple"},
-				{"name":"states_","type":"uint8"},
+				{"name":"state_","type":"uint8"},
 				{"components":[{"name":"value","type":"uint128"},{"name":"target","type":"address"},{"name":"payload","type":"cell"}],"name":"venomActions_","type":"tuple[]"},
 				{"name":"creationBlockTS_","type":"uint256"},
 				{"name":"proposer_","type":"address"},
@@ -79,7 +79,7 @@
 				{"name":"startTime_","type":"uint256"},
 				{"name":"endTime_","type":"uint256"},
 				{"name":"executionTime_","type":"uint256"},
-				{"name":"Tip3VoteWalletCode_","type":"cell"},
+				{"name":"tip3VoteWalletCode_","type":"cell"},
 				{"name":"tip3VoteRootAddress_","type":"address"}
 			]
 		},
@@ -212,11 +212,11 @@
 			]
 		},
 		{
-			"name": "Tip3VoteWalletCode",
+			"name": "tip3VoteWalletCode",
 			"inputs": [
 			],
 			"outputs": [
-				{"name":"Tip3VoteWalletCode","type":"cell"}
+				{"name":"tip3VoteWalletCode","type":"cell"}
 			]
 		},
 		{
@@ -310,7 +310,7 @@
 		{"name":"startTime","type":"uint256"},
 		{"name":"endTime","type":"uint256"},
 		{"name":"executionTime","type":"uint256"},
-		{"name":"Tip3VoteWalletCode","type":"cell"},
+		{"name":"tip3VoteWalletCode","type":"cell"},
 		{"name":"tip3VoteRootAddress","type":"address"},
 		{"name":"venomActionTotalValue","type":"uint128"},
 		{"name":"voteTrack","type":"map(address,bool)"}

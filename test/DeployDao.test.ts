@@ -109,9 +109,9 @@ describe("shuold deploy Dao  ", async function () {
         _nonce: locklift.utils.getRandomNonce(),
       },
       constructorParams: {
-        _DaoCode: locklift.factory.getContractArtifacts("DAO").code,
-        _ProposalCode: locklift.factory.getContractArtifacts("Proposal").code,
-        _Tip3VoteWalletCode: locklift.factory.getContractArtifacts("VoteTokenWallet").code,
+        _daoCode: locklift.factory.getContractArtifacts("DAO").code,
+        _proposalCode: locklift.factory.getContractArtifacts("Proposal").code,
+        _tip3VoteWalletCode: locklift.factory.getContractArtifacts("VoteTokenWallet").code,
       },
       value: locklift.utils.toNano(50),
     });
@@ -136,8 +136,8 @@ describe("shuold deploy Dao  ", async function () {
     // calling the propose function
     const { traceTree: data } = await locklift.tracing.trace(
       DAORoot.methods
-        .DeployDao({
-          _DaoConfig: DaoConfig,
+        .deployDao({
+          _daoConfig: DaoConfig,
         })
         .send({
           from: WalletV3.account.address,
@@ -146,7 +146,7 @@ describe("shuold deploy Dao  ", async function () {
     );
     const DaoRootEvents = data?.findEventsForContract({
       contract: DAOCon,
-      name: "newDAODeployed" as const, // 'as const' is important thing for type saving
+      name: "NewDAODeployed" as const, // 'as const' is important thing for type saving
     });
     // fetching the deployed contract
     const Dao = await locklift.factory.getDeployedContract(

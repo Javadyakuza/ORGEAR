@@ -123,9 +123,9 @@ describe("deploying Dao contract", async function () {
         _nonce: locklift.utils.getRandomNonce(),
       },
       constructorParams: {
-        _DaoCode: locklift.factory.getContractArtifacts("DAO").code,
-        _ProposalCode: locklift.factory.getContractArtifacts("Proposal").code,
-        _Tip3VoteWalletCode: locklift.factory.getContractArtifacts("VoteTokenWallet").code,
+        _daoCode: locklift.factory.getContractArtifacts("DAO").code,
+        _proposalCode: locklift.factory.getContractArtifacts("Proposal").code,
+        _tip3VoteWalletCode: locklift.factory.getContractArtifacts("VoteTokenWallet").code,
       },
       value: locklift.utils.toNano(10),
     });

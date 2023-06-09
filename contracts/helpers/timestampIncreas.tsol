@@ -1,0 +1,10 @@
+// SPDX-License-Identifier: SEE LICENSE IN LICENSE
+pragma ever-solidity >= 0.61.2 ;
+
+contract increas {
+    /**
+     * @notice this contract is only used for testing purposes 
+     * @dev this contract is used to increase the local node time stamp in order to performa a action testing on the proposal  
+     */
+ uint32 public static _nonce;   
+}

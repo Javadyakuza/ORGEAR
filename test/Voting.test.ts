@@ -151,9 +151,9 @@ describe("shuold perform vote casting", async function () {
         _nonce: locklift.utils.getRandomNonce(),
       },
       constructorParams: {
-        _DaoCode: locklift.factory.getContractArtifacts("DAO").code,
-        _ProposalCode: locklift.factory.getContractArtifacts("Proposal").code,
-        _Tip3VoteWalletCode: locklift.factory.getContractArtifacts("VoteTokenWallet").code,
+        _daoCode: locklift.factory.getContractArtifacts("DAO").code,
+        _proposalCode: locklift.factory.getContractArtifacts("Proposal").code,
+        _tip3VoteWalletCode: locklift.factory.getContractArtifacts("VoteTokenWallet").code,
       },
       value: locklift.utils.toNano(50),
     });
@@ -170,8 +170,8 @@ describe("shuold perform vote casting", async function () {
     // calling the propose function
     let DaodeployRes = await locklift.tracing.trace(
       DAORoot.methods
-        .DeployDao({
-          _DaoConfig: DaoConfig,
+        .deployDao({
+          _daoConfig: DaoConfig,
         })
         .send({
           from: WalletV3.account.address,
@@ -222,7 +222,7 @@ describe("shuold perform vote casting", async function () {
     const { traceTree: data } = await locklift.tracing.trace(
       Dao.methods
         .propose({
-          _ProposalInitConfiguration: ProposalConfigurationStructure,
+          _proposalInitConfiguration: ProposalConfigurationStructure,
           _venomActions: ProposalAction,
         })
         .send({
@@ -249,7 +249,7 @@ describe("shuold perform vote casting", async function () {
     const { traceTree: data_2 } = await locklift.tracing.trace(
       Dao.methods
         .propose({
-          _ProposalInitConfiguration: ProposalConfigurationStructure,
+          _proposalInitConfiguration: ProposalConfigurationStructure,
           _venomActions: ProposalAction,
         })
         .send({

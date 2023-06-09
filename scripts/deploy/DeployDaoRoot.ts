@@ -9,7 +9,7 @@ async function DaoRootDeployer() {
   const everWallet = ever.EverWalletAccount.fromPubkey({ publicKey: signer.publicKey, workchain: 0 });
 
   console.log("public key :", signer.publicKey);
-  console.log("Deployer : ", (await everWallet).address);
+  console.log("Deployer : ", (await everWallet).address.toString());
 
   //   deploying the DAORoot contract
   const { contract: DAORoot } = await locklift.factory.deployContract({
@@ -20,9 +20,9 @@ async function DaoRootDeployer() {
       _nonce: locklift.utils.getRandomNonce(),
     },
     constructorParams: {
-      _DaoCode: locklift.factory.getContractArtifacts("DAO").code,
-      _ProposalCode: locklift.factory.getContractArtifacts("Proposal").code,
-      _Tip3VoteWalletCode: locklift.factory.getContractArtifacts("VoteTokenWallet").code,
+      _daoCode: locklift.factory.getContractArtifacts("DAO").code,
+      _proposalCode: locklift.factory.getContractArtifacts("Proposal").code,
+      _tip3VoteWalletCode: locklift.factory.getContractArtifacts("VoteTokenWallet").code,
     },
     value: locklift.utils.toNano(1),
   });

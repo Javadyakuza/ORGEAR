@@ -36,7 +36,7 @@ contract Proposal is ProposalConfigurationStructure, Action, ProposalStates, IPr
   uint256 public startTime;
   uint256 public endTime;
   uint256 public executionTime;
-  TvmCell public Tip3VoteWalletCode;
+  TvmCell public tip3VoteWalletCode;
   address public tip3VoteRootAddress;
   uint128 public venomActionTotalValue;
 
@@ -46,11 +46,11 @@ contract Proposal is ProposalConfigurationStructure, Action, ProposalStates, IPr
     ProposalInitConfiguration _initConfig,
     VenomActions[] _venomActions,
     address _proposer,
-    TvmCell _Tip3VoteWalletCode,
+    TvmCell _tip3VoteWalletCode,
     address _tip3VoteRootAddress,
     uint128 _venomActionTotalValue
   ) public {
-    Tip3VoteWalletCode = _Tip3VoteWalletCode;
+    tip3VoteWalletCode = _tip3VoteWalletCode;
     tip3VoteRootAddress = _tip3VoteRootAddress;
     initConfig = _initConfig;
     venomActions = _venomActions;
@@ -104,7 +104,7 @@ contract Proposal is ProposalConfigurationStructure, Action, ProposalStates, IPr
   }
 
   // queue the proposal means that propoposal is ready to be excuited and was successfull
-  function Queue() public override internalMsg {
+  function queue() public override internalMsg {
     // checking if the positioin was successfull or not
     require(getProposalState() == ProposalState.Succeeded, DaoErrors.PROPOSAL_IS_NOT_SUCCEEDED);
     // accepting puuting the proposal state in queue fees
@@ -178,7 +178,7 @@ contract Proposal is ProposalConfigurationStructure, Action, ProposalStates, IPr
             contr: VoteTokenWallet,
             varInit: { root_: tip3VoteRootAddress, owner_: _walletOwner },
             pubkey: 0,
-            code: Tip3VoteWalletCode
+            code: tip3VoteWalletCode
           })
         )
       );
@@ -190,7 +190,7 @@ contract Proposal is ProposalConfigurationStructure, Action, ProposalStates, IPr
     override
     returns (
       ProposalInitConfiguration initConf_,
-      ProposalState states_,
+      ProposalState state_,
       VenomActions[] venomActions_,
       uint256 creationBlockTS_,
       address proposer_,
@@ -201,7 +201,7 @@ contract Proposal is ProposalConfigurationStructure, Action, ProposalStates, IPr
       uint256 startTime_,
       uint256 endTime_,
       uint256 executionTime_,
-      TvmCell Tip3VoteWalletCode_,
+      TvmCell tip3VoteWalletCode_,
       address tip3VoteRootAddress_
     )
   {
@@ -218,7 +218,7 @@ contract Proposal is ProposalConfigurationStructure, Action, ProposalStates, IPr
       startTime,
       endTime,
       executionTime,
-      Tip3VoteWalletCode,
+      tip3VoteWalletCode,
       tip3VoteRootAddress
     );
   }

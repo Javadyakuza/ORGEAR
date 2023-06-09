@@ -34,8 +34,8 @@ async function DeployDao() {
   // console.log("dao root : ", DAORoot.address.toString());
   // let { traceTree: data } = await locklift.tracing.trace(
   //   DAORoot.methods
-  //     .DeployDao({
-  //       _DaoConfig: DaoConfig,
+  //     .deployDao({
+  //       _daoConfig: DaoConfig,
   //     })
   //     .send({
   //       from: everWallet_1.address,
@@ -44,11 +44,11 @@ async function DeployDao() {
   // );
   // let DeployDaoEvents = data!.findEventsForContract({
   //   contract: DAORoot,
-  //   name: "newDAODeployed" as const,
+  //   name: "NewDAODeployed" as const,
   // });
   DAOCon = await locklift.factory.getDeployedContract("DAO", new Address(deployedContracts.yakuzatestDao));
   console.log("Dao address : ", DAOCon.address.toString());
-  console.log("dao information : \n", (await DAOCon.methods.getDAOConfig({}).call({})).DAOConfig_);
+  console.log("dao information : \n", (await DAOCon.methods.getDAOConfig({}).call({})).config_);
 }
 
 async function deployActionTestContract() {
@@ -81,7 +81,7 @@ async function deployProposal() {
   const { traceTree: data } = await locklift.tracing.trace(
     DAOCon.methods
       .propose({
-        _ProposalInitConfiguration: ProposalConfigurationStructure,
+        _proposalInitConfiguration: ProposalConfigurationStructure,
         _venomActions: ProposalAction,
       })
       .send({
@@ -129,7 +129,7 @@ async function performVoting() {
 
 async function takeActions() {
   await locklift.tracing.trace(
-    Proposal.methods.Queue({}).send({ from: everWallet_1.address, amount: locklift.utils.toNano(0.1) }),
+    Proposal.methods.queue({}).send({ from: everWallet_1.address, amount: locklift.utils.toNano(0.1) }),
   );
 
   await locklift.tracing.trace(

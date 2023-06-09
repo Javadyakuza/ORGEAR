@@ -300,7 +300,7 @@ PUSHINT 0
 SENDRAWMSG
 .loc ../contracts/Proposal.tsol, 0
 
-.macro Queue
+.macro queue
 DROP
 GETGLOB 6
 THROWIFNOT 76
@@ -313,7 +313,7 @@ IFREF {
 ENDS
 .loc ../contracts/Proposal.tsol, 0
 CALLREF {
-	CALL $Queue_1e074d7c_internal_macro$
+	CALL $queue_e10d29ee_internal_macro$
 }
 DROP
 CALLREF {
@@ -321,11 +321,11 @@ CALLREF {
 }
 THROW 0
 
-.globl	Queue_1e074d7c_internal
-.type	Queue_1e074d7c_internal, @function
-CALL $Queue_1e074d7c_internal_macro$
+.globl	queue_e10d29ee_internal
+.type	queue_e10d29ee_internal, @function
+CALL $queue_e10d29ee_internal_macro$
 
-.macro Queue_1e074d7c_internal_macro
+.macro queue_e10d29ee_internal_macro
 .loc ../contracts/Proposal.tsol, 107
 DEPTH
 ADDCONST -5
@@ -1516,7 +1516,7 @@ PUSHCONT {
 IF
 THROW 0
 
-.macro Tip3VoteWalletCode
+.macro tip3VoteWalletCode
 DROP
 ENDS
 CALLREF {
@@ -1525,7 +1525,7 @@ CALLREF {
 GETGLOB 24
 OVER
 PUSHCONT {
-	PUSHSLICE xc0000000000000000000000000a682afee
+	PUSHSLICE xc00000000000000000000000008db2caf6
 	NEWC
 	STSLICE
 	STREF
@@ -1598,7 +1598,7 @@ THROW 0
 
 .macro public_function_selector
 DUP
-PUSHINT 972038137
+PUSHINT 900421755
 LEQ
 IFJMPREF {
 	DUP
@@ -1631,9 +1631,15 @@ IFJMPREF {
 		}
 	}
 	DUP
-	PUSHINT 348418443
+	PUSHINT 320678970
 	LEQ
 	IFJMPREF {
+		DUP
+		PUSHINT 229821174
+		EQUAL
+		IFJMPREF {
+			CALL $tip3VoteWalletCode$
+		}
 		DUP
 		PUSHINT 271456302
 		EQUAL
@@ -1652,17 +1658,17 @@ IFJMPREF {
 		IFJMPREF {
 			CALL $castVote$
 		}
+	}
+	DUP
+	PUSHINT 528352003
+	LEQ
+	IFJMPREF {
 		DUP
 		PUSHINT 348418443
 		EQUAL
 		IFJMPREF {
 			CALL $endTime$
 		}
-	}
-	DUP
-	PUSHINT 626376772
-	LEQ
-	IFJMPREF {
 		DUP
 		PUSHINT 424980724
 		EQUAL
@@ -1681,22 +1687,22 @@ IFJMPREF {
 		IFJMPREF {
 			CALL $state$
 		}
+	}
+	DUP
+	PUSHINT 900421755
+	LEQ
+	IFJMPREF {
 		DUP
 		PUSHINT 626376772
 		EQUAL
 		IFJMPREF {
 			CALL $creationBlockTS$
 		}
-	}
-	DUP
-	PUSHINT 972038137
-	LEQ
-	IFJMPREF {
 		DUP
-		PUSHINT 646098926
+		PUSHINT 707469221
 		EQUAL
 		IFJMPREF {
-			CALL $Tip3VoteWalletCode$
+			CALL $queue$
 		}
 		DUP
 		PUSHINT 771679158
@@ -1709,12 +1715,6 @@ IFJMPREF {
 		EQUAL
 		IFJMPREF {
 			CALL $cancell$
-		}
-		DUP
-		PUSHINT 972038137
-		EQUAL
-		IFJMPREF {
-			CALL $Queue$
 		}
 	}
 }

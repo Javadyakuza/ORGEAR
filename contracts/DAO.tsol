@@ -27,7 +27,7 @@ contract DAO is ProposalConfigurationStructure, DAOConfigurationStruct, Action, 
   // static //
   uint256 static daoId;
   address static admin;
-  address static DaoRoot;
+  address static daoRoot;
   // static //
 
   // the constant variables are wrapped into a struct see {"DAOConfiguarationStruct.tsol"}.
@@ -36,18 +36,18 @@ contract DAO is ProposalConfigurationStructure, DAOConfigurationStruct, Action, 
 
   address public pendingAdmin;
   uint256 public totalProposals;
-  TvmCell public ProposalCode;
-  TvmCell public Tip3VoteWalletCode;
-  DaoConfig public Config;
+  TvmCell public proposalCode;
+  TvmCell public tip3VoteWalletCode;
+  DaoConfig public config;
 
   // normal //
 
-  constructor(DaoConfig _Config,TvmCell _proposalCode, TvmCell _tip3VoteWalletCode) public {
-    require(msg.sender == DaoRoot, DaoErrors.NOT_ROOT);
+  constructor(DaoConfig _config,TvmCell _proposalCode, TvmCell _tip3VoteWalletCode) public {
+    require(msg.sender == daoRoot, DaoErrors.NOT_ROOT);
     // initializing the state variabls
-    ProposalCode = _proposalCode;
-    Tip3VoteWalletCode = _tip3VoteWalletCode;
-    Config = _Config;
+    proposalCode = _proposalCode;
+    tip3VoteWalletCode = _tip3VoteWalletCode;
+    config = _config;
   }
 
   modifier onlyAdmin() {
@@ -61,17 +61,17 @@ contract DAO is ProposalConfigurationStructure, DAOConfigurationStruct, Action, 
 
 
   ///@notice the proposal expected address will be calculated from  a postion id wich is totalProposals + 1 
-  function propose(ProposalInitConfiguration _ProposalInitConfiguration, VenomActions[] _venomActions) public override internalMsg{
+  function propose(ProposalInitConfiguration _proposalInitConfiguration, VenomActions[] _venomActions) public override internalMsg{
     // cheking if the user has provided enough venom for deploying and actioning the proposal  
     /// @dev Gas.MAIN_VALUE in here is the value for deploying the proposal  
     require(msg.value >= _venomActionTotalValue(_venomActions) + Gas.MAIN_VALUE, DaoErrors.MSG_VALUE_TOO_LOW_TO_CREATE_PROPOSAL);
     // reserving the contract balance to not be spent on this trnasaction
     tvm.rawReserve(0,4); 
     // cheking the deploying params
-    uint8 paramsRes = checkParams(Config, _ProposalInitConfiguration, _venomActions, msg.sender);
+    uint8 paramsRes = checkParams(config, _proposalInitConfiguration, _venomActions, msg.sender);
     require(paramsRes == uint8(200), paramsRes);
 
-    TvmCell payload = abi.encode(_ProposalInitConfiguration,_venomActions,msg.sender);
+    TvmCell payload = abi.encode(_proposalInitConfiguration,_venomActions,msg.sender);
 
     if(msg.sender == admin){
       deployProposal(0, payload);
@@ -87,12 +87,12 @@ contract DAO is ProposalConfigurationStructure, DAOConfigurationStruct, Action, 
   }
   function deployProposal( uint256 _balance, TvmCell _payload) public override internalMsg {
     // unpacking the tvm cell 
-    (ProposalInitConfiguration _ProposalConf, VenomActions[] _venomActions, address _proposer)
+    (ProposalInitConfiguration _proposalConf, VenomActions[] _venomActions, address _proposer)
                 = abi.decode(_payload, (ProposalInitConfiguration, VenomActions[], address));   
     require(msg.sender == admin || msg.sender == expectedTip3VoteWalletAddress(_proposer), DaoErrors.NOT_ADMIN_OR_VOTE_WALLET);
 
     // checking if the sender has the enough value to deploy the porposal 
-      if (_balance < Config.TIP3_VOTE_PROPPOSING_QUORUM && msg.sender != admin){
+      if (_balance < config.TIP3_VOTE_PROPPOSING_QUORUM && msg.sender != admin){
         // user is not admin and doesnt have the quorum token neither
         emit ProposaDeployFailed(_proposer, totalProposals, _payload);
         revert(DaoErrors.TIP3_VOTE_TOO_LOW_TO_CREATE_PROPOSAL);
@@ -104,15 +104,15 @@ contract DAO is ProposalConfigurationStructure, DAOConfigurationStruct, Action, 
       value: 0, // it must be somhow the sender in the prropose function  
       flag: TokenMsgFlag.ALL_NOT_RESERVED
     }(
-      _ProposalConf,
+      _proposalConf,
       _venomActions,
       msg.sender, // msg sender checked,
-      Tip3VoteWalletCode,
-      Config.TIP3_VOTE_ROOT_ADDRESS,
+      tip3VoteWalletCode,
+      config.TIP3_VOTE_ROOT_ADDRESS,
       _venomActionTotalValue(_venomActions) + Gas.MAIN_VALUE
     );
     // adding one to the total proposals the totalProposals
-    emit ProposalDeployed(_proposer, proposalAddr, totalProposals, _ProposalConf.title, _ProposalConf.description);
+    emit ProposalDeployed(_proposer, proposalAddr, totalProposals, _proposalConf.title, _proposalConf.description);
     totalProposals++;
   }
 
@@ -141,7 +141,7 @@ contract DAO is ProposalConfigurationStructure, DAOConfigurationStruct, Action, 
   function _buildProposalStateInit(uint256 _proopsalId) private view returns (TvmCell initData_) {
     return
       tvm.buildStateInit({
-        code: ProposalCode,
+        code: proposalCode,
         contr: Proposal,
         varInit: { PROPOSAL_ID: _proopsalId, DaoAddress: address(this) }
       });
@@ -156,18 +156,18 @@ contract DAO is ProposalConfigurationStructure, DAOConfigurationStruct, Action, 
          tvm.buildStateInit({
             contr: VoteTokenWallet,
             varInit: {
-                root_: Config.TIP3_VOTE_ROOT_ADDRESS,
+                root_: config.TIP3_VOTE_ROOT_ADDRESS,
                 owner_: _walletOwner
             },
             pubkey: 0,
-            code: Tip3VoteWalletCode
+            code: tip3VoteWalletCode
         }))); 
   }
   function getAdmin() public override view returns (address admin_) {
     return admin;
   }
-  function getDAOConfig() public override view returns (DaoConfig DAOConfig_) {
-    return Config;
+  function getDAOConfig() public override view returns (DaoConfig config_) {
+    return config;
   }
   function getTotalProposals() public override view returns (uint256 totalProposal_) {
     return totalProposals;
@@ -207,13 +207,13 @@ contract DAO is ProposalConfigurationStructure, DAOConfigurationStruct, Action, 
     admin.transfer({ value: 0, flag: MsgFlag.REMAINING_GAS });
   }
 
-  function changeDAOprefrences(DaoConfig _Config) public override onlyAdmin {
+  function changeDAOprefrences(DaoConfig _config) public override onlyAdmin {
     // this contract is patying for the state changing since the admin is calling 
     tvm.accept();
     // emiting the event
     emit DAOPrefrencesChanged();
     // setting the new ones
-    Config = _Config;
+    config = _config;
   }
   // -- ADMIN FUNCTION -- //
 

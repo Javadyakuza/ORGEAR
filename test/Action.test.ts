@@ -8,7 +8,6 @@ import { ProposalAction } from "./structures_template/ProposalActionStruct.examp
 import { resolve } from "path";
 
 var DAOCon: Contract<FactorySource["DAO"]>;
-var TIME: Contract<FactorySource["timestamp"]>;
 let DAORootAddr: Address;
 let DAOAddr: Address;
 let Tip3voteRootAddr: Address;
@@ -153,9 +152,9 @@ describe("shuold take the actions ", async function () {
         _nonce: locklift.utils.getRandomNonce(),
       },
       constructorParams: {
-        _DaoCode: locklift.factory.getContractArtifacts("DAO").code,
-        _ProposalCode: locklift.factory.getContractArtifacts("Proposal").code,
-        _Tip3VoteWalletCode: locklift.factory.getContractArtifacts("VoteTokenWallet").code,
+        _daoCode: locklift.factory.getContractArtifacts("DAO").code,
+        _proposalCode: locklift.factory.getContractArtifacts("Proposal").code,
+        _tip3VoteWalletCode: locklift.factory.getContractArtifacts("VoteTokenWallet").code,
       },
       value: locklift.utils.toNano(50),
     });
@@ -172,8 +171,8 @@ describe("shuold take the actions ", async function () {
     // calling the propose function
     let DaodeployRes = await locklift.tracing.trace(
       DAORoot.methods
-        .DeployDao({
-          _DaoConfig: DaoConfig,
+        .deployDao({
+          _daoConfig: DaoConfig,
         })
         .send({
           from: WalletV3.account.address,
@@ -229,7 +228,7 @@ describe("shuold take the actions ", async function () {
     const { traceTree: data } = await locklift.tracing.trace(
       Dao.methods
         .propose({
-          _ProposalInitConfiguration: ProposalConfigurationStructure,
+          _proposalInitConfiguration: ProposalConfigurationStructure,
           _venomActions: ProposalAction,
         })
         .send({
@@ -256,7 +255,7 @@ describe("shuold take the actions ", async function () {
     const { traceTree: data_2 } = await locklift.tracing.trace(
       Dao.methods
         .propose({
-          _ProposalInitConfiguration: ProposalConfigurationStructure,
+          _proposalInitConfiguration: ProposalConfigurationStructure,
           _venomActions: ProposalAction,
         })
         .send({
@@ -315,20 +314,19 @@ describe("shuold take the actions ", async function () {
     // doing some stuff to increase the time stamp
     for (let i = 0; i < 15; i++) {
       const { contract: time } = await locklift.factory.deployContract({
-        contract: "timestamp",
+        contract: "timestampIncreas",
         publicKey: signer.publicKey,
         initParams: { _nonce: i },
         constructorParams: {},
         value: locklift.utils.toNano(2),
       });
-      TIME = time;
     }
   });
   it("shuold the take the actioin on proposal succeded", async function () {
     const Proposalcon = await locklift.factory.getDeployedContract("Proposal", ProposalAddr_1);
 
     await locklift.tracing.trace(
-      Proposalcon.methods.Queue({}).send({ from: WalletV3.account.address, amount: locklift.utils.toNano(0.1) }),
+      Proposalcon.methods.queue({}).send({ from: WalletV3.account.address, amount: locklift.utils.toNano(0.1) }),
     );
 
     await locklift.tracing.trace(

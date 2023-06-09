@@ -14,7 +14,7 @@ interface IProposal is ProposalConfigurationStructure, Action, ProposalStates {
   function castVote(uint256 _balance, TvmCell _votePayload) external internalMsg;
 
   // queue the proposal means that propoposal is ready to be excuited and was successfull
-  function Queue() external internalMsg;
+  function queue() external internalMsg;
 
   // this func call the "onProposalSuccess" fiunction on the dao root
   /// @notice payer : this
@@ -32,7 +32,7 @@ interface IProposal is ProposalConfigurationStructure, Action, ProposalStates {
     view
     returns (
       ProposalInitConfiguration initConf_,
-      ProposalState states_,
+      ProposalState state_,
       VenomActions[] venomActions_,
       uint256 creationBlockTS_,
       address proposer_,
@@ -43,7 +43,7 @@ interface IProposal is ProposalConfigurationStructure, Action, ProposalStates {
       uint256 startTime_,
       uint256 endTime_,
       uint256 executionTime_,
-      TvmCell Tip3VoteWalletCode_,
+      TvmCell tip3VoteWalletCode_,
       address tip3VoteRootAddress_
     );
 

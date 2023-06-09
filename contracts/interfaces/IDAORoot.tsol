@@ -11,15 +11,12 @@ import "../libraries/Gas.tsol";
 import "../structures/DAOConfigurationStruct.tsol";
 
 interface IDAORoot is DAOConfigurationStruct{
-
-
-
     // this function deploys A dao 
-    function DeployDao( DaoConfig _DaoConfig) external internalMsg;
+    function deployDao( DaoConfig _daoConfig) external internalMsg;
 
     // -- admin functions -- //
     // this function chages the Dao code 
-    function updateDaoCode(TvmCell _DaoCode) external ;
+    function updateDaoCode(TvmCell _daoCode) external ;
 
     function transferAdmin(address _newAdmin) external;
     function acceptBeingAdmin() external;

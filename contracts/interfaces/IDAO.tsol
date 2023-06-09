@@ -12,7 +12,7 @@ import "../interfaces/IProposal.tsol";
 interface IDAO is ProposalConfigurationStructure, DAOConfigurationStruct, Action {
 
   ///@notice the proposal expected address will be calculated from  a postion id wich is totalProposals + 1 
-  function propose(ProposalInitConfiguration _ProposalInitConfiguration, VenomActions[] _venomActions) external internalMsg;
+  function propose(ProposalInitConfiguration _proposalInitConfiguration, VenomActions[] _venomActions) external internalMsg;
   function deployProposal( uint256 _balance, TvmCell _payload) external internalMsg;
 
   // this  function is used to perfomrm the planned operation in case a proposal is approved and has got the votes
@@ -22,7 +22,7 @@ interface IDAO is ProposalConfigurationStructure, DAOConfigurationStruct, Action
   function expectedTip3VoteWalletAddress(address _walletOwner) external view returns (address expectedTip3WalletAddress_);
   function getAdmin() external view returns (address admin_) ;
 
-  function getDAOConfig() external view returns (DaoConfig DAOConfig_);
+  function getDAOConfig() external view returns (DaoConfig config_);
 
   function getTotalProposals() external view returns (uint256 totalProposal_);
 
@@ -33,7 +33,7 @@ interface IDAO is ProposalConfigurationStructure, DAOConfigurationStruct, Action
 
   function acceptBeingAdmin() external;
 
-  function changeDAOprefrences(DaoConfig _Config) external;
+  function changeDAOprefrences(DaoConfig _config) external;
   // -- ADMIN FUNCTION -- //
 
 }

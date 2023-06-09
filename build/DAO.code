@@ -138,7 +138,7 @@ CALLREF {
 PUSHINT 1000000000
 ADD
 GEQ
-THROWIFNOT 112
+THROWIFNOT 134
 .loc ../contracts/DAO.tsol, 69
 PUSHINT 0
 PUSHINT 4
@@ -315,7 +315,7 @@ PUSHCONT {
 	PUSHINT 0
 	SENDRAWMSG
 	.loc ../contracts/DAO.tsol, 98
-	THROW 113
+	THROW 135
 	.loc ../contracts/DAO.tsol, 0
 }
 IF
@@ -1324,7 +1324,7 @@ PUSHCONT {
 IFNOT
 PUSHCONT {
 	BLKDROP 3
-	PUSHINT 114
+	PUSHINT 127
 }
 IFJMP
 .loc ../contracts/helpers/ProposalInitialCheck.tsol, 21
@@ -1340,7 +1340,7 @@ EQINT 0
 AND
 PUSHCONT {
 	DROP2
-	PUSHINT 110
+	PUSHINT 133
 }
 IFJMP
 .loc ../contracts/helpers/ProposalInitialCheck.tsol, 25

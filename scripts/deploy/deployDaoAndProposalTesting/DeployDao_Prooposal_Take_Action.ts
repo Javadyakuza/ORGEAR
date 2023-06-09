@@ -71,35 +71,32 @@ async function deployActionTestContract() {
 }
 
 async function deployProposal() {
-  //   ProposalAction[0].target = ActionTestPersonalData.address;
-  //   ProposalAction[1].target = ActionTestPersonalData.address;
-  //   ProposalAction[0].payload = await ActionTestPersonalData.methods.setAge({ _age: 9 }).encodeInternal();
-  //   ProposalAction[1].payload = await ActionTestPersonalData.methods.setName({ _name: "hamed" }).encodeInternal();
+  ProposalAction[0].target = ActionTestPersonalData.address;
+  ProposalAction[1].target = ActionTestPersonalData.address;
+  ProposalAction[0].payload = await ActionTestPersonalData.methods.setAge({ _age: 9 }).encodeInternal();
+  ProposalAction[1].payload = await ActionTestPersonalData.methods.setName({ _name: "hamed" }).encodeInternal();
 
-  //   ProposalConfigurationStructure.description = "another proposal";
-  //   //
-  //   const { traceTree: data } = await locklift.tracing.trace(
-  //     DAOCon.methods
-  //       .propose({
-  //         _ProposalInitConfiguration: ProposalConfigurationStructure,
-  //         _venomActions: ProposalAction,
-  //       })
-  //       .send({
-  //         from: everWallet_1.address,
-  //         amount: locklift.utils.toNano(4.5),
-  //       }),
-  //   );
-  //   // fetching the emmited event reffering to ther propoal deploying
-  //   const ProposalEvents = await data?.findEventsForContract({
-  //     contract: DAOCon,
-  //     name: "ProposalDeployed" as const, // 'as const' is important thing for type saving
-  //   });
-  //   console.log("this is the event ", ProposalEvents);
-  // fetching the deployed proposal
-  Proposal = await locklift.factory.getDeployedContract(
-    "Proposal",
-    new Address("0:a503620a94b3d7f7b02c05bd5e518b328a15eaee941565d46598ebb61e77c77b"),
+  ProposalConfigurationStructure.description = "another proposal";
+  //
+  const { traceTree: data } = await locklift.tracing.trace(
+    DAOCon.methods
+      .propose({
+        _ProposalInitConfiguration: ProposalConfigurationStructure,
+        _venomActions: ProposalAction,
+      })
+      .send({
+        from: everWallet_1.address,
+        amount: locklift.utils.toNano(4.5),
+      }),
   );
+  // fetching the emmited event reffering to ther propoal deploying
+  const ProposalEvents = await data?.findEventsForContract({
+    contract: DAOCon,
+    name: "ProposalDeployed" as const, // 'as const' is important thing for type saving
+  });
+  console.log("this is the event ", ProposalEvents);
+  // fetching the deployed proposal
+  Proposal = await locklift.factory.getDeployedContract("Proposal", ProposalEvents![0]._proposal);
   console.log("proposal information : ", await Proposal.methods.getPorosposalOverview({}).call({}));
 }
 

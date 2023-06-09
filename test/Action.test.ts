@@ -312,24 +312,21 @@ describe("shuold take the actions ", async function () {
     expect((await Proposal.methods.getPorosposalOverview({}).call({})).againstVotes_).to.eq("500000000000");
   });
   it("shuold the take the actioin on proposal succeded", async function () {
+    // test progress gonna stop in here till the voting period get ended then we can queue the proposal
+    await new Promise<any>((resolve, reject) => {
+      setTimeout(() => {
+        resolve(true);
+      }, 180000);
+    });
     const Proposalcon = await locklift.factory.getDeployedContract("Proposal", ProposalAddr_1);
-    //checking the votes
 
-    // // suppose the proposal is succesded by now
-
-    //
-    // // fetching the propposal contract
-    // // queueingng
     await locklift.tracing.trace(
       Proposalcon.methods.Queue({}).send({ from: WalletV3.account.address, amount: locklift.utils.toNano(0.1) }),
     );
-    // // confirming that its qeueud
 
-    // excutiong
     await locklift.tracing.trace(
       Proposalcon.methods.execute({}).send({ from: WalletV3.account.address, amount: locklift.utils.toNano(20) }),
     );
-    // fetcing the action contract
     const actionCon = await locklift.factory.getDeployedContract("ActionTestPersonalData", ActionTestPersonalDataAddr);
     expect((await actionCon.methods.name({}).call({})).name).to.eq("hamed");
     expect((await actionCon.methods.age({}).call({})).age).to.eq("9");

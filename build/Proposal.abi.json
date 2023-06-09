@@ -225,6 +225,14 @@
 			"outputs": [
 				{"name":"tip3VoteRootAddress","type":"address"}
 			]
+		},
+		{
+			"name": "voteTrack",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"voteTrack","type":"map(address,bool)"}
+			]
 		}
 	],
 	"data": [
@@ -294,6 +302,7 @@
 		{"name":"endTime","type":"uint256"},
 		{"name":"executionTime","type":"uint256"},
 		{"name":"Tip3VoteWalletCode","type":"cell"},
-		{"name":"tip3VoteRootAddress","type":"address"}
+		{"name":"tip3VoteRootAddress","type":"address"},
+		{"name":"voteTrack","type":"map(address,bool)"}
 	]
 }

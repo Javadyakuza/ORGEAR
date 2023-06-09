@@ -159,6 +159,9 @@ contract Proposal is  ProposalConfigurationStructure, Action, ProposalStates, IP
         // transfering all the remaining balance to the proposers
         proposer.transfer({value: 0, flag: MsgFlag.ALL_NOT_RESERVED});
   }
+  // set function //
+  // get funcs 
+
   function _expectedTip3VoteWalletAddress(address _walletOwner) private view returns (address expectedTip3WalletAddress_) {
     return address(tvm.hash(
          tvm.buildStateInit({
@@ -170,9 +173,8 @@ contract Proposal is  ProposalConfigurationStructure, Action, ProposalStates, IP
             pubkey: 0,
             code: Tip3VoteWalletCode
         }))); 
-  }  // set function //
+  }  
 
-  // get funcs 
   function getPorosposalOverview( ) public override view returns (
     ProposalInitConfiguration initConf_,
     ProposalState states_,

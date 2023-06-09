@@ -18,7 +18,6 @@ async function CreateDao(Wallet: Address, DaoRootAddres: Address, deplopyAmount:
   await DeployedDaoRootCon.methods
     .DeployDao({
       _DaoConfig: DaoConfig,
-      _daoId: 69,
     })
     .send({
       from: Wallet,
@@ -33,14 +32,8 @@ async function CreateDao(Wallet: Address, DaoRootAddres: Address, deplopyAmount:
   );
   console.log("is dao deployed ?", (await DeployedCon.methods.getAdmin({}).call({})).admin_ == Wallet);
 }
-async function DeployProposal(
-  wallet: Address,
-  DaoAddr: Address,
-  deplopyAmount: string,
-  Tip3voteRootAddr: Address,
-) {
+async function DeployProposal(wallet: Address, DaoAddr: Address, deplopyAmount: string, Tip3voteRootAddr: Address) {
   let DeployedCon = await locklift.factory.getDeployedContract("DAO", DaoAddr);
-  ProposalConfigurationStructure.TIP3_VOTE_ROOT_ADDRESS = Tip3voteRootAddr;
   ProposalAction[0].target = new Address("");
   ProposalAction[1].target = new Address("");
   /// @DEV notice : the following two lines must be replace with the target functions
@@ -79,12 +72,12 @@ async function GetDaosList(DaoRootAddress: Address) {
   let deployedDaoRootCon = await locklift.factory.getDeployedContract("DAORoot", DaoRootAddress);
   let deployEvents = (
     await deployedDaoRootCon.getPastEvents({
-      filter: event => event.event === "newDAODepoyed",
+      filter: event => event.event === "newDAODeployed",
     })
   ).events;
   let daosAddrs = [];
   for (let i = 0; i < deployEvents.length; i++) {
-    daosAddrs.push(deployEvents[0]?.data?._Address_);
+    daosAddrs.push(deployEvents[0]?.data?._address);
   }
   return daosAddrs;
 }
@@ -110,7 +103,6 @@ async function VoteOnProposal(poroposalAddress: Address, wallet: Address) {
     .vote({
       _reason: "a good reason",
       _support: false,
-      nowTime: 5,
     })
     .send({
       from: wallet,
@@ -118,6 +110,6 @@ async function VoteOnProposal(poroposalAddress: Address, wallet: Address) {
     });
   console.log(
     "is vote casted ?",
-    (await ProposalCon.methods.getPorosposalOverview({ nowTime: 5 }).call({})).initConf_.againstVotes == voteWeight,
+    (await ProposalCon.methods.getPorosposalOverview({}).call({})).againstVotes_ == voteWeight,
   );
 }

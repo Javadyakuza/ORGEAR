@@ -5,19 +5,19 @@ import { ProposalAction } from "../../test/structures_template/ProposalActionStr
 // dao details
 async function GetDaoDetails(DaoAddres: Address) {
   let DeployedDaoCon = await locklift.factory.getDeployedContract("DAO", DaoAddres);
-  return (await DeployedDaoCon.methods.getDAOConfig({}).call({})).DAOConfig_;
+  return (await DeployedDaoCon.methods.getDAOConfig({}).call({})).config_;
 }
 async function GetProposalDetails(ProposalAddres: Address) {
   let DeployedProposalCon = await locklift.factory.getDeployedContract("Proposal", ProposalAddres);
   let ProposalConofAndState = await DeployedProposalCon.methods.getPorosposalOverview({}).call({});
-  return ProposalConofAndState.initConf_, ProposalConofAndState.states_;
+  return ProposalConofAndState.initConf_, ProposalConofAndState.state_;
 }
 async function CreateDao(Wallet: Address, DaoRootAddres: Address, deplopyAmount: string, Tip3voteRootAddr: Address) {
   let DeployedDaoRootCon = await locklift.factory.getDeployedContract("DAORoot", DaoRootAddres);
   DaoConfig.TIP3_VOTE_ROOT_ADDRESS = Tip3voteRootAddr;
   await DeployedDaoRootCon.methods
-    .DeployDao({
-      _DaoConfig: DaoConfig,
+    .deployDao({
+      _daoConfig: DaoConfig,
     })
     .send({
       from: Wallet,
@@ -42,7 +42,7 @@ async function DeployProposal(wallet: Address, DaoAddr: Address, deplopyAmount: 
   const { traceTree: data } = await locklift.tracing.trace(
     DeployedCon.methods
       .propose({
-        _ProposalInitConfiguration: ProposalConfigurationStructure,
+        _proposalInitConfiguration: ProposalConfigurationStructure,
         _venomActions: ProposalAction,
       })
       .send({
@@ -72,7 +72,7 @@ async function GetDaosList(DaoRootAddress: Address) {
   let deployedDaoRootCon = await locklift.factory.getDeployedContract("DAORoot", DaoRootAddress);
   let deployEvents = (
     await deployedDaoRootCon.getPastEvents({
-      filter: event => event.event === "newDAODeployed",
+      filter: event => event.event === "NewDAODeployed",
     })
   ).events;
   let daosAddrs = [];

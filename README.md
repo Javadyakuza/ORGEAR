@@ -48,18 +48,18 @@ Before you begin, please ensure that you have the following prerequisites instal
 Thanks to all the contributors who have helped make OrGear possible!
 
 - meisam taher
-  - Role: Developer
-  - Contact: meisamtaher@gmail.com
-- ahamd jahanbin
-  - Role: researcher
-  - Contact: ahamdjahanbin@gmail.com
+  - Role: blockchain Developer
+  - Contact: meisamtaher71@gmail.com
+- ahmad jahanbin
+  - Role: softwar developer
+  - Contact: ajahanbin1374@gmail.com
 
 ## Roadmap
 
 We have planned the following features for future versions of OrGear:
 
 - deploying the core contract's on mainnet
-- designing super user freindly web interface
+- upgrading the web interface
 - implementing more features for core contracts
 
 ## License

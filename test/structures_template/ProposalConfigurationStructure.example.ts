@@ -10,7 +10,7 @@ var ProposalConfigurationStructure = {
   timeLock: 0, // 2 minutes timelock
   threshold: locklift.utils.toNano(10), // 5 threshold votes required
   gracePeriod: 2592000, // 10 minutes grace period
-  sponser: false,
+  sponser: true,
 };
 
 export { ProposalConfigurationStructure };

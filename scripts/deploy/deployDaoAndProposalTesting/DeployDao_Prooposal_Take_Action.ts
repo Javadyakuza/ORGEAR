@@ -30,38 +30,38 @@ async function setSigenrs() {
   console.log(`account 1 : ${everWallet_1.address.toString()} \n account 2 : ${everWallet_2.address.toString()}`);
 }
 async function DeployDao() {
-  // DAORoot = await locklift.factory.getDeployedContract("DAORoot", new Address(deployedContracts.DaoRootAddress));
-  // console.log("dao root : ", DAORoot.address.toString());
-  // let { traceTree: data } = await locklift.tracing.trace(
-  //   DAORoot.methods
-  //     .deployDao({
-  //       _daoConfig: DaoConfig,
-  //     })
-  //     .send({
-  //       from: everWallet_1.address,
-  //       amount: locklift.utils.toNano(2),
-  //     }),
-  // );
-  // let DeployDaoEvents = data!.findEventsForContract({
-  //   contract: DAORoot,
-  //   name: "NewDAODeployed" as const,
-  // });
-  DAOCon = await locklift.factory.getDeployedContract("DAO", new Address(deployedContracts.yakuzatestDao));
+  DAORoot = await locklift.factory.getDeployedContract("DAORoot", new Address(deployedContracts.DaoRootAddress));
+  console.log("dao root : ", DAORoot.address.toString());
+  let { traceTree: data } = await locklift.tracing.trace(
+    DAORoot.methods
+      .deployDao({
+        _daoConfig: DaoConfig,
+      })
+      .send({
+        from: everWallet_1.address,
+        amount: locklift.utils.toNano(2),
+      }),
+  );
+  let DeployDaoEvents = data!.findEventsForContract({
+    contract: DAORoot,
+    name: "NewDAODeployed" as const,
+  });
+  DAOCon = await locklift.factory.getDeployedContract("DAO", DeployDaoEvents[0]!._address);
   console.log("Dao address : ", DAOCon.address.toString());
   console.log("dao information : \n", (await DAOCon.methods.getDAOConfig({}).call({})).config_);
 }
 
 async function deployActionTestContract() {
-  //   const { contract: ActionTestPersonalData2 } = await locklift.factory.deployContract({
-  //     contract: "ActionTestPersonalData",
-  //     publicKey: signer.publicKey,
-  //     initParams: {},
-  //     constructorParams: {
-  //       _age: 43,
-  //       _name: "javad",
-  //     },
-  //     value: locklift.utils.toNano("0.2"),
-  //   });
+  // const { contract: ActionTestPersonalData2 } = await locklift.factory.deployContract({
+  //   contract: "ActionTestPersonalData",
+  //   publicKey: signer.publicKey,
+  //   initParams: {},
+  //   constructorParams: {
+  //     _age: 43,
+  //     _name: "javad",
+  //   },
+  //   value: locklift.utils.toNano("0.2"),
+  // });
   // setting the state varibale
   ActionTestPersonalData = await locklift.factory.getDeployedContract(
     "ActionTestPersonalData",
@@ -76,7 +76,6 @@ async function deployProposal() {
   ProposalAction[0].payload = await ActionTestPersonalData.methods.setAge({ _age: 9 }).encodeInternal();
   ProposalAction[1].payload = await ActionTestPersonalData.methods.setName({ _name: "hamed" }).encodeInternal();
 
-  ProposalConfigurationStructure.description = "another proposal";
   //
   const { traceTree: data } = await locklift.tracing.trace(
     DAOCon.methods

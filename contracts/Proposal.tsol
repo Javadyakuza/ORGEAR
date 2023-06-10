@@ -66,19 +66,19 @@ contract Proposal is ProposalConfigurationStructure, Action, ProposalStates, IPr
   @notice this function support the delegate voting by getting the voter  
    */
   function vote(bool _support, string _reason) public view override internalMsg {
-    require(getProposalState() == ProposalState.Active, DaoErrors.PROPOSAL_IS_NOT_ACTIVVE);
-    require(voteTrack[msg.sender] == false, DaoErrors.USER_VOTED_ALREADY);
     if (initConfig.sponser) {
-      require(msg.value == 0, DaoErrors.USER_MUST_NOT_SEND_VALUE);
       tvm.accept();
+      // the Gas Main Value for voting fees
+      tvm.rawReserve(address(this).balance - Gas.MAIN_VALUE, 0);
     } else {
       // the Gas Main Value for voting fees
       require(msg.value >= Gas.MAIN_VALUE, DaoErrors.VALUE_TOO_LOW);
       tvm.rawReserve(0, 4);
     }
+    require(getProposalState() == ProposalState.Active, DaoErrors.PROPOSAL_IS_NOT_ACTIVVE);
+    require(voteTrack[msg.sender] == false, DaoErrors.USER_VOTED_ALREADY);
     // packing the data
     TvmCell votePayload = abi.encode(msg.sender, _support, _reason);
-
     // calling the expected tip3 vote wallet to return the past votes for us
     IVoteTokenWallet(_expectedTip3VoteWalletAddress(msg.sender)).getPastVotes{
       value: 0,

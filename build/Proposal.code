@@ -134,12 +134,40 @@ ADDCONST -5
 PICK
 THROWIF 72
 .loc ../contracts/Proposal.tsol, 69
+GETGLOB 13
+INDEX 8
+PUSHCONT {
+	.loc ../contracts/Proposal.tsol, 70
+	ACCEPT
+	.loc ../contracts/Proposal.tsol, 72
+	GETPARAM 7
+	FIRST
+	PUSHINT 1000000000
+	SUB
+	UFITS 128
+	PUSHINT 0
+}
+PUSHCONT {
+	.loc ../contracts/Proposal.tsol, 75
+	DEPTH
+	ADDCONST -2
+	PICK
+	PUSHINT 1000000000
+	GEQ
+	THROWIFNOT 130
+	.loc ../contracts/Proposal.tsol, 76
+	PUSHINT 0
+	PUSHINT 4
+}
+IFELSE
+RAWRESERVE
+.loc ../contracts/Proposal.tsol, 78
 CALLREF {
 	CALL $getProposalState_aade375b_internal_macro$
 }
 EQINT 1
 THROWIFNOT 143
-.loc ../contracts/Proposal.tsol, 70
+.loc ../contracts/Proposal.tsol, 79
 GETGLOB 9
 GETGLOB 27
 PUSHINT 267
@@ -152,33 +180,7 @@ IF
 FALSE
 EQUAL
 THROWIFNOT 110
-.loc ../contracts/Proposal.tsol, 71
-GETGLOB 13
-INDEX 8
-PUSHCONT {
-	.loc ../contracts/Proposal.tsol, 72
-	DEPTH
-	ADDCONST -2
-	PICK
-	THROWIF 136
-	.loc ../contracts/Proposal.tsol, 73
-	ACCEPT
-}
-PUSHCONT {
-	.loc ../contracts/Proposal.tsol, 76
-	DEPTH
-	ADDCONST -2
-	PICK
-	PUSHINT 1000000000
-	GEQ
-	THROWIFNOT 130
-	.loc ../contracts/Proposal.tsol, 77
-	PUSHINT 0
-	PUSHINT 4
-	RAWRESERVE
-}
-IFELSE
-.loc ../contracts/Proposal.tsol, 80
+.loc ../contracts/Proposal.tsol, 81
 SWAP
 GETGLOB 9
 NEWC

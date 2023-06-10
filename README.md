@@ -1,4 +1,4 @@
-![OrGear LOGO](https://bafybeigm6nosritlcykhq6yt2xcr4mcocj376hk7apbilp5zct7ktaj674.ipfs.w3s.link/ORGEAR.jpg)
+![OrGear LOGO](https://bafybeihnx765hpgr2fmiexsxyjigm3at5v2bujswsmiplmazgtikxoisqy.ipfs.w3s.link/OrGearLogo.jpg)
 
 # OrGear
 
